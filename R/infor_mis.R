@@ -1,9 +1,19 @@
 
+#' Title
+#'
+#' @param y
+#' @param x
+#' @param z
+#'
+#' @return
+#' @export
+#'
+#' @examples
 infor_mis <- function(y,x,z){
 
 
-  sof <- "source_mis.so"
-  dyn.load(sof)
+  # sof <- "source_mis.so"
+  # dyn.load(sof)
 
   N <- nrow(x)
   #x <- cbind(1,x)

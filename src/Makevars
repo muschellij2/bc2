@@ -7,9 +7,9 @@ source_mis.o: source_mis.c
 # source0.o: source0.c
 getXpWXp.o: getXpWXp.c
 # getXbetaX.o: getXbetaX.c
-# getXWX.o: getXWX.c
-# getXWXp.o: getXWXp.c
+getXWX.o: getXWX.c
+getXWXp.o: getXWXp.c
 getW.o: getW.c
 getWXp.o: getWXp.c
-# getXY.o: getXY.c
+getXY.o: getXY.c
 
