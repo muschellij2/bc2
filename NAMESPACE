@@ -3,6 +3,7 @@
 export(Mvpoly)
 export(score_support)
 export(score_test)
+export(score_test_mis)
 export(ztozall.fun)
 importFrom(Rcpp,sourceCpp)
 useDynLib(bc2)

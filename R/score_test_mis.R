@@ -1,4 +1,14 @@
 
+#' Title
+#'
+#' @param y
+#' @param x_test
+#' @param score_support_result
+#'
+#' @return
+#' @export
+#'
+#' @examples
 score_test_mis <- function(y,x_test,score_support_result){
   if(nrow(y)<450){
     # if(is.null(x_covar)){
