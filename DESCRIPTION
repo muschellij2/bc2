@@ -1,17 +1,20 @@
 Package: bc2
 Type: Package
-Title: Breast Cancer Prediction
+Title: Breast Cancer Prediction(
 Version: 0.1.1
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
+Author: Haoyu Zhang 
+Maintainer: Haoyu Zhang <andrew.haoyu@gmail.com>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 License: GPL-2
-Imports: 
-    Rcpp,
-    Matrix
-LinkingTo: 
+Depends:
+  R (>= 3.1.0)
+Imports:
+    Rcpp(>= 0.12.9),
+    Matrix(>= 1.2-8) 
+LinkingTo:
     Rcpp
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.0.1.9000
+RoxygenNote: 6.0.1
+Suggests: testthat

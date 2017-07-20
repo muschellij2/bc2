@@ -97,8 +97,8 @@ score_test <- function(delta0, y, x_test, x_covar, z_design) {
       1 - pchisq(as.numeric(score_test_result), df = ncol(z_test))
     return(p_value)
   } else{
-    sof <- "source.so"
-    dyn.load(sof)
+    # sof <- "source.so"
+    # dyn.load(sof)
 
 
 

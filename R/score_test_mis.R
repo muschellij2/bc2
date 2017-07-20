@@ -1,4 +1,14 @@
 
+#' Title
+#'
+#' @param y
+#' @param x_test
+#' @param score_support_result
+#'
+#' @return
+#' @export
+#'
+#' @examples
 score_test_mis <- function(y,x_test,score_support_result){
   if(nrow(y)<450){
     # if(is.null(x_covar)){
@@ -100,8 +110,8 @@ score_test_mis <- function(y,x_test,score_support_result){
     x_covar <- cbind(1,x_covar)
     p_col <- ncol(x_covar)
 
-    sof <- "getXWXp.so"
-    dyn.load(sof)
+    # sof <- "getXWXp.so"
+    # dyn.load(sof)
     ret <- rep(0,M^2*p_col)
     XWXp <- .C("getXWXp",as.numeric(WxpVec),as.numeric(x_test),as.integer(N),as.integer(M),as.numeric(ret),as.integer(p_col))
     XWXpVec <- XWXp[[5]]
@@ -110,14 +120,14 @@ score_test_mis <- function(y,x_test,score_support_result){
     for(ind in 1:p_col){
       XWXp_mat[,seq(ind,M*p_col,p_col)] <- XWXp_mat_temp[,(ind-1)*M+(1:M)]
     }
-    sof <- "getXWX.so"
-    dyn.load(sof)
+    # sof <- "getXWX.so"
+    # dyn.load(sof)
     ret = rnorm(M^2)
     XWX_c <- .C("getXWX",as.numeric(W),as.numeric(x_test),as.integer(N),as.integer(M),
                 as.numeric(ret))
     XWX <- matrix(XWX_c[[5]],M,M)
-    sof2 <- "getXY.so"
-    dyn.load(sof2)
+    # sof2 <- "getXY.so"
+    # dyn.load(sof2)
     XY <- rep(0,M)
     pxx <- yy-ret_p
     XY_c <- .C("getXY",as.numeric(x_test),as.numeric(pxx),as.numeric(XY),as.integer(N),as.integer(M))
