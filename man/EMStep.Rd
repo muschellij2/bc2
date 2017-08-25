@@ -7,7 +7,17 @@
 EMStep(delta0, y, x.all, z.standard, z.all, missingTumorIndicator)
 }
 \arguments{
-\item{missingTumorIndicator}{}
+\item{delta0}{delta0}
+
+\item{y}{y}
+
+\item{x.all}{x.all}
+
+\item{z.standard}{z.standard}
+
+\item{z.all}{z.all}
+
+\item{missingTumorIndicator}{missingtumorIndicator}
 }
 \description{
 Title

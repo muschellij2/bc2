@@ -4,12 +4,12 @@
 
 #' Title
 #'
-#' @param delta0
-#' @param y
-#' @param x.all
-#' @param z.standard
-#' @param z.all
-#' @param missingTumorIndicator
+#' @param delta0 delta0
+#' @param y y
+#' @param x.all x.all
+#' @param z.standard z.standard
+#' @param z.all z.all
+#' @param missingTumorIndicator missingtumorIndicator
 #'
 #' @return
 #' @export
