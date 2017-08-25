@@ -1,4 +1,7 @@
-#' Title
+#####ScoreTest
+
+
+#' ScoreTest
 #'
 #' @param y
 #' @param x
@@ -94,8 +97,8 @@ ScoreTest <- function(y,x,second.stage.structure = "main.effect",score.test.supp
     x.intere <- as.numeric(x[,i])
 
 
-    # sof <- "try6.so"
-    # dyn.load(sof)
+     sof <- ScoreTest.so
+     dyn.load(sof)
 
     temp <- .C("ScoreTest",
                x.intere,
