@@ -1,3 +1,15 @@
+#' Title
+#'
+#' @param y
+#' @param x
+#' @param second.stage.structure
+#' @param score.test.support
+#' @param missingTumorIndicator
+#'
+#' @return
+#' @export
+#'
+#' @examples
 ScoreTest <- function(y,x,second.stage.structure = "main.effect",score.test.support=NULL,missingTumorIndicator=NULL){
   if(is.vector(x)==1){
     x = matrix(x,ncol=1)
