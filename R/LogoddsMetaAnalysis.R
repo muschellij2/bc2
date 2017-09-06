@@ -9,12 +9,13 @@
 #' @export
 #'
 #' @examples
-LogoddsMetaAnalysis <- function(logodds1,info1,logodds2,info2){
-  info.meta <- info1+info2
-  sigma.meta <- solve(info1+info2)
-  logodds.meta <- sigma.meta%*%(info1%*%logodds1+info2%*%logodds2)
+LogoddsMetaAnalysis <- function(logodds1,sigma1,logodds2,sigma2){
+  sigma1.inv <- solve(sigma1)
+  sigma2.inv <- solve(sigma2)
+  sigma.meta <- solve(sigma1.inv+sigma2.inv)
+  logodds.meta <- sigma.meta%*%(sigma1.inv%*%logodds1+sigma2.inv%*%logodds2)
 
   return(list(logodds.meta = logodds.meta,
-         info.meta = info.meta))
+         sigma.meta = sigma.meta))
 
 }

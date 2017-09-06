@@ -7,10 +7,10 @@
 #' @export
 #'
 #' @examples
-GlobalTestForAssoc <- function(logodds,infor){
-  infor <- as.matrix(infor)
+GlobalTestForAssoc <- function(logodds,sigma){
+  sigma <- as.matrix(sigma)
   df <- length(logodds)
-  GTA.stat <- t(logodds)%*%infor%*%logodds
+  GTA.stat <- t(logodds)%*%solve(sigma)%*%logodds
   p.value.GTA <- pchisq(as.numeric(GTA.stat),df=df,lower.tail = F)
   p.value.GTA <- format(p.value.GTA,scientific = T,digits = 3)
   return(p.value.GTA)
@@ -27,9 +27,9 @@ GlobalTestForAssoc <- function(logodds,infor){
 #' @export
 #'
 #' @examples
-GlobalTestForHeter <- function(logodds,infor){
-  infor <- as.matrix(infor)
-  sigma <- solve(infor)
+GlobalTestForHeter <- function(logodds,sigma){
+
+  sigma <- as.matrix(infor)
   df <- length(logodds)
   sigma.casecase <- sigma[2:df,2:df]
   logodds.casecase <- logodds[2:df]
@@ -48,9 +48,9 @@ GlobalTestForHeter <- function(logodds,infor){
 #' @export
 #'
 #' @examples
-IndividualHeterTest <- function(logodds,infor){
-  infor <- as.matrix(infor)
-  sigma <- solve(infor)
+IndividualHeterTest <- function(logodds,sigma){
+
+  sigma <- as.matrix(sigma)
   var.logodds <- diag(sigma)
   df <- length(logodds)
   z <- logodds/sqrt(var.logodds)
