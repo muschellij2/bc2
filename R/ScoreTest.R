@@ -144,3 +144,11 @@ ScoreTest <- function(y,x,second.stage.structure = "main.effect",score.test.supp
   #return(list(score_c=score_test_mis$score_c,infor_c = score_test_mis$infor_c))
   return(list(score.result=score.result,efficient.info.result=efficient.info.result, info.complete=info.complete,info.lost = info.lost,tx_intereWXZ=tx_intereWXZ,Quad_tx_intere_WXZ_invinfo_vec=Quad_tx_intere_WXZ_invinfo_vec))
 }
+
+
+
+
+
+
+
+

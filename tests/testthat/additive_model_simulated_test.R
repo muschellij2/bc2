@@ -1,4 +1,4 @@
-load("simulated_data.Rdata")
+load("./data/simulated_data.Rdata")
 y = simulated_data[[1]]
 x = simulated_data[[2]]
 y.pheno.complete <- simulated_data[[3]]
@@ -15,7 +15,7 @@ missingTumorIndicator = 888
 
 
 library(devtools)
-install_github("andrewhaoyu/bc2")
+#install_github("andrewhaoyu/bc2")
 library(bc2)
 
 
@@ -112,7 +112,7 @@ result6 = ScoreTest(y,try,second.stage.structure = "main.effect",score.test.supp
 
 
 library(devtools)
-install_github("andrewhaoyu/bc2")
+#install_github("andrewhaoyu/bc2")
 library(bc2)
 library(readr)
 
@@ -120,9 +120,9 @@ library(readr)
 
 
 
-y_standard <- as.matrix(read_csv("./onco_y_standard.csv"))
-x <- as.matrix(read_csv("./gene_and_pc.csv"))
-y_onco <- as.matrix(read_csv("./onco_y.csv"))
+y_standard <- as.matrix(read_csv("./data/onco_y_standard.csv"))
+x <- as.matrix(read_csv("./data/gene_and_pc.csv"))
+y_onco <- as.matrix(read_csv("./data/onco_y.csv"))
 pc <- x[,2:11]
 gene <- x[,1]
 

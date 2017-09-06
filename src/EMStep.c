@@ -8,6 +8,7 @@
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 
+
 #define ALMOST_ZERO 1e-16
 #define NUM_ZERO 1e-100
 #define ERROR_SINGULAR_MATRIX 1
