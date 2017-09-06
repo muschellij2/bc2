@@ -6,7 +6,7 @@
 #' @export
 #'
 #' @examples
-p_value_function <- function(z){
+PvalueFunction <- function(z){
   result <- NULL
   for(i in 1:length(z)){
 
