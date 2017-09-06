@@ -15,7 +15,7 @@ LogoddsMetaAnalysis <- function(logodds1,info1,logodds2,info2){
   logodds.meta <- solve(w1+w2)%*%(w1%*%logodds1+w2%*%logodds2)
   info.meta <- solve(w1+w2)
 
-  return(logodds.meta = logodds.meta,
-         info.meta = info.meta)
+  return(list(logodds.meta = logodds.meta,
+         info.meta = info.meta))
 
 }
