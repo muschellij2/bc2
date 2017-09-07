@@ -4,7 +4,7 @@
 \alias{IndividualHeterTest}
 \title{Title}
 \usage{
-IndividualHeterTest(logodds, infor)
+IndividualHeterTest(logodds, sigma)
 }
 \arguments{
 \item{infor}{}

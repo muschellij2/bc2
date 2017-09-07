@@ -4,7 +4,7 @@
 \alias{GlobalTestForAssoc}
 \title{Title}
 \usage{
-GlobalTestForAssoc(logodds, infor)
+GlobalTestForAssoc(logodds, sigma)
 }
 \arguments{
 \item{infor}{}

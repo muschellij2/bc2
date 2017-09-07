@@ -4,7 +4,7 @@
 \alias{GlobalTestForHeter}
 \title{Title}
 \usage{
-GlobalTestForHeter(logodds, infor)
+GlobalTestForHeter(logodds, sigma)
 }
 \arguments{
 \item{infor}{}

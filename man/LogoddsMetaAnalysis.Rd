@@ -4,7 +4,7 @@
 \alias{LogoddsMetaAnalysis}
 \title{Title}
 \usage{
-LogoddsMetaAnalysis(logodds1, info1, logodds2, info2)
+LogoddsMetaAnalysis(logodds1, sigma1, logodds2, sigma2)
 }
 \arguments{
 \item{info2}{}
