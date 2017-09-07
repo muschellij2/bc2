@@ -29,7 +29,7 @@ GlobalTestForAssoc <- function(logodds,sigma){
 #' @examples
 GlobalTestForHeter <- function(logodds,sigma){
 
-  sigma <- as.matrix(infor)
+  sigma <- as.matrix(sigma)
   df <- length(logodds)
   sigma.casecase <- sigma[2:df,2:df]
   logodds.casecase <- logodds[2:df]
