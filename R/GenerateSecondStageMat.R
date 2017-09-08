@@ -1,15 +1,10 @@
 #' Title
 #'
-#' @param baselineonly.number
-#' @param main.effect.number
-#' @param pairwise.interaction.number
-#' @param saturated.number
-#' @param baselineonly.second.cat
-#' @param main.effect.second.cat
-#' @param pairwise.interaction.second.cat
-#' @param saturated.second.cat
+#' @param baselineonly
+#' @param main.effect
+#' @param pairwise.interaction
+#' @param saturated
 #' @param M
-#' @param total.covar.number
 #' @param full.second.stage.names
 #' @param covar.names
 #'
@@ -17,19 +12,25 @@
 #' @export
 #'
 #' @examples
-GenerateSecondStageMat <- function(baselineonly.number,
-                                   main.effect.number,
-                                   pairwise.interaction.number,
-                                   saturated.number,
-                                   baselineonly.second.cat,
-                                   main.effect.second.cat,
-                                   pairwise.interaction.second.cat,
-                                   saturated.second.cat,
+GenerateSecondStageMat <- function(baselineonly,
+                                   main.effect,
+                                   pairwise.interaction,
+                                   saturated,
                                    M,
-                                   total.covar.number,
                                    full.second.stage.names,
-                                   covar.names,
-                                   delta){
+                                   covar.names){
+  baselineonly.number <- CountCovarNumber(baselineonly)
+  main.effect.number <- CountCovarNumber(main.effect)
+  pairwise.interaction.number <- CountCovarNumber(pairwise.interaction)
+  saturated.number <- CountCovarNumber(saturated)
+  ###second.stage.category for different model structures
+  baselineonly.second.cat <- 1
+  main.effect.second.cat <- ncol(z.design.main.effect)
+  pairwise.interaction.second.cat <- ncol(z.design.pairwise.interaction)
+  saturated.second.cat <- ncol(z.design.saturated)
+  ###1 for intercept
+  total.covar.number <- 1+ baselineonly.number+main.effect.number+
+    pairwise.interaction.number+saturated.number
 
   max.number.second.stage.parameter <- 0
   if(baselineonly.number!=0){
@@ -62,6 +63,7 @@ GenerateSecondStageMat <- function(baselineonly.number,
   if(main.effect.number!=0){
 
     for(i in 1:main.effect.number){
+      print(i)
       ind.covar <- ind.covar+1
       second.stage.mat[1:main.effect.second.cat,ind.covar]<-
         delta.no.inter[(ind.delta+1):(ind.delta+main.effect.second.cat)]
@@ -95,7 +97,3 @@ GenerateSecondStageMat <- function(baselineonly.number,
   return(second.stage.mat)
 
 }
-
-
-
-
