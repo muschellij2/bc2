@@ -88,7 +88,11 @@ EMmvpoly <- function(y,
                           M,
                           full.second.stage.names,
                           covar.names,
-                        delta)
+                        delta,
+                        baselineonly.second.cat,
+                        main.effect.second.cat,
+                        pairwise.interaction.second.cat,
+                        saturated.second.cat)
 
 
 
