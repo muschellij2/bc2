@@ -4,7 +4,7 @@
 \alias{LogLikelihoodwithAIC}
 \title{Title}
 \usage{
-LogLikelihoodwithAIC(y_em, p, missing.vec, missing.mat, nparm)
+LogLikelihoodwithAIC(y_em, p, missing.vec, nparm)
 }
 \arguments{
 \item{nparm}{}

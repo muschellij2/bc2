@@ -12,11 +12,11 @@
 #'
 #' @examples
 EMmvpoly <- function(y,
-                                baselineonly=NULL,
-                                main.effect=NULL,
-                                pairwise.interaction=NULL,
-                                saturated=NULL,
-                                missingTumorIndicator = 888){
+                     baselineonly=NULL,
+                     main.effect=NULL,
+                     pairwise.interaction=NULL,
+                     saturated=NULL,
+                     missingTumorIndicator = 888){
   tumor.number <- ncol(y)-1
   y.case.control <- y[,1]
   y.tumor <- y[,2:(tumor.number+1)]
@@ -46,6 +46,12 @@ EMmvpoly <- function(y,
                                                  tumor.number,
                                                  tumor.names,
                                                  freq.subtypes)
+  full.second.stage.names <- colnames(z.design.saturated)
+  covar.names <- GenerateCovarName(baselineonly,
+                                   main.effect,
+                                   pairwise.interaction,
+                                   saturated)
+
   z.all <- ZDesigntoZall(baselineonly,
                          main.effect,
                          pairwise.interaction,
@@ -68,6 +74,28 @@ EMmvpoly <- function(y,
   p.main <- ncol(z.standard)+1
 
   EM.result = EMStep(delta0,as.matrix(y),x.all,z.standard,z.all,missingTumorIndicator)
+  delta <- EM.result$delta
+  infor <- EM.result$infor_obs
+  complete.loglikelihood <- complete.loglikelihood
+  complete.loglikelihood.aic <- complete.loglikelihood.aic
+  loglikelihood.for.complete <- loglikelihood.for.complete
+  loglikelihood.for.complete.aic <- loglikelihood.for.complete.aic
+  second.stage.mat <- GenerateSecondStageMat(baselineonly.number,
+                                             main.effect.number,
+                                             pairwise.interaction.number,
+                                             saturated.number,
+                                             baselineonly.second.cat,
+                                             main.effect.second.cat,
+                                             pairwise.interaction.second.cat,
+                                             saturated.second.cat,
+                                             M,
+                                             total.covar.number,
+                                             full.second.stage.names,
+                                             covar.names,
+                                             delta)
+
+
+
 
 
   #   pxx = EM.result[[3]]
@@ -76,7 +104,7 @@ EMmvpoly <- function(y,
   #  #return(score_support_result)
   # score_test_mis_result <- score_test_mis(y_em,baselineonly,score_support_result)
 
-  return(EM.result)
+  return(list(delta=delta,infor=infor,second.stage.mat = second.stage.mat))
   #return(list(score_c=score_test_mis$score_c,infor_c = score_test_mis$infor_c))
   #return(EM.result)
 
