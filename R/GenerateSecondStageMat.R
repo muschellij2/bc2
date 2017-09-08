@@ -62,7 +62,6 @@ GenerateSecondStageMat <- function(baselineonly.number,
   if(main.effect.number!=0){
 
     for(i in 1:main.effect.number){
-      print(i)
       ind.covar <- ind.covar+1
       second.stage.mat[1:main.effect.second.cat,ind.covar]<-
         delta.no.inter[(ind.delta+1):(ind.delta+main.effect.second.cat)]
