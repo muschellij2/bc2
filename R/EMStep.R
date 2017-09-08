@@ -77,8 +77,9 @@ EMStep <- function(delta0,y,x.all,z.standard,z.all,missingTumorIndicator){
 
   loglikelihood.aic <- LogLikelihoodwithAIC(y_em,p,missing.vec,nparm)
   complete.loglikelihood <- loglikelihood.aic[[1]]
-  complete.loglikelihood.aic <- loglikelihood.aic[[3]]
   loglikelihood.for.complete <- loglikelihood.aic[[2]]
+  complete.loglikelihood.aic <- loglikelihood.aic[[3]]
+
   loglikelihood.for.complete.aic <- loglikelihood.aic[[4]]
 
   return(list(delta=delta,

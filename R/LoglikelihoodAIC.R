@@ -26,8 +26,9 @@ LogLikelihoodwithAIC <- function(y_em,p,missing.vec,nparm){
   loglikehood.for.complete.obs <- ComputeLogLikelihood(y.em.complete,p.complete)
   AIC.for.complete.obs <- 2*nparm - 2* loglikehood.for.complete.obs
   return(list(complete.loglikelihood=complete.loglikelihood,
-              AIC.complete.loglikelihood = AIC.complete.loglikelihood,
+
               loglikehood.for.complete.obs=loglikehood.for.complete.obs,
+              AIC.complete.loglikelihood = AIC.complete.loglikelihood,
               AIC.for.complete.obs=AIC.for.complete.obs))
 }
 
