@@ -29,7 +29,8 @@ EMStep <- function(delta0,y,x.all,z.standard,z.all,missingTumorIndicator){
                                  z.standard,z.all,missingTumorIndicator)
   y_em <- prob.fit.result[[1]]
   missing.vec <- as.numeric(as.vector(prob.fit.result[[2]]))
-  missing.mat.vec <- as.numeric(as.vector(prob.fit.result[[3]]))
+  missing.mat <- prob.fit.result[[3]]
+  missing.mat.vec <- as.numeric(as.vector(missing.mat))
   missing.number <- as.integer(length(missing.vec))
 
   # sof <- "try4.so"
@@ -74,7 +75,7 @@ EMStep <- function(delta0,y,x.all,z.standard,z.all,missingTumorIndicator){
   infor_obs=result[[2]]
   p=result[[3]]
 
-  loglikelihood.aic <- LogLikelihoodwithAIC(y_em,p)
+  loglikelihood.aic <- LogLikelihoodwithAIC(y_em,p,missing.vec,nparm)
   complete.loglikelihood <- loglikelihood.aic[[1]]
   complete.loglikelihood.aic <- loglikelihood.aic[[3]]
   loglikelihood.for.complete <- loglikelihood.aic[[2]]

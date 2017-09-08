@@ -10,7 +10,7 @@
 #' @export
 #'
 #' @examples
-LogLikelihoodwithAIC <- function(y_em,p,missing.vec,missing.mat,nparm){
+LogLikelihoodwithAIC <- function(y_em,p,missing.vec,nparm){
   n <- nrow(y_em)
   M <- ncol(y_em)
   all.vec <- c(1:n)
