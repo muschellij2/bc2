@@ -76,10 +76,10 @@ EMmvpoly <- function(y,
   EM.result = EMStep(delta0,as.matrix(y),x.all,z.standard,z.all,missingTumorIndicator)
   delta <- EM.result$delta
   infor <- EM.result$infor_obs
-  complete.loglikelihood <- complete.loglikelihood
-  complete.loglikelihood.aic <- complete.loglikelihood.aic
-  loglikelihood.for.complete <- loglikelihood.for.complete
-  loglikelihood.for.complete.aic <- loglikelihood.for.complete.aic
+  complete.loglikelihood <- EM.result$complete.loglikelihood
+  complete.loglikelihood.aic <- EM.result$complete.loglikelihood.aic
+  loglikelihood.for.complete <- EM.result$loglikelihood.for.complete
+  loglikelihood.for.complete.aic <- EM.result$loglikelihood.for.complete.aic
   second.stage.mat <- GenerateSecondStageMat(baselineonly.number,
                                              main.effect.number,
                                              pairwise.interaction.number,
@@ -104,7 +104,8 @@ EMmvpoly <- function(y,
   #  #return(score_support_result)
   # score_test_mis_result <- score_test_mis(y_em,baselineonly,score_support_result)
 
-  return(list(delta=delta,infor=infor,second.stage.mat = second.stage.mat))
+  return(list(delta=delta,infor=infor,second.stage.mat = second.stage.mat,complete.loglikelihood=complete.loglikelihood,
+              loglikelihood.for.complete= loglikelihood.for.complete))
   #return(list(score_c=score_test_mis$score_c,infor_c = score_test_mis$infor_c))
   #return(EM.result)
 
