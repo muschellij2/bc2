@@ -1,22 +1,11 @@
-#' Title
-#'
-#' @param y
-#' @param baselineonly
-#' @param main.effect
-#' @param pairwise.interaction
-#' @param saturated
-#' @param missingTumorIndicator
-#'
-#' @return
-#' @export
-#'
-#' @examples
-EMmvpoly <- function(y,
-                                baselineonly=NULL,
-                                main.effect=NULL,
-                                pairwise.interaction=NULL,
-                                saturated=NULL,
-                                missingTumorIndicator = 888){
+EMmvpolySelfDesign <- function(y,
+                    x,
+                    z.design,
+                     missingTumorIndicator = 888,
+                    z.all=NULL){
+  if(is.null(z.all)){
+
+  }
   tumor.number <- ncol(y)-1
   y.case.control <- y[,1]
   y.tumor <- y[,2:(tumor.number+1)]
@@ -46,14 +35,7 @@ EMmvpoly <- function(y,
                                                  tumor.number,
                                                  tumor.names,
                                                  freq.subtypes)
-  z.all <- ZDesigntoZall(baselineonly,
-                         main.effect,
-                         pairwise.interaction,
-                         saturated,
-                         z.design.baselineonly,
-                         z.design.main.effect,
-                         z.design.pairwise.interaction,
-                         z.design.saturated)
+
   delta0 <-StartValueFunction(freq.subtypes,y.case.control,z.all)
   #x.all has no intercept yet
   #we will add the intercept in C code
@@ -68,8 +50,6 @@ EMmvpoly <- function(y,
   p.main <- ncol(z.standard)+1
 
   EM.result = EMStep(delta0,as.matrix(y),x.all,z.standard,z.all,missingTumorIndicator)
-
-
   #   pxx = EM.result[[3]]
   #   y_em = EM.result[[4]]
   #  score_support_result <- score_support(pxx,x.all,baselineonly,z.all,z.standard,y_em)

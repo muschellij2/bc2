@@ -56,11 +56,12 @@ EMStep <- function(delta0,y,x.all,z.standard,z.all,missingTumorIndicator){
   ret_delta <- as.numeric(rep(-9999, nparm))
   ret_info <- as.numeric(rep(-9999,nparm^2))
   ret_p <- as.numeric(rep(0,NM))
+  ret_lxx <- as.numeric(rep(0,NM))
 
 
   temp <- .C("EMStep",deltai, nparm, Y=Y, X, ZallVec,Znr,Znc, N, M, NCOV, NITER, tol,tolMaxstep,
              debug, ret_rc=ret_rc, ret_delta=ret_delta,ret_info=ret_info,ret_p=ret_p,missing.vec,
-             missing.mat.vec,missing.number)
+             missing.mat.vec,missing.number,ret_lxx=ret_lxx)
   print(paste0("EM Algorithm Converged"))
   info <- matrix(unlist(temp$ret_info),nparm,nparm)
   result <- list(temp$ret_delta,info,
@@ -70,6 +71,6 @@ EMStep <- function(delta0,y,x.all,z.standard,z.all,missingTumorIndicator){
   # infor_mis_c <- infor_mis(y_em,x.all,z.all)
   #infor_obs <- result[[2]]-infor_mis_c
 
-  return(list(delta=result[[1]],infor_obs=result[[2]],p=result[[3]],y_em=y_em,M=M,NumberofTumor=ncol(z.standard)))
+  return(list(delta=result[[1]],infor_obs=result[[2]],p=result[[3]],y_em=y_em,M=M,NumberofTumor=ncol(z.standard)),missing.vec=missing.vec,missing.mat=prob.fit.result[[3]])
 }
 
