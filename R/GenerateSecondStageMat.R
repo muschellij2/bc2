@@ -20,15 +20,18 @@ GenerateSecondStageMat <- function(baselineonly,
                                    full.second.stage.names,
                                    covar.names,
                                    delta,
-                                   baselineonly.second.cat,
-                                   main.effect.second.cat,
-                                   pairwise.interaction.second.cat,
-                                   saturated.second.cat ){
+                                   z.design.main.effect,
+                                   z.design.pairwise.interaction,
+                                   z.design.saturated){
   baselineonly.number <- CountCovarNumber(baselineonly)
   main.effect.number <- CountCovarNumber(main.effect)
   pairwise.interaction.number <- CountCovarNumber(pairwise.interaction)
   saturated.number <- CountCovarNumber(saturated)
-
+  ###second.stage.category for different model structures
+  baselineonly.second.cat <- 1
+  main.effect.second.cat <- ncol(z.design.main.effect)
+  pairwise.interaction.second.cat <- ncol(z.design.pairwise.interaction)
+  saturated.second.cat <- ncol(z.design.saturated)
   ###1 for intercept
   total.covar.number <- 1+ baselineonly.number+main.effect.number+
     pairwise.interaction.number+saturated.number
