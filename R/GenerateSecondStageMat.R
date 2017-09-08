@@ -18,7 +18,8 @@ GenerateSecondStageMat <- function(baselineonly,
                                    saturated,
                                    M,
                                    full.second.stage.names,
-                                   covar.names){
+                                   covar.names,
+                                   delta){
   baselineonly.number <- CountCovarNumber(baselineonly)
   main.effect.number <- CountCovarNumber(main.effect)
   pairwise.interaction.number <- CountCovarNumber(pairwise.interaction)
