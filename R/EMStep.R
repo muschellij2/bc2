@@ -71,6 +71,6 @@ EMStep <- function(delta0,y,x.all,z.standard,z.all,missingTumorIndicator){
   # infor_mis_c <- infor_mis(y_em,x.all,z.all)
   #infor_obs <- result[[2]]-infor_mis_c
 
-  return(list(delta=result[[1]],infor_obs=result[[2]],p=result[[3]],y_em=y_em,M=M,NumberofTumor=ncol(z.standard)),missing.vec=missing.vec,missing.mat=prob.fit.result[[3]])
+  return(list(delta=result[[1]],infor_obs=result[[2]],p=result[[3]],y_em=y_em,M=M,NumberofTumor=ncol(z.standard),missing.vec=missing.vec,missing.mat=prob.fit.result[[3]]))
 }
 
