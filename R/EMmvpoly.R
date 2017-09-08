@@ -81,14 +81,14 @@ EMmvpoly <- function(y,
   loglikelihood.for.complete <- EM.result$loglikelihood.for.complete
   loglikelihood.for.complete.aic <- EM.result$loglikelihood.for.complete.aic
   second.stage.mat <-
-    GenerateSecondStageMatfunction(baselineonly,
-                                    main.effect,
-                                    pairwise.interaction,
-                                    saturated,
-                                    M,
-                                    full.second.stage.names,
-                                    covar.names,
-                                    delta)
+    GenerateSecondStageMat(baselineonly,
+                          main.effect,
+                          pairwise.interaction,
+                          saturated,
+                          M,
+                          full.second.stage.names,
+                          covar.names,
+                        delta)
 
 
 
