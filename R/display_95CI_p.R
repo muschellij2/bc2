@@ -18,7 +18,7 @@ DisplayTestResult = function(logodds,sigma){
   odds <- exp(logodds)
   odds.low <- exp(logodds.low)
   odds.high <- exp(logodds.high)
-  places <- 2
+  places <- 3
   odds <- round(odds,places)
   odds.low <- round(odds.low,places)
   odds.high <- round(odds.high,places)
