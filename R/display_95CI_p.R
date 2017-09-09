@@ -15,9 +15,13 @@ DisplayTestResult = function(logodds,sigma){
   odds <- exp(logodds)
   odds.low <- exp(logodds.low)
   odds.high <- exp(logodds.high)
-  odds <- format(odds,digits = 2)
-  odds.low <- format(odds.low,digits=2)
-  odds.high <- format(odds.high,digits=2)
+  odds <- exp(logodds)
+  odds.low <- exp(logodds.low)
+  odds.high <- exp(logodds.high)
+  places <- 2
+  odds <- round(odds,places)
+  odds.low <- round(odds.low,places)
+  odds.high <- round(odds.high,places)
   p.global.assoc <- GlobalTestForAssoc(logodds,sigma)
   p.global.heter <- GlobalTestForHeter(logodds,sigma)
   p.individual.heter <- IndividualHeterTest(logodds,sigma)
@@ -28,5 +32,21 @@ DisplayTestResult = function(logodds,sigma){
               p.individual.heter[i])
   }
   result <- c(result,p.global.assoc, p.global.heter)
+  return(result)
+}
+
+
+
+DisplayIndTestResult = function(logodds,sigma){
+  var.logodds <- diag(sigma)
+  logodds.low <- logodds-1.96*sqrt(var.logodds)
+  logodds.high <- logodds+1.96*sqrt(var.logodds)
+  p.individual.heter <- IndividualHeterTest(logodds,sigma)
+  result = NULL
+  for(i in 1:length(logodds)){
+    result= c(result,paste0(logodds[i],"(",logodds.low[i],"-",
+                            logodds.high[i],")"),
+              p.individual.heter[i])
+  }
   return(result)
 }

@@ -4,10 +4,9 @@
 \alias{GenerateSecondStageMat}
 \title{Title}
 \usage{
-GenerateSecondStageMat(baselineonly.number, main.effect.number,
-  pairwise.interaction.number, saturated.number, baselineonly.second.cat,
-  main.effect.second.cat, pairwise.interaction.second.cat, saturated.second.cat,
-  M, total.covar.number, full.second.stage.names, covar.names, delta)
+GenerateSecondStageMat(baselineonly, main.effect, pairwise.interaction,
+  saturated, M, full.second.stage.names, covar.names, delta,
+  z.design.main.effect, z.design.pairwise.interaction, z.design.saturated)
 }
 \arguments{
 \item{covar.names}{}

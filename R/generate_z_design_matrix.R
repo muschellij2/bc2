@@ -103,10 +103,11 @@ GenerateZDesignNamesMainEffect <- function(tumor.names){
 #' @examples
 GenerateZDesignPairwiseInteraction <- function(tumor.character.cat,tumor.number,tumor.names,freq.subtypes){
   cutoff <- 10
-  z.design.pairwise.interaction <- GenerateZDesignMainEffect(tumor.character.cat,
-                                                             tumor.number,
-                                                             tumor.names,
-                                                             freq.subtypes)
+  z.design.pairwise.interaction <-
+    GenerateZDesignMainEffect(tumor.character.cat,
+                              tumor.number,
+                              tumor.names,
+                              freq.subtypes)
   z.design.names.pairwise.interaction <- colnames(z.design.pairwise.interaction)
   all.pairwise.combnation <- combn(tumor.number,2)+1
   combn.number <- ncol(all.pairwise.combnation)
