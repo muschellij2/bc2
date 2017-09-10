@@ -4,7 +4,7 @@
 \alias{GenerateCovarName}
 \title{Title}
 \usage{
-GenerateCovarName(baselineonly, main.effect, pairwise.interaction, saturated)
+GenerateCovarName(baselineonly, additive, pairwise.interaction, saturated)
 }
 \arguments{
 \item{saturated}{}

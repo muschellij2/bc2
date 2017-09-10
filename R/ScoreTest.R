@@ -13,7 +13,7 @@
 #' @export
 #'
 #' @examples
-ScoreTest <- function(y,x,second.stage.structure = "main.effect",score.test.support=NULL,missingTumorIndicator=NULL){
+ScoreTest <- function(y,x,second.stage.structure = "additive",score.test.support=NULL,missingTumorIndicator=NULL){
   if(is.vector(x)==1){
     x = matrix(x,ncol=1)
     interested.variable.number = 1
@@ -41,7 +41,7 @@ ScoreTest <- function(y,x,second.stage.structure = "main.effect",score.test.supp
                                                        tumor.number,
                                                        tumor.names,
                                                        freq.subtypes)
-  z.design.main.effect <- GenerateZDesignMainEffect(tumor.character.cat,
+  z.design.additive <- GenerateZDesignMainEffect(tumor.character.cat,
                                                     tumor.number,
                                                     tumor.names,
                                                     freq.subtypes)
@@ -56,9 +56,9 @@ ScoreTest <- function(y,x,second.stage.structure = "main.effect",score.test.supp
                                                  freq.subtypes)
   if(second.stage.structure == "baselineonly"){
     z.intere <- z.design.baselineonly
-  }else if(second.stage.structure == "main.effect"){
-    #z.intere <- z.design.main.effect
-    z.intere <- z.design.main.effect[,-1]
+  }else if(second.stage.structure == "additive"){
+    #z.intere <- z.design.additive
+    z.intere <- z.design.additive[,-1]
   }else if(second.stage.structure=="pairwise.interaction"){
     z.intere <- z.design.pairwise.interaction
   }else if(second.stage.structure=="saturated"){
@@ -68,7 +68,7 @@ ScoreTest <- function(y,x,second.stage.structure = "main.effect",score.test.supp
 
 
 
-  z.standard <- z.design.main.effect[,-1]
+  z.standard <- z.design.additive[,-1]
   debug     <- as.integer(1)
   inv_info_vec=as.numeric(score.test.support$inv_info_vec)
   YminusP=as.numeric(score.test.support$YminusP)

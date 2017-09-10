@@ -2,7 +2,7 @@
 #'
 #' @param y
 #' @param baselineonly
-#' @param main.effect
+#' @param additive
 #' @param pairwise.interaction
 #' @param saturated
 #' @param missingTumorIndicator
@@ -13,7 +13,7 @@
 #' @examples
 EMmvpoly <- function(y,
                      baselineonly=NULL,
-                     main.effect=NULL,
+                     additive=NULL,
                      pairwise.interaction=NULL,
                      saturated=NULL,
                      missingTumorIndicator = 888){
@@ -34,7 +34,7 @@ EMmvpoly <- function(y,
                                                        tumor.number,
                                                        tumor.names,
                                                        freq.subtypes)
-  z.design.main.effect <- GenerateZDesignMainEffect(tumor.character.cat,
+  z.design.additive <- GenerateZDesignMainEffect(tumor.character.cat,
                                                     tumor.number,
                                                     tumor.names,
                                                     freq.subtypes)
@@ -48,28 +48,28 @@ EMmvpoly <- function(y,
                                                  freq.subtypes)
   full.second.stage.names <- colnames(z.design.saturated)
   covar.names <- GenerateCovarName(baselineonly,
-                                   main.effect,
+                                   additive,
                                    pairwise.interaction,
                                    saturated)
 
   z.all <- ZDesigntoZall(baselineonly,
-                         main.effect,
+                         additive,
                          pairwise.interaction,
                          saturated,
                          z.design.baselineonly,
-                         z.design.main.effect,
+                         z.design.additive,
                          z.design.pairwise.interaction,
                          z.design.saturated)
   delta0 <-StartValueFunction(freq.subtypes,y.case.control,z.all)
   #x.all has no intercept yet
   #we will add the intercept in C code
-  x.all <- GenerateXAll(y,baselineonly,main.effect,pairwise.interaction,saturated)
+  x.all <- GenerateXAll(y,baselineonly,additive,pairwise.interaction,saturated)
   ###z standard matrix means the additive model z design matrix without baseline effect
   ###z standard matrix is used to match the missing tumor characteristics to the complete subtypes
 
   y <- as.matrix(y)
   x.all <- as.matrix(x.all)
-  z.standard <- z.design.main.effect[,-1]
+  z.standard <- z.design.additive[,-1]
   M <- as.integer(nrow(z.standard))
   p.main <- ncol(z.standard)+1
 
@@ -82,14 +82,14 @@ EMmvpoly <- function(y,
   loglikelihood.for.complete.aic <- EM.result$loglikelihood.for.complete.aic
   second.stage.mat <-
     GenerateSecondStageMat(baselineonly,
-                          main.effect,
+                          additive,
                           pairwise.interaction,
                           saturated,
                           M,
                           full.second.stage.names,
                           covar.names,
                         delta,
-                        z.design.main.effect,
+                        z.design.additive,
                         z.design.pairwise.interaction,
                         z.design.saturated)
 

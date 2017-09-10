@@ -1,11 +1,11 @@
 #' Title
 #'
 #' @param baselineonly
-#' @param main.effect
+#' @param additive
 #' @param pairwise.interaction
 #' @param saturated
 #' @param z.design.baselineonly
-#' @param z.design.main.effect
+#' @param z.design.additive
 #' @param z.design.pairwise.interaction
 #' @param z.design.saturated
 #'
@@ -14,34 +14,34 @@
 #'
 #' @examples
 ZDesigntoZall <- function(baselineonly,
-                          main.effect,
+                          additive,
                           pairwise.interaction,
                           saturated,
                           z.design.baselineonly,
-                          z.design.main.effect,
+                          z.design.additive,
                           z.design.pairwise.interaction,
                           z.design.saturated) {
-  M <- nrow(z.design.main.effect)
+  M <- nrow(z.design.additive)
   ##the number of covariates in different potential model structures
   baselineonly.number <- CountCovarNumber(baselineonly)
-  main.effect.number <- CountCovarNumber(main.effect)
+  additive.number <- CountCovarNumber(additive)
   pairwise.interaction.number <- CountCovarNumber(pairwise.interaction)
   saturated.number <- CountCovarNumber(saturated)
   ###second.stage.category for different model structures
   baselineonly.second.cat <- 1
-  main.effect.second.cat <- ncol(z.design.main.effect)
+  additive.second.cat <- ncol(z.design.additive)
   pairwise.interaction.second.cat <- ncol(z.design.pairwise.interaction)
   saturated.second.cat <- ncol(z.design.saturated)
   ###1 for intercept
-  total.covar.number <- 1+ baselineonly.number+main.effect.number+
+  total.covar.number <- 1+ baselineonly.number+additive.number+
     pairwise.interaction.number+saturated.number
 
   z.all <- matrix(0,nrow=(M*total.covar.number),ncol = (M+baselineonly.number*baselineonly.second.cat+
-                                                          main.effect.second.cat*main.effect.number+
+                                                          additive.second.cat*additive.number+
                                                           pairwise.interaction.second.cat*pairwise.interaction.number)+saturated.second.cat*saturated.number)
 
   for(i in c("intercept","baselineonly",
-             "main.effect","pairwise.interection",
+             "additive","pairwise.interection",
              "satuared")){
     ##we always keep intercept as saturated model and to simply, we always use diagnonal matrix for intercept
     if(i=="intercept"){
@@ -62,21 +62,21 @@ ZDesigntoZall <- function(baselineonly,
           }
         }
       }
-    }else if(i=="main.effect"){
+    }else if(i=="additive"){
       column.start <- M+baselineonly.number
       row.start <- 1+baselineonly.number
-      if(main.effect.number!=0){
+      if(additive.number!=0){
         for(j in 1:M){
-          for(k in 1:main.effect.number){
+          for(k in 1:additive.number){
             z.all[row.start+k+(j-1)*total.covar.number,
-                  (column.start+(k-1)*main.effect.second.cat+1):
-                    (column.start+k*main.effect.second.cat)] <- as.matrix(z.design.main.effect[j,])
+                  (column.start+(k-1)*additive.second.cat+1):
+                    (column.start+k*additive.second.cat)] <- as.matrix(z.design.additive[j,])
           }
         }
       }
     }else if(i == "pairwise.interaction"){
-      column.start <- M+baselineonly.number+main.effect.number*main.effect.second.cat
-      row.start <- 1+baselineonly.number+main.effect.number
+      column.start <- M+baselineonly.number+additive.number*additive.second.cat
+      row.start <- 1+baselineonly.number+additive.number
       if(pairwise.interaction.number!=0){
         for(j in 1:M){
           for(k in 1:pairwise.interaction.number){
@@ -87,9 +87,9 @@ ZDesigntoZall <- function(baselineonly,
         }
       }
     }else {
-      column.start <- M+baselineonly.number+main.effect.number*main.effect.second.cat+
+      column.start <- M+baselineonly.number+additive.number*additive.second.cat+
         pairwise.interaction.number*pairwise.interaction.second.cat
-      row.start <- 1+baselineonly.number+main.effect.number+pairwise.interaction.number
+      row.start <- 1+baselineonly.number+additive.number+pairwise.interaction.number
       if(saturated.number!=0){
         for(j in 1:M){
           for(k in 1:saturated.number){

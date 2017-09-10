@@ -4,7 +4,7 @@
 \alias{EMmvpoly}
 \title{Title}
 \usage{
-EMmvpoly(y, baselineonly = NULL, main.effect = NULL,
+EMmvpoly(y, baselineonly = NULL, additive = NULL,
   pairwise.interaction = NULL, saturated = NULL,
   missingTumorIndicator = 888)
 }

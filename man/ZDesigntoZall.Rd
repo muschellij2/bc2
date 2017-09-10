@@ -4,8 +4,8 @@
 \alias{ZDesigntoZall}
 \title{Title}
 \usage{
-ZDesigntoZall(baselineonly, main.effect, pairwise.interaction, saturated,
-  z.design.baselineonly, z.design.main.effect, z.design.pairwise.interaction,
+ZDesigntoZall(baselineonly, additive, pairwise.interaction, saturated,
+  z.design.baselineonly, z.design.additive, z.design.pairwise.interaction,
   z.design.saturated)
 }
 \arguments{

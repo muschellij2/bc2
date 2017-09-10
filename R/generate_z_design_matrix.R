@@ -43,29 +43,29 @@ GenerateZDesignBaselineonly <- function(tumor.character.cat,tumor.number,tumor.n
 #'
 #' @examples
 GenerateZDesignMainEffect <- function(tumor.character.cat,tumor.number,tumor.names,freq.subtypes){
-  z.design.main.effect.text <- NULL
+  z.design.additive.text <- NULL
   cutoff <- 10
   for(i in 1:tumor.number){
     if(i==tumor.number){
-      z.design.main.effect.text <- paste0(z.design.main.effect.text,
+      z.design.additive.text <- paste0(z.design.additive.text,
                                           "tumor.character.cat[[",i,"]]")
     }else{
-      z.design.main.effect.text <- paste0(z.design.main.effect.text,
+      z.design.additive.text <- paste0(z.design.additive.text,
                                           "tumor.character.cat[[",i,"]],")
     }
   }
-  z.design.main.effect.text <- paste0("z.design.main.effect <- expand.grid(",
-                                      z.design.main.effect.text,
+  z.design.additive.text <- paste0("z.design.additive <- expand.grid(",
+                                      z.design.additive.text,
                                       ")")
-  eval(parse(text=z.design.main.effect.text))
-  z.design.main.effect <- cbind(1,z.design.main.effect)
-  colnames(z.design.main.effect) <- GenerateZDesignNamesMainEffect(tumor.names)
+  eval(parse(text=z.design.additive.text))
+  z.design.additive <- cbind(1,z.design.additive)
+  colnames(z.design.additive) <- GenerateZDesignNamesMainEffect(tumor.names)
   freq = freq.subtypes[,ncol(freq.subtypes)]
   idx <- which(freq<=cutoff)
   if(length(idx!=0)){
-    return(z.design.main.effect[-idx,])
+    return(z.design.additive[-idx,])
   }else{
-    return(z.design.main.effect)
+    return(z.design.additive)
   }
 }
 
@@ -80,12 +80,12 @@ GenerateZDesignMainEffect <- function(tumor.character.cat,tumor.number,tumor.nam
 #' @examples
 GenerateZDesignNamesMainEffect <- function(tumor.names){
 
-  z.design.names.main.effect <- "baseline effect"
+  z.design.names.additive <- "baseline effect"
 
-  z.design.names.main.effect <- c(z.design.names.main.effect,
+  z.design.names.additive <- c(z.design.names.additive,
                                   paste0(tumor.names," main effect"))
 
-  return(z.design.names.main.effect)
+  return(z.design.names.additive)
 
 }
 
@@ -133,7 +133,7 @@ GenerateZDesignPairwiseInteraction <- function(tumor.character.cat,tumor.number,
 
 }
 
-}
+
 ##Generate the z design matrix for saturated model
 #' Title
 #'

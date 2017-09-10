@@ -4,7 +4,7 @@
 \alias{GenerateXAll}
 \title{Title}
 \usage{
-GenerateXAll(y, baselineonly, main.effect, pairwise.interaction, saturated)
+GenerateXAll(y, baselineonly, additive, pairwise.interaction, saturated)
 }
 \arguments{
 \item{saturated}{}

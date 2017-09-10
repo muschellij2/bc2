@@ -4,7 +4,7 @@
 \alias{ScoreTest}
 \title{ScoreTest}
 \usage{
-ScoreTest(y, x, second.stage.structure = "main.effect",
+ScoreTest(y, x, second.stage.structure = "additive",
   score.test.support = NULL, missingTumorIndicator = NULL)
 }
 \arguments{

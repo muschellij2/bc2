@@ -2,7 +2,7 @@
 #' Title
 #'
 #' @param baselineonly
-#' @param main.effect
+#' @param additive
 #' @param pairwise.interaction
 #' @param saturated
 #'
@@ -11,15 +11,15 @@
 #'
 #' @examples
 GenerateCovarName <- function(baselineonly,
-                              main.effect,
+                              additive,
                               pairwise.interaction,
                               saturated){
   full.names <- NULL
   if(is.null(baselineonly)==0){
     full.names<- c(full.names,colnames(baselineonly))
   }
-  if(is.null(main.effect)==0){
-    full.names<- c(full.names,colnames(main.effect))
+  if(is.null(additive)==0){
+    full.names<- c(full.names,colnames(additive))
   }
   if(is.null(pairwise.interaction)==0){
     full.names<- c(full.names,colnames(pairwise.interaction))

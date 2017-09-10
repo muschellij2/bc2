@@ -2,7 +2,7 @@
 #'
 #' @param y
 #' @param baselineonly
-#' @param main.effect
+#' @param additive
 #' @param pairwise.interaction
 #' @param saturated
 #'
@@ -10,15 +10,15 @@
 #' @export
 #'
 #' @examples
-GenerateXAll <- function(y,baselineonly,main.effect,pairwise.interaction,saturated){
+GenerateXAll <- function(y,baselineonly,additive,pairwise.interaction,saturated){
   n = nrow(y)
   ###initial x.all to use cbind
   x.all = rep(1,n)
   if(is.null(baselineonly)==0){
     x.all = cbind(x.all,baselineonly)
   }
-  if(is.null(main.effect)==0){
-    x.all = cbind(x.all,main.effect)
+  if(is.null(additive)==0){
+    x.all = cbind(x.all,additive)
   }
   if(is.null(pairwise.interaction)==0){
     x.all = cbind(x.all,pairwise.interaction)

@@ -4,7 +4,7 @@
 \alias{ScoreTestSupport}
 \title{Title}
 \usage{
-ScoreTestSupport(y, baselineonly = NULL, main.effect = NULL,
+ScoreTestSupport(y, baselineonly = NULL, additive = NULL,
   pairwise.interaction = NULL, saturated = NULL,
   missingTumorIndicator = 888)
 }

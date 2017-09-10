@@ -23,7 +23,7 @@ EMmvpolySelfDesign <- function(y,
                                                        tumor.number,
                                                        tumor.names,
                                                        freq.subtypes)
-  z.design.main.effect <- GenerateZDesignMainEffect(tumor.character.cat,
+  z.design.additive <- GenerateZDesignMainEffect(tumor.character.cat,
                                                     tumor.number,
                                                     tumor.names,
                                                     freq.subtypes)
@@ -39,13 +39,13 @@ EMmvpolySelfDesign <- function(y,
   delta0 <-StartValueFunction(freq.subtypes,y.case.control,z.all)
   #x.all has no intercept yet
   #we will add the intercept in C code
-  x.all <- GenerateXAll(y,baselineonly,main.effect,pairwise.interaction,saturated)
+  x.all <- GenerateXAll(y,baselineonly,additive,pairwise.interaction,saturated)
   ###z standard matrix means the additive model z design matrix without baseline effect
   ###z standard matrix is used to match the missing tumor characteristics to the complete subtypes
 
   y <- as.matrix(y)
   x.all <- as.matrix(x.all)
-  z.standard <- z.design.main.effect[,-1]
+  z.standard <- z.design.additive[,-1]
   M <- as.integer(nrow(z.standard))
   p.main <- ncol(z.standard)+1
 
