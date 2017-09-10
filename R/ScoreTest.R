@@ -41,7 +41,7 @@ ScoreTest <- function(y,x,second.stage.structure = "additive",score.test.support
                                                        tumor.number,
                                                        tumor.names,
                                                        freq.subtypes)
-  z.design.additive <- GenerateZDesignMainEffect(tumor.character.cat,
+  z.design.additive <- GenerateZDesignAdditive(tumor.character.cat,
                                                     tumor.number,
                                                     tumor.names,
                                                     freq.subtypes)

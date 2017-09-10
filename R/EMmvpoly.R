@@ -34,7 +34,7 @@ EMmvpoly <- function(y,
                                                        tumor.number,
                                                        tumor.names,
                                                        freq.subtypes)
-  z.design.additive <- GenerateZDesignMainEffect(tumor.character.cat,
+  z.design.additive <- GenerateZDesignAdditive(tumor.character.cat,
                                                     tumor.number,
                                                     tumor.names,
                                                     freq.subtypes)
