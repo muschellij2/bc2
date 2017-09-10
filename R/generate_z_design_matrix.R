@@ -1,5 +1,6 @@
 ###Generate the potential Z Design Matrix for the four potential models
 
+
 #' Title
 #'
 #' @param tumor.character.cat
@@ -31,6 +32,7 @@ GenerateZDesignBaselineonly <- function(tumor.character.cat,tumor.number,tumor.n
 }
 
 ###Generate z design matrix for main effect model
+
 #' Title
 #'
 #' @param tumor.character.cat
@@ -42,7 +44,7 @@ GenerateZDesignBaselineonly <- function(tumor.character.cat,tumor.number,tumor.n
 #' @export
 #'
 #' @examples
-GenerateZDesignMainEffect <- function(tumor.character.cat,tumor.number,tumor.names,freq.subtypes){
+GenerateZDesignAdditive <- function(tumor.character.cat,tumor.number,tumor.names,freq.subtypes){
   z.design.additive.text <- NULL
   cutoff <- 10
   for(i in 1:tumor.number){
@@ -59,7 +61,7 @@ GenerateZDesignMainEffect <- function(tumor.character.cat,tumor.number,tumor.nam
                                       ")")
   eval(parse(text=z.design.additive.text))
   z.design.additive <- cbind(1,z.design.additive)
-  colnames(z.design.additive) <- GenerateZDesignNamesMainEffect(tumor.names)
+  colnames(z.design.additive) <- GenerateZDesignNamesAdditive(tumor.names)
   freq = freq.subtypes[,ncol(freq.subtypes)]
   idx <- which(freq<=cutoff)
   if(length(idx!=0)){
@@ -70,6 +72,7 @@ GenerateZDesignMainEffect <- function(tumor.character.cat,tumor.number,tumor.nam
 }
 
 ###Generate tumor.names for z design matrix for main effect
+
 #' Title
 #'
 #' @param tumor.names
@@ -78,7 +81,7 @@ GenerateZDesignMainEffect <- function(tumor.character.cat,tumor.number,tumor.nam
 #' @export
 #'
 #' @examples
-GenerateZDesignNamesMainEffect <- function(tumor.names){
+GenerateZDesignNamesAdditive <- function(tumor.names){
 
   z.design.names.additive <- "baseline effect"
 
@@ -90,6 +93,7 @@ GenerateZDesignNamesMainEffect <- function(tumor.names){
 }
 
 ###Generate z design matrix for pairwise interaction model
+
 #' Title
 #'
 #' @param tumor.character.cat
@@ -104,7 +108,7 @@ GenerateZDesignNamesMainEffect <- function(tumor.names){
 GenerateZDesignPairwiseInteraction <- function(tumor.character.cat,tumor.number,tumor.names,freq.subtypes){
   cutoff <- 10
   z.design.pairwise.interaction <-
-    GenerateZDesignMainEffect(tumor.character.cat,
+    GenerateZDesignAdditive(tumor.character.cat,
                               tumor.number,
                               tumor.names,
                               freq.subtypes)
@@ -135,6 +139,7 @@ GenerateZDesignPairwiseInteraction <- function(tumor.character.cat,tumor.number,
 
 
 ##Generate the z design matrix for saturated model
+
 #' Title
 #'
 #' @param tumor.character.cat
@@ -148,7 +153,7 @@ GenerateZDesignPairwiseInteraction <- function(tumor.character.cat,tumor.number,
 #' @examples
 GenerateZDesignSaturated <- function(tumor.character.cat,tumor.number,tumor.names,freq.subtypes) {
   cutoff <- 10
-  z.design.saturated <- GenerateZDesignMainEffect(tumor.character.cat,
+  z.design.saturated <- GenerateZDesignAdditive(tumor.character.cat,
                                                   tumor.number,
                                                   tumor.names,
                                                   freq.subtypes)
