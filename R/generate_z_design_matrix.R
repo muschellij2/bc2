@@ -126,15 +126,12 @@ GenerateZDesignPairwiseInteraction <- function(tumor.character.cat,tumor.number,
                                            newcol)
   }
   colnames(z.design.pairwise.interaction) <- z.design.names.pairwise.interaction
-  freq = freq.subtypes[,ncol(freq.subtypes)]
-  idx <- which(freq<=cutoff)
-  if(length(idx!=0)){
-    return(z.design.pairwise.interaction[-idx,])
-  }else{
-    return(z.design.pairwise.interaction)
-  }
+
+  return(z.design.pairwise.interaction)
 
 
+
+}
 
 }
 ##Generate the z design matrix for saturated model
@@ -182,12 +179,11 @@ GenerateZDesignSaturated <- function(tumor.character.cat,tumor.number,tumor.name
   }
   colnames(z.design.saturated) <- z.design.names.saturated
 
-  freq = freq.subtypes[,ncol(freq.subtypes)]
-  idx <- which(freq<=cutoff)
-  if(length(idx!=0)){
-    return(z.design.saturated[-idx,])
-  }else{
+
+
     return(z.design.saturated)
-  }
+
+
+
 
 }
