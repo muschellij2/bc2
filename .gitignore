@@ -6,3 +6,6 @@ data/.DS_Store
 data/gene_and_pc.csv
 data/onco_y.csv
 data/onco_y_standard.csv
+breast_cancer_known_SNPs_data_analysis/data
+breast_cancer_known_SNPs_data_analysis/known_SNPs_analysis_G_revised/additive_model/result
+breast_cancer_known_SNPs_data_analysis/known_SNPs_analysis_revised/additive_model/result
