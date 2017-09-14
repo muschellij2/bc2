@@ -18,7 +18,7 @@ DisplayTestResult = function(logodds,sigma){
   odds <- exp(logodds)
   odds.low <- exp(logodds.low)
   odds.high <- exp(logodds.high)
-  places <- 3
+  places <- 2
   odds <- round(odds,places)
   odds.low <- round(odds.low,places)
   odds.high <- round(odds.high,places)
@@ -41,12 +41,18 @@ DisplayIndTestResult = function(logodds,sigma){
   var.logodds <- diag(sigma)
   logodds.low <- logodds-1.96*sqrt(var.logodds)
   logodds.high <- logodds+1.96*sqrt(var.logodds)
+  odds <- exp(logodds)
+  odds.low <- exp(logodds.low)
+  odds.high <- exp(logodds.high)
+  places <- 2
+  odds <- round(odds,places)
+  odds.low <- round(odds.low,places)
+  odds.high <- round(odds.high,places)
   p.individual.heter <- IndividualHeterTest(logodds,sigma)
   result = NULL
   for(i in 1:length(logodds)){
-    result= c(result,paste0(logodds[i],"(",logodds.low[i],"-",
-                            logodds.high[i],")"),
-              p.individual.heter[i])
+    temp <- c(odds,odds.low,odds.high,p.individual.heter[i])
+    result= rbind(result,temp)
   }
   return(result)
 }

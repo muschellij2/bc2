@@ -79,7 +79,7 @@ GenerateSecondStageMat <- function(baselineonly,
 
     for(i in 1:pairwise.interaction.number){
       ind.covar <- ind.covar+1
-      second.stage.mat[1:pairwise.interaction.second.cat,(ind.covar+1):(ind.covar+pairwise.interaction.number)]<-
+      second.stage.mat[1:pairwise.interaction.second.cat,ind.covar]<-
         delta.no.inter[(ind.delta+1):(ind.delta+pairwise.interaction.second.cat)]
       ind.delta <- ind.delta + pairwise.interaction.second.cat
     }
@@ -89,7 +89,7 @@ GenerateSecondStageMat <- function(baselineonly,
 
     for(i in 1:saturated.number){
       ind.covar <- ind.covar+1
-      second.stage.mat[1:saturated.second.cat,(ind.covar+1):(ind.covar+saturated.number)]<-
+      second.stage.mat[1:saturated.second.cat,ind.covar]<-
         delta.no.inter[(ind.delta+1):(ind.delta+saturated.second.cat)]
       ind.delta <- ind.delta + saturated.second.cat
     }
@@ -97,6 +97,8 @@ GenerateSecondStageMat <- function(baselineonly,
 
   colnames(second.stage.mat) <- covar.names
   rownames(second.stage.mat) <- full.second.stage.names[1:max.number.second.stage.parameter]
+  places = 3
+  second.stage.mat <- round(second.stage.mat,digits = 3)
   return(second.stage.mat)
 
 }

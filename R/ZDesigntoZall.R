@@ -41,7 +41,7 @@ ZDesigntoZall <- function(baselineonly,
                                                           pairwise.interaction.second.cat*pairwise.interaction.number)+saturated.second.cat*saturated.number)
 
   for(i in c("intercept","baselineonly",
-             "additive","pairwise.interection",
+             "additive","pairwise.interaction",
              "satuared")){
     ##we always keep intercept as saturated model and to simply, we always use diagnonal matrix for intercept
     if(i=="intercept"){
