@@ -1,16 +1,4 @@
-
-#' Title
-#'
-#' @param delta
-#' @param sigma
-#' @param M
-#' @param second.stage.mat
-#'
-#' @return
-#' @export
-#'
-#' @examples
-GenerateSecondStageTest <- function(delta,sigma,M,second.stage.mat){
+FirstStageTest <- function(delta,sigma,M,second.stage.mat){
   ind.delta <- 0
   ind.covar <- 0
   var.logodds <- diag(sigma)

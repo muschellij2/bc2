@@ -9,7 +9,7 @@ GenerateSecondStageMat(baselineonly, additive, pairwise.interaction, saturated,
   z.design.pairwise.interaction, z.design.saturated)
 }
 \arguments{
-\item{covar.names}{}
+\item{z.design.saturated}{}
 }
 \description{
 Title

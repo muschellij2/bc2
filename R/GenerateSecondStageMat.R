@@ -1,3 +1,4 @@
+
 #' Title
 #'
 #' @param baselineonly
@@ -7,6 +8,10 @@
 #' @param M
 #' @param full.second.stage.names
 #' @param covar.names
+#' @param delta
+#' @param z.design.additive
+#' @param z.design.pairwise.interaction
+#' @param z.design.saturated
 #'
 #' @return
 #' @export

@@ -7,7 +7,7 @@
 IndividualHeterTest(logodds, sigma)
 }
 \arguments{
-\item{infor}{}
+\item{sigma}{}
 }
 \description{
 Title

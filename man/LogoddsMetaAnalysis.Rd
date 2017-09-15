@@ -7,7 +7,7 @@
 LogoddsMetaAnalysis(logodds1, sigma1, logodds2, sigma2)
 }
 \arguments{
-\item{info2}{}
+\item{sigma2}{}
 }
 \description{
 Title

@@ -1,7 +1,8 @@
+
 #' Title
 #'
 #' @param logodds
-#' @param infor
+#' @param sigma
 #'
 #' @return
 #' @export
@@ -22,10 +23,11 @@ GlobalTestForAssoc <- function(logodds,sigma){
 }
 
 
+
 #' Title
 #'
 #' @param logodds
-#' @param infor
+#' @param sigma
 #'
 #' @return
 #' @export
@@ -53,10 +55,11 @@ GlobalTestForHeter <- function(logodds,sigma){
 
 }
 
+
 #' Title
 #'
 #' @param logodds
-#' @param infor
+#' @param sigma
 #'
 #' @return
 #' @export

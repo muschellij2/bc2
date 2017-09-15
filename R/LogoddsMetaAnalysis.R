@@ -1,9 +1,10 @@
+
 #' Title
 #'
 #' @param logodds1
-#' @param info1
+#' @param sigma1
 #' @param logodds2
-#' @param info2
+#' @param sigma2
 #'
 #' @return
 #' @export

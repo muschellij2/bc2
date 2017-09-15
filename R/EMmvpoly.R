@@ -74,6 +74,7 @@ EMmvpoly <- function(y,
   p.main <- ncol(z.standard)+1
 
   EM.result = EMStep(delta0,as.matrix(y),x.all,z.standard,z.all,missingTumorIndicator)
+  ###delta represent second stage parameters
   delta <- EM.result$delta
   covariance.delta <- solve(EM.result$infor_obs)
   complete.loglikelihood <- EM.result$complete.loglikelihood
@@ -92,7 +93,34 @@ EMmvpoly <- function(y,
                         z.design.additive,
                         z.design.pairwise.interaction,
                         z.design.saturated)
+  ##take out the intercept from second stage parameters
 
+  takeout.intercept.result <- TakeoutIntercept(delta,covariance.delta,
+                                               M,
+                                               tumor.names,
+                                               z.all,covar.names)
+  beta <- takeout.intercept.result$beta
+  covariance.beta <- takeout.intercept.result$covariance.beta
+  delta.no.inter <- takeout.intercept.result$delta.no.inter
+  covariance.delta.no.inter <-
+    takeout.intercept.result$covariance.delta.no.inter
+  beta.no.inter <- takeout.intercept.result$beta.no.inter
+  covariance.delta.no.inter <- takeout.intercept.result$covariance.beta.no.inter
+
+
+
+  second.stage.test <- SecondStageTest(delta.no.inter,covariance.delta.no.inter,M,second.stage.mat)
+  global.test <- GenerateGlobalTest(delta.no.inter,
+                                    covariance.delta.no.inter,
+                                    M,
+                                    second.stage.mat)
+  ##beta represent first stage parameters
+
+  subtypes.names <- GenerateSubtypesName(z.design.additive,M,
+                                         tumor.names)
+  first.stage.mat <- GenerateFirstStageMat(beta,
+                                           covar.names,
+                                           subtypes.names)
 
 
 
