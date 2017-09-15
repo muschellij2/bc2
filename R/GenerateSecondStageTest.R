@@ -11,7 +11,6 @@
 #'
 #' @examples
 GenerateSecondStageTest <- function(delta,sigma,M,second.stage.mat){
-  delta.no.inter <- delta[(M+1):length(delta)]
   ind.delta <- 0
   ind.covar <- 0
   var.logodds <- diag(sigma)
@@ -31,12 +30,12 @@ GenerateSecondStageTest <- function(delta,sigma,M,second.stage.mat){
 
   covar.names <- NULL
   second.stage.effect.names <- NULL
-  for(i in 1:nrow(second.stage.mat)){
-    for(j in 1:ncol(second.stage.mat)){
-      if(is.na(second.stage.mat[i,j])==F){
-        covar.names = c(covar.names,all.covar.names[j])
+  for(i in 1:ncol(second.stage.mat)){
+    for(j in 1:nrow(second.stage.mat)){
+      if(is.na(second.stage.mat[j,i])==F){
+        covar.names = c(covar.names,all.covar.names[i])
         second.stage.effect.names =
-          c(second.stage.effect.names,all.second.stage.names[i])
+          c(second.stage.effect.names,all.second.stage.names[j])
       }
     }
   }
@@ -51,7 +50,7 @@ GenerateSecondStageTest <- function(delta,sigma,M,second.stage.mat){
                        odds.high,
                        p.individual.heter)
 
-  colnames(result) <- c("CovarName","SecondStageEffect",
+  colnames(result) <- c("Covariate","SecondStageEffect",
                         "OddsRatio",
                         "OddsRatio(95%CI low)",
                         "OddsRatio(95%CI high)",
