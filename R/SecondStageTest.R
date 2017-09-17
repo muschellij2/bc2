@@ -10,7 +10,8 @@
 #' @export
 #'
 #' @examples
-SecondStageTest <- function(delta,sigma,M,second.stage.mat){
+
+SecondStageTest <- function(logodds,sigma,M,second.stage.mat){
   ind.delta <- 0
   ind.covar <- 0
   var.logodds <- diag(sigma)

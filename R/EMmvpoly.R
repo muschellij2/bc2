@@ -105,7 +105,7 @@ EMmvpoly <- function(y,
   covariance.delta.no.inter <-
     takeout.intercept.result$covariance.delta.no.inter
   beta.no.inter <- takeout.intercept.result$beta.no.inter
-  covariance.delta.no.inter <- takeout.intercept.result$covariance.beta.no.inter
+  covariance.beta.no.inter <- takeout.intercept.result$covariance.beta.no.inter
 
 
 
@@ -130,7 +130,7 @@ EMmvpoly <- function(y,
   #  #return(score_support_result)
   # score_test_mis_result <- score_test_mis(y_em,baselineonly,score_support_result)
 
-  return(list(delta=delta,covariance.delta=covariance.delta,second.stage.mat = second.stage.mat,complete.loglikelihood=complete.loglikelihood,
+  return(list(delta=delta,covariance.delta=covariance.delta,second.stage.mat = second.stage.mat,second.stage.test,global.test,complete.loglikelihood=complete.loglikelihood,
               loglikelihood.for.complete= loglikelihood.for.complete))
   #return(list(score_c=score_test_mis$score_c,infor_c = score_test_mis$infor_c))
   #return(EM.result)
