@@ -77,10 +77,8 @@ EMmvpoly <- function(y,
   ###delta represent second stage parameters
   delta <- EM.result$delta
   covariance.delta <- solve(EM.result$infor_obs)
-  complete.loglikelihood <- EM.result$complete.loglikelihood
-  complete.loglikelihood.aic <- EM.result$complete.loglikelihood.aic
-  loglikelihood.for.complete <- EM.result$loglikelihood.for.complete
-  loglikelihood.for.complete.aic <- EM.result$loglikelihood.for.complete.aic
+  loglikelihood <- EM.result$loglikelihood
+  AIC <- EM.result$AIC
   second.stage.mat <-
     GenerateSecondStageMat(baselineonly,
                           additive,
@@ -122,7 +120,10 @@ EMmvpoly <- function(y,
                                            covar.names,
                                            subtypes.names)
 
-
+  first.stage.test <- FirstStageTest(beta.no.inter,
+                                     covariance.beta.no.inter,
+                                     M,
+                                     first.stage.mat)
 
   #   pxx = EM.result[[3]]
   #   y_em = EM.result[[4]]
@@ -130,8 +131,8 @@ EMmvpoly <- function(y,
   #  #return(score_support_result)
   # score_test_mis_result <- score_test_mis(y_em,baselineonly,score_support_result)
 
-  return(list(delta=delta,covariance.delta=covariance.delta,second.stage.mat = second.stage.mat,second.stage.test,global.test,complete.loglikelihood=complete.loglikelihood,
-              loglikelihood.for.complete= loglikelihood.for.complete))
+  return(list(delta=delta,covariance.delta=covariance.delta,second.stage.mat = second.stage.mat,second.stage.test,global.test,first.stage.mat,first.stage.test,loglikelihood = loglikelihood,
+              AIC = AIC))
   #return(list(score_c=score_test_mis$score_c,infor_c = score_test_mis$infor_c))
   #return(EM.result)
 

@@ -58,11 +58,12 @@ EMStep <- function(delta0,y,x.all,z.standard,z.all,missingTumorIndicator){
   ret_info <- as.numeric(rep(-9999,nparm^2))
   ret_p <- as.numeric(rep(0,NM))
   ret_lxx <- as.numeric(rep(0,NM))
+  loglikelihood <- as.numeric(-1);
 
 
   temp <- .C("EMStep",deltai, nparm, Y=Y, X, ZallVec,Znr,Znc, N, M, NCOV, NITER, tol,tolMaxstep,
              debug, ret_rc=ret_rc, ret_delta=ret_delta,ret_info=ret_info,ret_p=ret_p,missing.vec,
-             missing.mat.vec,missing.number,ret_lxx=ret_lxx)
+             missing.mat.vec,missing.number,ret_lxx=ret_lxx,loglikelihood = loglikelihood)
   print(paste0("EM Algorithm Converged"))
   info <- matrix(unlist(temp$ret_info),nparm,nparm)
   result <- list(temp$ret_delta,info,
@@ -74,23 +75,19 @@ EMStep <- function(delta0,y,x.all,z.standard,z.all,missingTumorIndicator){
   delta=result[[1]]
   infor_obs=result[[2]]
   p=result[[3]]
+  loglikelihood = temp$loglikelihood
+  #loglikelihood.aic <- LogLikelihoodwithAIC(y_em,p,nparm)
+  #loglikelihood <- loglikelihood.aic[[1]]
+  #AIC <- loglikelihood.aic[[2]]
 
-  loglikelihood.aic <- LogLikelihoodwithAIC(y_em,p,missing.vec,nparm)
-  complete.loglikelihood <- loglikelihood.aic[[1]]
-  loglikelihood.for.complete <- loglikelihood.aic[[2]]
-  complete.loglikelihood.aic <- loglikelihood.aic[[3]]
-
-  loglikelihood.for.complete.aic <- loglikelihood.aic[[4]]
 
   return(list(delta=delta,
               infor_obs=infor_obs,
               p=p,y_em=y_em,
               M=M,
               NumberofTumor=ncol(z.standard),
-              complete.loglikelihood = complete.loglikelihood,
-              complete.loglikelihood.aic = complete.loglikelihood.aic,
-              loglikelihood.for.complete = loglikelihood.for.complete,
-              loglikelihood.for.complete.aic = loglikelihood.for.complete.aic
+    loglikelihood = loglikelihood
+    #          AIC = AIC
   ))
 }
 

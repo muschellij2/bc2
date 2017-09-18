@@ -1,4 +1,7 @@
-FirstStageTest <- function(delta,sigma,M,second.stage.mat){
+FirstStageTest <- function(beta,sigma,M,first.stage.mat){
+  logodds <- beta
+  ###take out intercept
+  first.stage.mat <- first.stage.mat[,-1]
   ind.delta <- 0
   ind.covar <- 0
   var.logodds <- diag(sigma)
@@ -13,17 +16,17 @@ FirstStageTest <- function(delta,sigma,M,second.stage.mat){
   odds.high <- round(odds.high,places)
   p.individual.heter <- IndividualHeterTest(logodds,sigma)
 
-  all.covar.names <- colnames(second.stage.mat)
-  all.second.stage.names <- row.names(second.stage.mat)
+  all.covar.names <- colnames(first.stage.mat)
+  all.subtypes.names <- row.names(first.stage.mat)
 
   covar.names <- NULL
-  second.stage.effect.names <- NULL
-  for(i in 1:ncol(second.stage.mat)){
-    for(j in 1:nrow(second.stage.mat)){
-      if(is.na(second.stage.mat[j,i])==F){
+  subtypes.names <- NULL
+  for(i in 1:ncol(first.stage.mat)){
+    for(j in 1:nrow(first.stage.mat)){
+      if(is.na(first.stage.mat[j,i])==F){
         covar.names = c(covar.names,all.covar.names[i])
-        second.stage.effect.names =
-          c(second.stage.effect.names,all.second.stage.names[j])
+        subtypes.names =
+          c(subtypes.names,all.subtypes.names[j])
       }
     }
   }
@@ -32,13 +35,13 @@ FirstStageTest <- function(delta,sigma,M,second.stage.mat){
 
 
   result <- data.frame(CovarName = covar.names,
-                       SecondStageEffect = second.stage.effect.names,
+                       Subtypes = subtypes.names,
                        odds,
                        odds.low,
                        odds.high,
                        p.individual.heter)
 
-  colnames(result) <- c("Covariate","SecondStageEffect",
+  colnames(result) <- c("Covariate","Subtypes",
                         "OddsRatio",
                         "OddsRatio(95%CI low)",
                         "OddsRatio(95%CI high)",

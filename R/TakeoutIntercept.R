@@ -22,9 +22,11 @@ TakeoutIntercept <- function(delta,covariance.delta,
   covariance.delta.no.inter <-
     covariance.delta[(M+1):length(delta),
                      (M+1):length(delta)]
-  beta.no.inter <- beta[-(1+M*(0:length(covar.names)))]
-  covariance.beta.no.inter <- covariance.beta[-(1+M*(0:length(covar.names))),
-                                                       -(1+M*(0:length(covar.names)))]
+  p.no.inter <- length(covar.names)
+  p <- p.no.inter+1
+  beta.no.inter <- beta[-(1+p*(0:(M-1)))]
+  covariance.beta.no.inter <- covariance.beta[-(1+p*(0:(M-1))),
+                                              -(1+p*(0:(M-1)))]
   result <- list(beta = beta,
                  covariance.beta = covariance.beta,
                  delta.no.inter = delta.no.inter,

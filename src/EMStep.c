@@ -804,6 +804,45 @@ double **inv; /* Returned inverse */
 
   }
 
+static void LogLikelihood(double *Y, double *ret_p,double *loglikelihood, int N,
+                          int M){
+  *loglikelihood = 0;
+
+  double *Y_temp, *p_temp;
+  double p_o = 0;
+  double p_sum = 0;
+  int ind = 0;
+  Y_temp = dVec_alloc(M,0,0.0);
+  p_temp = dVec_alloc(M,0,0.0);
+  for(int i=0;i<N;i++){
+    p_o = 0;
+    ind = 0;
+    p_sum = 0;
+    for(int j=0;j<M;j++){
+      p_temp[j] = ret_p[i+N*j];
+    }
+    for(int j=0;j<M;j++){
+      Y_temp[j] = Y[i+N*j];
+    }
+    for(int j=0;j<M;j++){
+      if(Y_temp[j]> ALMOST_ZERO ){
+        p_o += p_temp[j];
+        ind = 1;
+      }
+      }
+    if(ind ==0){
+      for(int j=0;j<M;j++){
+      p_sum += p_temp[j];
+      }
+      p_o = 1-p_sum;
+    }
+    *loglikelihood += log(p_o);
+  }
+free(Y_temp);
+  free(p_temp);
+
+}
+
 
 /*calculate the weighted matrix for MLE*/
 
@@ -963,9 +1002,9 @@ static void Free_Mem(double * XX,double **tXXZ,int Nparm,double**X,int N,
 
 void EMStep(deltai, pNparm, Y, Xvec, ZallVec,Zallnr,Zallnc, pN, pM, pNcov, pNiter, ptol,ptolMaxstep,
             pDEBUG, ret_rc, ret_delta,ret_info,ret_p,missing_vec,
-            missing_Mat_vec,pmissing_number)
+            missing_Mat_vec,pmissing_number,loglikelihood)
 double *deltai, *Y, *Xvec, *ptol, *ret_delta,*ret_info,*ret_p,*ZallVec,*missing_vec,
-*missing_Mat_vec,*ptolMaxstep;
+*missing_Mat_vec,*ptolMaxstep,*loglikelihood;
 int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc,*pmissing_number;
 
 {
@@ -1055,6 +1094,7 @@ int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc,*pmissi
     if (DEBUG) Rprintf("Compute Observed Information Matrix\n");
     Get_ObservedInfo(Info,Y, M, N,Info_obs, DEBUG,
     XX,X, Ncov,Znr,Znc,Z);
+    LogLikelihood(Y, ret_p,loglikelihood, N,M);
 
     Free_Mem(XX,tXXZ,Nparm,X,N,
     delta0,Z,M,
@@ -1113,7 +1153,7 @@ int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc,*pmissi
     if (DEBUG) Rprintf("Compute Observed Information Matrix\n");
     Get_ObservedInfo(Info,Y, M, N,Info_obs, DEBUG,
     XX,X, Ncov,Znr,Znc,Z);
-
+    LogLikelihood(Y, ret_p,loglikelihood, N,M);
 
 
 
