@@ -836,7 +836,10 @@ static void LogLikelihood(double *Y, double *ret_p,double *loglikelihood, int N,
       }
       p_o = 1-p_sum;
     }
+
     *loglikelihood += log(p_o);
+
+
   }
 free(Y_temp);
   free(p_temp);
