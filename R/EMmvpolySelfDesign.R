@@ -1,3 +1,15 @@
+#' Title
+#'
+#' @param y
+#' @param x
+#' @param z.design
+#' @param missingTumorIndicator
+#' @param z.all
+#'
+#' @return
+#' @export
+#'
+#' @examples
 EMmvpolySelfDesign <- function(y,
                     x,
                     z.design,

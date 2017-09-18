@@ -1,3 +1,14 @@
+#' Title
+#'
+#' @param beta
+#' @param sigma
+#' @param M
+#' @param first.stage.mat
+#'
+#' @return
+#' @export
+#'
+#' @examples
 FirstStageTest <- function(beta,sigma,M,first.stage.mat){
   logodds <- beta
   ###take out intercept
