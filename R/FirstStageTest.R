@@ -1,7 +1,12 @@
 FirstStageTest <- function(beta,sigma,M,first.stage.mat){
   logodds <- beta
   ###take out intercept
+  all.covar.names <- colnames(first.stage.mat)[-1]
+  all.subtypes.names <- row.names(first.stage.mat)
   first.stage.mat <- first.stage.mat[,-1]
+  if(is.vector(first.stage.mat)){
+    first.stage.mat <- matrix(first.stage.mat,ncol=1)
+  }
   ind.delta <- 0
   ind.covar <- 0
   var.logodds <- diag(sigma)
@@ -16,8 +21,7 @@ FirstStageTest <- function(beta,sigma,M,first.stage.mat){
   odds.high <- round(odds.high,places)
   p.individual.heter <- IndividualHeterTest(logodds,sigma)
 
-  all.covar.names <- colnames(first.stage.mat)
-  all.subtypes.names <- row.names(first.stage.mat)
+
 
   covar.names <- NULL
   subtypes.names <- NULL

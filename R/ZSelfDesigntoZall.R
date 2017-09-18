@@ -1,19 +1,45 @@
-ZSelfDesigntoZall <- function(z.design,x){
-  p.col <- ncol(x)
-  M <- nrow(z.design)
-  z.all <- NULL
-  z.all.temp <- NULL
-  for(i in 1:M){
-    z.all.temp <- rbind(z.all.temp,kronecker(diag(p.col),t(z.design[i,])))
-  }
+#' Title
+#'
+#' @param z.design
+#' @param z.design.additive
+#' @param x
+#'
+#' @return
+#' @export
+#'
+#' @examples
+ZSelfDesigntoZall <- function(z.design,
+                              z.design.additive,
+                              x){
 
-  z.all <- matrix(0,nrow = M*(p.col+1),ncol= M+p.col*ncol(z.design))
-  for(i in 1:M){
-    z.all[1+(i-1)*(p.col+1),i] <- 1
+  M <- nrow(z.design.additive)
+  if(is.vector(x)==1){
+    x = matrix(x,ncol = 1)
   }
-  for(i in 1:M){
-    z.all[(2+(i-1)*(p.col+1)):(i*(p.col+1)),(M+1):ncol(z.all)] <-
-      z.all.temp[(1+(i-1)*p.col):(i*p.col),]
-  }
+  total.covar.number <- ncol(x)+1
+  total.covar.number.no.inter <- ncol(x)
+  second.stage.cat <- ncol(z.design)
+  z.all <- matrix(0,nrow=(M*total.covar.number),ncol = (M+total.covar.number.no.inter*second.stage.cat))
 
+  ##setup intercept
+  ##we always keep intercept as saturated model and to simply, we always use diagnonal matrix for intercept
+
+  row.start <- 0
+  column.start <- 0
+  for(j in 1:M){
+    z.all[row.start+1+(j-1)*total.covar.number,(column.start+j)] = 1
+  }
+  ##set up all other covariates
+      column.start = M
+      row.start <- 1
+      ###test whether there is any baselineonly variable
+
+      for(j in 1:M){
+        for(k in 1:(total.covar.number-1)){
+          z.all[row.start+k+(j-1)*total.covar.number,
+                (column.start+(k-1)*second.stage.cat+1):
+                  (column.start+k*second.stage.cat)] <- as.matrix(z.design[j,])
+        }
+      }
+       return(z.all)
 }

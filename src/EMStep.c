@@ -884,11 +884,13 @@ free(Y_temp);
           Weighted_W(ret_p, W, N, M);
           if (DEBUG) Rprintf("Compute XmWXm matrix\n");
           get_XmWXm(XX,X,W, M,N, Ncov,XmWXm);
-
+            /*print_dMat(XmWXm,Znr,Znr,"XmWXm");*/
           if (DEBUG) Rprintf("Compute information matrix\n");
 
           /*get_Info(X, N, Ncov, M, Z, Znr, Znc, pxx, Info);*/
+
             QuadXKX(Z,XmWXm, Znr,Znc, Info);
+           /* print_dMat(XmWXm,Znr,Znr,"Info");*/
 
           if (DEBUG) Rprintf("Compute covariance matrix\n");
           rc = cov_inv(Info, Znc, Inv);
