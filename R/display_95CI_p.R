@@ -8,6 +8,7 @@
 #' @export
 #'
 #' @examples
+
 DisplayTestResult = function(logodds,sigma){
   var.logodds <- diag(sigma)
   logodds.low <- logodds-1.96*sqrt(var.logodds)

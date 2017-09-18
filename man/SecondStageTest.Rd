@@ -4,7 +4,7 @@
 \alias{SecondStageTest}
 \title{Title}
 \usage{
-SecondStageTest(delta, sigma, M, second.stage.mat)
+SecondStageTest(logodds, sigma, M, second.stage.mat)
 }
 \arguments{
 \item{second.stage.mat}{}
