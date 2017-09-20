@@ -24,7 +24,7 @@ GenerateZDesignBaselineonly <- function(tumor.character.cat,tumor.number,tumor.n
   freq = freq.subtypes[,ncol(freq.subtypes)]
   idx <- which(freq<=cutoff)
   if(length(idx!=0)){
-    return(z.design.baselineonly[-idx,])
+    return(z.design.baselineonly[-idx,,drop=F])
   }else{
     return(z.design.baselineonly)
   }

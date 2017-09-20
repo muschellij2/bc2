@@ -11,8 +11,12 @@
 #'
 #' @examples
 EMmvpolySelfDesign <- function(y,
-                    x,
+                    x.self.design,
                     z.design,
+                    baselineonly=NULL,
+                    additive=NULL,
+                    pairwise.interaction=NULL,
+                    saturated=NULL,
                      missingTumorIndicator = 888,
                     z.all=NULL){
   if(is.null(z.all)){
@@ -46,13 +50,16 @@ EMmvpolySelfDesign <- function(y,
                                                    tumor.names,
                                                    freq.subtypes)
     full.second.stage.names <- colnames(z.design)
-    covar.names <- colnames(x)
-
+    covar.names <- GenerateSelfCovarName(x.self.design,
+                                         baselineonly,
+                                     additive,
+                                     pairwise.interaction,
+                                     saturated)
     z.all <- ZSelfDesigntoZall(z.design,z.design.additive,x)
     delta0 <-StartValueFunction(freq.subtypes,y.case.control,z.all)
     #x.all has no intercept yet
     #we will add the intercept in C code
-    x.all <- x
+    x.all <- GenerateSelfXAll(y,x.self.design,baselineonly,additive,pairwise.interaction,saturated)
     ###z standard matrix means the additive model z design matrix without baseline effect
     ###z standard matrix is used to match the missing tumor characteristics to the complete subtypes
 

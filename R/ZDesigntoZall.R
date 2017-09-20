@@ -58,7 +58,9 @@ ZDesigntoZall <- function(baselineonly,
       if(baselineonly.number!=0){
         for(j in 1:M){
           for(k in 1:baselineonly.number){
-            z.all[row.start+k+(j-1)*total.covar.number,(column.start+k)] <- 1
+            z.all[row.start+k+(j-1)*total.covar.number,
+                  (column.start+(k-1)*baselineonly.second.cat+1):
+                    (column.start+k*baselineonly.second.cat)] <- as.matrix(z.design.baselineonly[j,])
           }
         }
       }
