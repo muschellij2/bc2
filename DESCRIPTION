@@ -1,7 +1,7 @@
 Package: bc2
 Type: Package
 Title: Breast Cancer Prediction(
-Version: 0.1.1
+Version: 0.1.2
 Author: Haoyu Zhang 
 Maintainer: Haoyu Zhang <andrew.haoyu@gmail.com>
 Description: More about what it does (maybe more than one line)
