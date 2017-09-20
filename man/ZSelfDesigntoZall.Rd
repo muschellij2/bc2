@@ -4,7 +4,9 @@
 \alias{ZSelfDesigntoZall}
 \title{Title}
 \usage{
-ZSelfDesigntoZall(z.design, z.design.additive, x)
+ZSelfDesigntoZall(x.self.design, baselineonly, additive, pairwise.interaction,
+  saturated, z.design, z.design.baselineonly, z.design.additive,
+  z.design.pairwise.interaction, z.design.saturated)
 }
 \arguments{
 \item{x}{}

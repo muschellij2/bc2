@@ -4,8 +4,9 @@
 \alias{EMmvpolySelfDesign}
 \title{Title}
 \usage{
-EMmvpolySelfDesign(y, x, z.design, missingTumorIndicator = 888,
-  z.all = NULL)
+EMmvpolySelfDesign(y, x.self.design, z.design, baselineonly = NULL,
+  additive = NULL, pairwise.interaction = NULL, saturated = NULL,
+  missingTumorIndicator = 888, z.all = NULL)
 }
 \arguments{
 \item{z.all}{}
