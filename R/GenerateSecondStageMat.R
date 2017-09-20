@@ -62,11 +62,12 @@ GenerateSecondStageMat <- function(baselineonly,
   ind.delta <- 0
   ind.covar <- 0
   if(baselineonly.number!=0){
-    baselineonly.second.stage.delta <- matrix(NA,max.number.second.stage.parameter,baselineonly.number)
-    baselineonly.second.stage.delta[1,(ind.covar+1):(ind.covar+baselineonly.number)] <- delta.no.inter[(ind.covar+1):(ind.covar+baselineonly.number)]
-    second.stage.mat[,(ind.covar+1):(ind.covar+baselineonly.number)]<- baselineonly.second.stage.delta
-    ind.covar <- ind.covar+baselineonly.number
-    ind.delta <- ind.delta + ind.covar*baselineonly.number
+    for(i in 1:baselineonly.number){
+      ind.covar <- ind.covar+1
+      second.stage.mat[1:baselineonly.second.cat,ind.covar]<-
+        delta.no.inter[(ind.delta+1):(ind.delta+baselineonly.second.cat)]
+      ind.delta <- ind.delta + baselineonly.second.cat
+    }
   }
 
   if(additive.number!=0){

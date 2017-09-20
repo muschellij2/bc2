@@ -4,7 +4,7 @@
 \alias{GenerateSelfSecondStageMat}
 \title{Title}
 \usage{
-GenerateSelfSecondStageMat(z.design, x, M, full.second.stage.names, covar.names,
+GenerateSelfSecondStageMat(x.self.design, z.design, M, full.second.stage.names,
   delta)
 }
 \arguments{

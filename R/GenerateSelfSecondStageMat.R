@@ -12,16 +12,19 @@
 #' @export
 #'
 #' @examples
-GenerateSelfSecondStageMat <- function(z.design,
-                                     x
-  ,M,
+GenerateSelfSecondStageMat <- function(x.self.design,
+                                       z.design,
+                                      M,
                                      full.second.stage.names,
-                                     covar.names,
                                      delta){
+
+  x <- x.self.design
   ###1 for intercept
   if(is.vector(x)){
     x <- matrix(x,ncol=1)
     covar.names <- "Noname"
+  }else{
+    covar.names <- colnames(x)
   }
   total.covar.number <- 1+ncol(x)
   second.stage.cat <- ncol(z.design)

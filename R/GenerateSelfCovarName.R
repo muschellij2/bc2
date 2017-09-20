@@ -17,10 +17,12 @@ GenerateSelfCovarName <- function(x.self.design
                               pairwise.interaction,
                               saturated){
   full.names <- NULL
-  if(is.null(x.self.design)){
+  if(is.null(x.self.design)==0){
     if(is.vector(x.self.design)==1){
       x.self.design <- as.matrix(x.self.design)
       colnames(x.self.design) <- "self design variable"
+      full.names <- c(full.names,colnames(x.self.design))
+    }else{
       full.names <- c(full.names,colnames(x.self.design))
     }
   }

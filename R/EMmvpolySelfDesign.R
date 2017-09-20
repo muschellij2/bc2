@@ -1,8 +1,13 @@
+
 #' Title
 #'
 #' @param y
-#' @param x
+#' @param x.self.design
 #' @param z.design
+#' @param baselineonly
+#' @param additive
+#' @param pairwise.interaction
+#' @param saturated
 #' @param missingTumorIndicator
 #' @param z.all
 #'
@@ -11,14 +16,14 @@
 #'
 #' @examples
 EMmvpolySelfDesign <- function(y,
-                    x.self.design,
-                    z.design,
-                    baselineonly=NULL,
-                    additive=NULL,
-                    pairwise.interaction=NULL,
-                    saturated=NULL,
-                     missingTumorIndicator = 888,
-                    z.all=NULL){
+                               x.self.design,
+                               z.design,
+                               baselineonly=NULL,
+                               additive=NULL,
+                               pairwise.interaction=NULL,
+                               saturated=NULL,
+                               missingTumorIndicator = 888,
+                               z.all=NULL){
   if(is.null(z.all)){
     tumor.number <- ncol(y)-1
     y.case.control <- y[,1]
@@ -52,10 +57,19 @@ EMmvpolySelfDesign <- function(y,
     full.second.stage.names <- colnames(z.design)
     covar.names <- GenerateSelfCovarName(x.self.design,
                                          baselineonly,
-                                     additive,
-                                     pairwise.interaction,
-                                     saturated)
-    z.all <- ZSelfDesigntoZall(z.design,z.design.additive,x)
+                                         additive,
+                                         pairwise.interaction,
+                                         saturated)
+    z.all <- ZSelfDesigntoZall(x.self.design,
+                               baselineonly,
+                               additive,
+                               pairwise.interaction,
+                               saturated,
+                               z.design,
+                               z.design.baselineonly,
+                               z.design.additive,
+                               z.design.pairwise.interaction,
+                               z.design.saturated)
     delta0 <-StartValueFunction(freq.subtypes,y.case.control,z.all)
     #x.all has no intercept yet
     #we will add the intercept in C code
@@ -75,12 +89,12 @@ EMmvpolySelfDesign <- function(y,
     covariance.delta <- solve(EM.result$infor_obs)
     loglikelihood <- EM.result$loglikelihood
     AIC <- EM.result$AIC
+
     second.stage.mat <-
-      GenerateSelfSecondStageMat(z.design,
-                                 x,
+      GenerateSelfSecondStageMat(x.self.design,
+                                 z.design,
                                  M,
                                  full.second.stage.names,
-                                 covar.names,
                                  delta)
     ##take out the intercept from second stage parameters
 
@@ -102,18 +116,23 @@ EMmvpolySelfDesign <- function(y,
                                       covariance.delta.no.inter,
                                       M,
                                       second.stage.mat)
+    global.test <- global.test[,-3,drop=F]
     ##beta represent first stage parameters
 
     subtypes.names <- GenerateSubtypesName(z.design.additive,M,
                                            tumor.names)
-    first.stage.mat <- GenerateFirstStageMat(beta,
-                                             covar.names,
-                                             subtypes.names)
+    first.stage.mat <- GenerateSelfFirstStageMat(beta,
+                                                 x.self.design,
+                                                 z.design,
+                                                 covar.names,
+                                                 subtypes.names
+    )
 
-    first.stage.test <- FirstStageTest(beta.no.inter,
-                                       covariance.beta.no.inter,
-                                       M,
-                                       first.stage.mat)
+    first.stage.test <- SelfFirstStageTest(beta.no.inter,
+                                           covariance.beta.no.inter,
+                                           M,
+                                           first.stage.mat,
+                                           covar.names)
 
 
     #   pxx = EM.result[[3]]

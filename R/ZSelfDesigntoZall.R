@@ -22,7 +22,7 @@ ZSelfDesigntoZall <- function(x.self.design,
 
   M <- nrow(z.design.additive)
   ##the number of covariates in different potential model structures
-  self.design.number <- CountCovarNumber(x.self.number)
+  self.design.number <- CountCovarNumber(x.self.design)
   baselineonly.number <- CountCovarNumber(baselineonly)
   additive.number <- CountCovarNumber(additive)
   pairwise.interaction.number <- CountCovarNumber(pairwise.interaction)
