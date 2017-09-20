@@ -26,7 +26,7 @@ DisplayTestResult = function(logodds,sigma){
   p.global.assoc <- GlobalTestForAssoc(logodds,sigma)
   p.global.heter <- GlobalTestForHeter(logodds,sigma)
   p.individual.heter <- IndividualHeterTest(logodds,sigma)
-  result = data.frame(matrix(1,2*length(odds)+2))
+  result = data.frame(matrix(0,1,2*length(odds)+2))
   for(i in 1:length(logodds)){
     result[1,2*i-1] <- paste0(odds[i],"(",odds.low[i],"-",
                              odds.high[i],")")
