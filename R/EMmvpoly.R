@@ -132,7 +132,8 @@ EMmvpoly <- function(y,
   # score_test_mis_result <- score_test_mis(y_em,baselineonly,score_support_result)
 
   return(list(delta=delta,covariance.delta=covariance.delta,second.stage.mat = second.stage.mat,second.stage.test,global.test,first.stage.mat,first.stage.test,loglikelihood = loglikelihood,
-              AIC = AIC))
+              AIC = AIC,beta=beta,covariance.beta=covariance.beta,
+              z.standard=z.standard))
   #return(list(score_c=score_test_mis$score_c,infor_c = score_test_mis$infor_c))
   #return(EM.result)
 
