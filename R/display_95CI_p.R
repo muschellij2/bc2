@@ -61,8 +61,6 @@ DisplayFirstStageTestResult = function(logodds,sigma){
   odds <- round(odds,places)
   odds.low <- round(odds.low,places)
   odds.high <- round(odds.high,places)
-  p.global.assoc <- GlobalTestForAssoc(logodds,sigma)
-  p.global.heter <- GlobalTestForHeter(logodds,sigma)
   p.individual.heter <- IndividualHeterTest(logodds,sigma)
   result = data.frame(matrix(0,1,2*length(odds)+2))
   for(i in 1:length(logodds)){
@@ -70,8 +68,7 @@ DisplayFirstStageTestResult = function(logodds,sigma){
                               odds.high[i],")")
     result[1,2*i] <- p.individual.heter[i]
   }
-  result[,2*length(odds)+1] <- p.global.assoc
-  result[,2*length(odds)+2] <- p.global.heter
+
   return(result)
 }
 
