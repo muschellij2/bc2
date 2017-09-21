@@ -145,6 +145,7 @@ ScoreMixedGlobalTestForHeter <- function(score.casecase,infor.casecase){
 #' @param infor.baseline
 #'
 #' @return
+#' @import CompQuadForm
 #' @export
 #'
 #' @examples

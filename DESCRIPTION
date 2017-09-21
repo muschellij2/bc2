@@ -1,15 +1,16 @@
 Package: bc2
 Type: Package
-Title: Breast Cancer Prediction(
+Title: Breast Cancer Prediction
 Version: 0.1.2
 Author: Haoyu Zhang 
 Maintainer: Haoyu Zhang <andrew.haoyu@gmail.com>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
-License: GPL-2
+License: MIT
 Depends:
   R (>= 3.1.0)
 Imports:
+ CompQuadForm
 LinkingTo:
     CompQuadForm
 Encoding: UTF-8
