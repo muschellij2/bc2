@@ -1,15 +1,18 @@
 
+
+
+
 #' Title
 #'
 #' @param logodds
 #' @param sigma
+#' @param self.design
 #'
 #' @return
 #' @export
 #'
 #' @examples
-
-DisplaySecondStageTestResult = function(logodds,sigma){
+DisplaySecondStageTestResult = function(logodds,sigma,self.design=F){
   var.logodds <- diag(sigma)
   logodds.low <- logodds-1.96*sqrt(var.logodds)
   logodds.high <- logodds+1.96*sqrt(var.logodds)
@@ -24,7 +27,7 @@ DisplaySecondStageTestResult = function(logodds,sigma){
   odds.low <- round(odds.low,places)
   odds.high <- round(odds.high,places)
   p.global.assoc <- GlobalTestForAssoc(logodds,sigma)
-  p.global.heter <- GlobalTestForHeter(logodds,sigma)
+  p.global.heter <- GlobalTestForHeter(logodds,sigma,self.design)
   p.individual.heter <- IndividualHeterTest(logodds,sigma)
   result = data.frame(matrix(0,1,2*length(odds)+2))
   for(i in 1:length(logodds)){
