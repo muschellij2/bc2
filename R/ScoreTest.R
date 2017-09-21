@@ -57,8 +57,8 @@ ScoreTest <- function(y,x,second.stage.structure = "additive",score.test.support
   if(second.stage.structure == "baselineonly"){
     z.intere <- z.design.baselineonly
   }else if(second.stage.structure == "additive"){
-    #z.intere <- z.design.additive
-    z.intere <- z.design.additive[,-1]
+    z.intere <- z.design.additive
+    #z.intere <- z.design.additive[,-1]
   }else if(second.stage.structure=="pairwise.interaction"){
     z.intere <- z.design.pairwise.interaction
   }else if(second.stage.structure=="saturated"){
@@ -95,10 +95,6 @@ ScoreTest <- function(y,x,second.stage.structure = "additive",score.test.support
 
   for(i in 1:interested.variable.number){
     x.intere <- as.numeric(x[,i])
-
-
-     sof <- ScoreTest.so
-     dyn.load(sof)
 
     temp <- .C("ScoreTest",
                x.intere,

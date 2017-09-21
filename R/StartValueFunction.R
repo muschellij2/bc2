@@ -1,14 +1,3 @@
-####set up the start vaue for the parameters
-#' Title
-#'
-#' @param freq.subtypes
-#' @param y.case.control
-#' @param z.all
-#'
-#' @return
-#' @export
-#'
-#' @examples
 StartValueFunction = function(freq.subtypes,y.case.control,z.all){
   ###cutoff for take one subject
   cutoff=10
@@ -20,11 +9,11 @@ StartValueFunction = function(freq.subtypes,y.case.control,z.all){
     freq.subtypes = freq.subtypes[-idx,]
     freq = freq.subtypes[,p.freq]
     total = sum(freq)+ncontrol
-    p.empirical = freq/ncontrol
+    p.empirical = freq/total
     delta_inter = log(p.empirical/(1-p.empirical))
   }else{
     total = sum(freq)+ncontrol
-    p.empirical = freq/ncontrol
+    p.empirical = freq/total
     delta_inter = log(p.empirical/(1-p.empirical))
   }
   delta0 <- rep(0,ncol(z.all))
