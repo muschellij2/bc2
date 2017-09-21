@@ -27,6 +27,6 @@ GenerateXAll <- function(y,baselineonly,additive,pairwise.interaction,saturated)
     x.all = cbind(x.all,saturated)
   }
   x.all <- x.all[,-1]
-  return(x.all)
+  return(as.matrix(x.all))
 }
 

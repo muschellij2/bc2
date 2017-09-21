@@ -21,7 +21,7 @@ EMStepScoreTestSupport <- function(delta0,y,x.all,z.standard,z.all,missingTumorI
   ##first E step
   print(paste0("Begin EM algorithm"))
   print(paste0("EM round: 1"))
-  prob.fit.result <- ProbFitting(delta_old,y,x.all,
+  prob.fit.result <- ProbFitting(delta_old,as.matrix(y),x.all,
                                  z.standard,z.all,missingTumorIndicator)
   y_em <- prob.fit.result[[1]]
   missing.vec <- as.numeric(as.vector(prob.fit.result[[2]]))
@@ -88,7 +88,7 @@ EMStepScoreTestSupport <- function(delta0,y,x.all,z.standard,z.all,missingTumorI
   WX_vec <- temp$WX_vec
 
 
-  return(list(inv_info_vec=inv_info_vec,YminusP=YminusP,W_obs=W_obs,WXZ_vec = WXZ_vec,zc=z.all,WX_vec = WX_vec))
+  return(list(inv_info_vec=inv_info_vec,YminusP=YminusP,W_obs=W_obs,WXZ_vec = WXZ_vec,zc=z.all))
   #  return(temp)
 }
 

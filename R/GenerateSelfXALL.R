@@ -32,6 +32,6 @@ GenerateSelfXAll <- function(y,x.self.design,baselineonly,additive,pairwise.inte
     x.all = cbind(x.all,saturated)
   }
   x.all <- x.all[,-1,drop=F]
-  return(x.all)
+  return(as.matrix(x.all))
 }
 

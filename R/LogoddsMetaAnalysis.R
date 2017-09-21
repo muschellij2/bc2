@@ -20,3 +20,24 @@ LogoddsMetaAnalysis <- function(logodds1,sigma1,logodds2,sigma2){
          sigma.meta = sigma.meta))
 
 }
+
+
+#' Title
+#'
+#' @param score1
+#' @param infor1
+#' @param score2
+#' @param infor2
+#'
+#' @return
+#' @export
+#'
+#' @examples
+ScoreMetaAnalysis <- function(score1,infor1,score2,infor2){
+  infor.meta <- infor1+infor2
+  score.meta <- score1+score2
+
+  return(list(score.meta = score.meta,
+              infor.meta = infor.meta))
+
+}

@@ -19,6 +19,7 @@ ScoreTestSupport <- function(y,
                              pairwise.interaction=NULL,
                              saturated=NULL,
                              missingTumorIndicator = 888){
+  y <- as.matrix(y)
   tumor.number <- ncol(y)-1
   y.case.control <- y[,1]
   y.tumor <- y[,2:(tumor.number+1)]

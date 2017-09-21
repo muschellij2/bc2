@@ -1,3 +1,13 @@
+#' Title
+#'
+#' @param freq.subtypes
+#' @param y.case.control
+#' @param z.all
+#'
+#' @return
+#' @export
+#'
+#' @examples
 StartValueFunction = function(freq.subtypes,y.case.control,z.all){
   ###cutoff for take one subject
   cutoff=10

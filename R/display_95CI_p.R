@@ -39,6 +39,52 @@ DisplayTestResult = function(logodds,sigma){
 
 
 
+#' Title
+#'
+#' @param score
+#' @param infor
+#'
+#' @return
+#' @export
+#'
+#' @examples
+DisplayFixedScoreTestResult <- function(score,infor){
+  p.value.GTA <- ScoreGlobalTestForAssoc(score,infor)
+  places <- 3
+  p.value.GTA <- round(p.value.GTA*10^(floor(-log10(p.value.GTA))+places))/(10^(floor(-log10(p.value.GTA))+places))
+  return(p.value.GTA)
+}
+
+#' Title
+#'
+#' @param score.baseline
+#' @param infor.baseline
+#' @param score.casecase
+#' @param infor.casecase
+#'
+#' @return
+#' @export
+#'
+#' @examples
+DisplayMixedScoreTestResult <- function(score.baseline,infor.baseline,score.casecase,infor.casecase){
+  p.value.GTH.mixed <- ScoreMixedGlobalTestForHeter(score.casecase,infor.casecase)
+  p.value.GTA.mixed <- ScoreMixedGlobalTestForAssoc(p.value.GTH.mixed,
+                                                    score.baseline,
+                                                    infor.baseline)
+  result <- c(p.value.GTA.mixed,p.value.GTH.mixed)
+  return(result)
+}
+
+
+#' Title
+#'
+#' @param logodds
+#' @param sigma
+#'
+#' @return
+#' @export
+#'
+#' @examples
 DisplayIndTestResult = function(logodds,sigma){
   var.logodds <- diag(sigma)
   logodds.low <- logodds-1.96*sqrt(var.logodds)
