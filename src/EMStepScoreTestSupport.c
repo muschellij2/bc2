@@ -859,12 +859,14 @@ double **ret;
   static void get_WXZ(int M,int N,int Ncov,double **X, double *W,
                       double **WX,double **WXZ,int Nparm,double **Z,int Znc,
                       double *WXZ_vec,double *WX_vec){
+    /*Rprintf("Get WX");*/
     get_WX(M,N,Ncov,X, W, WX);
     fill_vec(WX,N*M,M*Ncov,WX_vec);
+    /*Rprintf("Get WXZ");*/
     matrixMult(WX, N*M, M*Ncov, Z, Nparm, WXZ);
     fill_vec(WXZ,N*M,Znc,WXZ_vec);
 
-  }
+                      }
 
 
 
