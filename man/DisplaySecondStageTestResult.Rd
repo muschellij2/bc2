@@ -4,10 +4,10 @@
 \alias{DisplaySecondStageTestResult}
 \title{Title}
 \usage{
-DisplaySecondStageTestResult(logodds, sigma)
+DisplaySecondStageTestResult(logodds, sigma, self.design = F)
 }
 \arguments{
-\item{sigma}{}
+\item{self.design}{}
 }
 \description{
 Title

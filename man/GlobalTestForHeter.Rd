@@ -4,10 +4,10 @@
 \alias{GlobalTestForHeter}
 \title{Title}
 \usage{
-GlobalTestForHeter(logodds, sigma, selfdesign = F)
+GlobalTestForHeter(logodds, sigma, self.design = F)
 }
 \arguments{
-\item{selfdesign}{}
+\item{self.design}{}
 }
 \description{
 Title
