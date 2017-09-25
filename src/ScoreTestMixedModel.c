@@ -115,6 +115,16 @@ int n;
 
 } /* END: all_finite */
 
+  /**transform a matrix **/
+
+  static void transform_x(double **x, int nr, int nc, double** ret){
+    for(int i=0;i <nr; i++){
+      for(int j=0;j <nc; j++){
+        ret[j][i] = x[i][j];
+      }
+    }
+  }
+
   /* Multiply to matrices (matrix mult)  */
   static void matrixMult(m1, m1_nr, m1_nc, m2, m2_nc, ret)
 double **m1, **m2, **ret;
@@ -870,6 +880,68 @@ double **ret;
   }
 
 
+/*function to compute the t(x_intere_M)%*%W%*%X */
+/* x_intere_M is sparse */
+/* the output would be a M* (M*Ncov_c0) matrix */
+/* i represent the ith row */
+/* j represent the jth block in the 1*p block */
+ /*in total there are M*M block*/
+/* k represent kth column with the ith row, jth 1*p block */
+static void get_tx_intere_W_X(double* x_intere,double *W,double **X,
+                              int M,int N, int Ncov_c0,double **ret){
+  double sum =0.0;
+  double* Wtemp;
+  int NM = N*M;
+  int p = Ncov_c0;
+
+  Wtemp = dVec_alloc(N,0,0.0);
+
+  for(int i=0;i<M; i++){
+    for(int j=0;j<M;j++){
+
+      for(int l=0;l <N; l++){
+        Wtemp[l] = W[NM*i+N*j+l];
+      }
+
+
+      for(int k=0;k<p;k++){
+        sum =0.0;
+        for(int l=0;l<N;l++){
+          sum += x_intere[l]*Wtemp[l]*X[l][k];
+        }
+        ret[i][j*p+k] = sum;
+      }
+      }
+  }
+
+  free(Wtemp);
+  }
+
+static void get_tz_intere_tx_intere_W_X_zc(double** tz_intere,
+                                           double** tx_intere_W_X,
+                                           double **zc,
+                                           double **ret,
+                                           int z_intere_nc,
+                                           int z_intere_nr,
+                                           int zc_nr,
+                                           int zc_nc){
+ double ** tz_intere_tx_intere_W_X;
+  tz_intere_tx_intere_W_X = dMat_alloc(z_intere_nc,zc_nr,0,0.0);
+
+  matrixMult(tz_intere, z_intere_nc, z_intere_nr, tx_intere_W_X,
+             zc_nr, tz_intere_tx_intere_W_X);
+
+  matrixMult(tz_intere_tx_intere_W_X,z_intere_nc,
+             zc_nr,zc,zc_nc,ret);
+
+
+  matrix_free((void**)tz_intere_tx_intere_W_X,z_intere_nc);
+
+
+
+}
+
+
 /* fill matrix into vector */
   /* vec was ordered by column */
   static void fill_vec(double **mat,int nr, int nc, double *ret){
@@ -881,7 +953,7 @@ double **ret;
   }
 
 
-void ScoreTest( double *x_intere ,
+void ScoreTestMixedModel( double *x_intere ,
                 double *z_intere_vec,
                 double *inv_info_vec,
                 double *YminusP,
@@ -898,12 +970,11 @@ void ScoreTest( double *x_intere ,
                 int *pDEBUG,
                 double *info_complete_vec,
                 double *info_lost_vec,
-                double *tx_intereWXZ_vec,
-                double *Quad_tx_intere_WXZ_invinfo_vec,
-                double *x_vec)
+                double *x_vec,
+                double *zc_vec)
 
 {
-  int zc_nr = *pzc_nc;
+  int zc_nr = *pzc_nr;
   int zc_nc = *pzc_nc;
   int z_intere_nr = *pz_intere_nr;
   int z_intere_nc = *pz_intere_nc;
@@ -912,21 +983,39 @@ void ScoreTest( double *x_intere ,
   int N = *pN;
   int DEBUG = *pDEBUG;
   int Ncov = 1;
+  int Ncov_c0 = (zc_nr/M);
+  int Ncov_c = (Ncov_c0-1);
 
   double **z_intere;
   double **Inv_info;
   double **efficient_info;
   double * XtYminusP;
 
-  double **tx_intereWXZ; /*t(x_intere)%*%WXZ*/
-    double **Quad_tx_intere_WXZ_invinfo;
+
+
   double **info_lost;
   double **info_complete;
   double **X;
+  double **tx_intere_W_X;
+  double **zc;
+  double **tz_intere;
+  double **tz_intere_tx_intere_W_X_zc;
   if (DEBUG) Rprintf("Allocate memory\n");
   if (DEBUG) Rprintf("Allocate z_intere\n");
   z_intere = dMat_alloc(z_intere_nr,z_intere_nc,0,0.0);
   if (DEBUG) Rprintf("Finish z_intere\n");
+
+  zc = dMat_alloc(zc_nr,zc_nc,0,0.0);
+
+  tx_intere_W_X = dMat_alloc(M,M*Ncov_c0,0,0.0);
+
+  X        = dMat_alloc(N, Ncov_c0,0, 0.0);
+
+  tz_intere = dMat_alloc(z_intere_nc,z_intere_nr,0,0.0);
+  tz_intere_tx_intere_W_X_zc = dMat_alloc(z_intere_nc,zc_nc,0,0.0);
+
+  fillMat(x_vec, N, Ncov_c, 1, X);
+  fillMat(zc_vec,zc_nr,zc_nc,0,zc);
 
   Inv_info = dMat_alloc(zc_nc,zc_nc,0,0.0);
   if (DEBUG) Rprintf("Finish inv_info\n");
@@ -935,10 +1024,9 @@ void ScoreTest( double *x_intere ,
   if (DEBUG) Rprintf("Allocate XtYminusP\n");
   XtYminusP = dVec_alloc(M,0,0.0);
 
-  if (DEBUG) Rprintf("Allocate tx_intereWXZ\n");
-  tx_intereWXZ = dMat_alloc(M,zc_nc,0,0.0);
-  if (DEBUG) Rprintf("Allocate Quad_tx_intere_WXZ_invinfo\n");
-  Quad_tx_intere_WXZ_invinfo = dMat_alloc(M,M,0,0.0);
+
+
+
   if (DEBUG) Rprintf("Allocate info_lost\n");
   info_lost = dMat_alloc(z_intere_nc,z_intere_nc,0,0.0);
   if (DEBUG) Rprintf("Allocate info_complete\n");
@@ -953,18 +1041,23 @@ void ScoreTest( double *x_intere ,
   if (DEBUG) Rprintf("Get Score\n");
   get_Score(z_intere, XtYminusP, z_intere_nr, z_intere_nc,score);
 
-  if (DEBUG) Rprintf("Get tx_intereWXZ\n");
-  get_tx_intereWXZ(x_intere,WXZ,N, M, zc_nc, tx_intereWXZ);
-  fill_vec(tx_intereWXZ,M,zc_nc,tx_intereWXZ_vec);
+  transform_x(z_intere,z_intere_nr,z_intere_nc,tz_intere);
+
+  get_tx_intere_W_X(x_intere,W_obs,X,
+                     M,N,Ncov_c0,tx_intere_W_X);
+  get_tz_intere_tx_intere_W_X_zc(tz_intere,
+                                 tx_intere_W_X,
+                                 zc,
+                                 tz_intere_tx_intere_W_X_zc,
+                                 z_intere_nc,
+                                 z_intere_nr,
+                                 zc_nr,
+                                 zc_nc);
 
 
-  if (DEBUG) Rprintf("Get Quad_tx_intere_WXZ_invinfo\n");
-
-  QuadXKXt( tx_intereWXZ, Inv_info, M,zc_nc, Quad_tx_intere_WXZ_invinfo);
-  fill_vec(Quad_tx_intere_WXZ_invinfo,M,M,Quad_tx_intere_WXZ_invinfo_vec);
 
   if (DEBUG) Rprintf("Get info_lost\n");
-  QuadXtKX(z_intere,Quad_tx_intere_WXZ_invinfo,M,z_intere_nc,info_lost);
+  QuadXKXt(tz_intere_tx_intere_W_X_zc,Inv_info,z_intere_nc,zc_nc,info_lost);
   if (DEBUG) Rprintf("Get info_complete\n");
   Get_ObservedInfo(M,N,info_complete, DEBUG,
                    x_intere,Ncov,z_intere_nr,z_intere_nc,z_intere,W_obs);
@@ -984,10 +1077,13 @@ void ScoreTest( double *x_intere ,
   matrix_free((void**)Inv_info,zc_nc);
   matrix_free((void**)efficient_info,nparm_intere);
   free(XtYminusP);
-  matrix_free((void**)tx_intereWXZ,M);
-  matrix_free((void **)Quad_tx_intere_WXZ_invinfo,M);
   matrix_free((void**)info_lost,z_intere_nc);
   matrix_free((void**)info_complete,z_intere_nc);
+  matrix_free((void**)X,Ncov_c0);
+  matrix_free((void**)tx_intere_W_X,M);
+  matrix_free((void**)zc ,zc_nr);
+  matrix_free((void**)tz_intere ,z_intere_nc);
+  matrix_free((void**)tz_intere_tx_intere_W_X_zc,z_intere_nc);
 
 
 } /* END: ScoreTest */

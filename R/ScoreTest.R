@@ -138,7 +138,7 @@ ScoreTest <- function(y,x,second.stage.structure = "additive",score.test.support
   # score_support_result <- score_support(pxx,x.all,baselineonly,z.all,z.standard,y_em)
   #score_test_mis <- score_test_mis(y_em,baselineonly,score_support_result)
   #return(list(score_c=score_test_mis$score_c,infor_c = score_test_mis$infor_c))
-  return(list(score.result=score.result,efficient.info.result=efficient.info.result, info.complete=info.complete,info.lost = info.lost,tx_intereWXZ=tx_intereWXZ,Quad_tx_intere_WXZ_invinfo_vec=Quad_tx_intere_WXZ_invinfo_vec))
+  return(list(score.result=score.result,efficient.info.result=efficient.info.result, info.complete=info.complete,info.lost = info.lost))
 }
 
 

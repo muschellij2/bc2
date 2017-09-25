@@ -1,11 +1,9 @@
-#####ScoreTest
 
-
-#' ScoreTest
+#' Title
 #'
 #' @param y
 #' @param x
-#' @param second.stage.structure
+#' @param z.design
 #' @param score.test.support
 #' @param missingTumorIndicator
 #'
@@ -13,7 +11,7 @@
 #' @export
 #'
 #' @examples
-ScoreTest <- function(y,x,second.stage.structure = "additive",score.test.support=NULL,missingTumorIndicator=NULL){
+ScoreTestMixedModel <- function(y,x,z.design = z.design,score.test.support=NULL,missingTumorIndicator=NULL){
   if(is.vector(x)==1){
     x = matrix(x,ncol=1)
     interested.variable.number = 1
@@ -54,17 +52,7 @@ ScoreTest <- function(y,x,second.stage.structure = "additive",score.test.support
                                                  tumor.number,
                                                  tumor.names,
                                                  freq.subtypes)
-  if(second.stage.structure == "baselineonly"){
-    z.intere <- z.design.baselineonly
-  }else if(second.stage.structure == "additive"){
-    z.intere <- z.design.additive
-    #z.intere <- z.design.additive[,-1]
-  }else if(second.stage.structure=="pairwise.interaction"){
-    z.intere <- z.design.pairwise.interaction
-  }else if(second.stage.structure=="saturated"){
-    z.intere <- z.design.saturated
-  }
-
+  z.intere <- z.design
 
 
 
@@ -73,7 +61,7 @@ ScoreTest <- function(y,x,second.stage.structure = "additive",score.test.support
   inv_info_vec=as.numeric(score.test.support$inv_info_vec)
   YminusP=as.numeric(score.test.support$YminusP)
   W_obs=as.numeric(score.test.support$W_obs)
-  x.all = as.numeric(score.test.support$x.all)
+  x.all.vec = as.numeric(score.test.support$x.all)
 
   zc = score.test.support$zc
   z.intere <- as.matrix(z.intere)
@@ -87,14 +75,16 @@ ScoreTest <- function(y,x,second.stage.structure = "additive",score.test.support
   zc.nc <- as.integer(ncol(zc))
   M <- z.intere.nr <- as.integer(nrow(z.intere))
   z.intere.nc <- as.integer(ncol(z.intere))
-  tx_intereWXZ_vec <- as.numeric(rep(0,M*zc.nc))
-  Quad_tx_intere_WXZ_invinfo_vec <- as.numeric(rep(0,M*M))
+
+
+
   N <- as.integer(nrow(x))
   score.result <- matrix(0,interested.variable.number,length(score))
   efficient.info.result <- matrix(0,interested.variable.number*nparm.intere,nparm.intere)
+  zc.vec <- as.numeric(as.vector(zc))
   index <- 1
 
-  for(i in 1:interested.variable.number){
+i = 1
     x.intere <- as.numeric(x[,i])
 
     temp <- .C("ScoreTestMixedModel",
@@ -115,23 +105,23 @@ ScoreTest <- function(y,x,second.stage.structure = "additive",score.test.support
                debug,
                info.complete.vec = info.complete.vec,
                info.lost.vec=info.lost.vec,
-               tx_intereWXZ_vec= tx_intereWXZ_vec,
-               Quad_tx_intere_WXZ_invinfo_vec= Quad_tx_intere_WXZ_invinfo_vec,
-               x.all
+    x.all.vec,
+               zc.vec
     )
     score.result[i,] <- temp$score
     efficient.info <- matrix(temp$efficient.info.vec,nparm.intere,nparm.intere)
     info.complete <- matrix(temp$info.complete.vec,nparm.intere,nparm.intere)
     info.lost <- matrix(temp$info.lost.vec,nparm.intere,nparm.intere)
-    tx_intereWXZ  = matrix(temp$tx_intereWXZ_vec,M,zc.nc)
-    Quad_tx_intere_WXZ_invinfo_vec <- temp$Quad_tx_intere_WXZ_invinfo_vec
+
+
+
     efficient.info.result[(index):(index+nparm.intere-1),] <- efficient.info
 
     index <- index + nparm.intere
 
 
 
-  }
+
 
 
 
@@ -139,7 +129,9 @@ ScoreTest <- function(y,x,second.stage.structure = "additive",score.test.support
   # score_support_result <- score_support(pxx,x.all,baselineonly,z.all,z.standard,y_em)
   #score_test_mis <- score_test_mis(y_em,baselineonly,score_support_result)
   #return(list(score_c=score_test_mis$score_c,infor_c = score_test_mis$infor_c))
-  return(list(score.result=score.result,efficient.info.result=efficient.info.result, info.complete=info.complete,info.lost = info.lost,tx_intereWXZ=tx_intereWXZ,Quad_tx_intere_WXZ_invinfo_vec=Quad_tx_intere_WXZ_invinfo_vec))
+
+  return(list(score.result=score.result,efficient.info.result=efficient.info.result, info.complete=info.complete,info.lost = info.lost)
+         )
 }
 
 

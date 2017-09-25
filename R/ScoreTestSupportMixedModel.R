@@ -1,4 +1,3 @@
-###Finish implementing ScoreTestSupport C function into the try5.c code
 
 #' Title
 #'

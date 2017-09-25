@@ -903,7 +903,7 @@ void ScoreTest( double *x_intere ,
                 double *Quad_tx_intere_WXZ_invinfo_vec)
 
 {
-  int zc_nr = *pzc_nc;
+  int zc_nr = *pzc_nr;
   int zc_nc = *pzc_nc;
   int z_intere_nr = *pz_intere_nr;
   int z_intere_nc = *pz_intere_nc;
