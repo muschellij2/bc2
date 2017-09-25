@@ -794,11 +794,11 @@ double **ret;
     double *XX;
     XmWobsXm    = dMat_alloc(Znr,Znr,0,0.0);
     XX = dVec_alloc(N,0,0.0);
-    if (DEBUG) Rprintf("get XX\n");
+    /*if (DEBUG) Rprintf("get XX\n");*/
     get_XX_vec(X,N,XX);
-    if (DEBUG) Rprintf("Compute XmWobsXm matrix\n");
+    /*if (DEBUG) Rprintf("Compute XmWobsXm matrix\n");*/
     get_XmWXm_vec(XX,W_obs,M, N,XmWobsXm);
-    if (DEBUG) Rprintf("Compute information matrix\n");
+    /*if (DEBUG) Rprintf("Compute information matrix\n");*/
     /*get_Info(X, N, Ncov, M, Z, Znr, Znc, pxx, Info);*/
       QuadXtKX(Z,XmWobsXm, Znr,Znc, Info_obs);
     matrix_free((void **)XmWobsXm,Znr);
