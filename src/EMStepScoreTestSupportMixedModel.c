@@ -804,9 +804,9 @@ double **ret;
                                double *XX,double **X,int Ncov,int Znr,int Znc,double **Z,double*W_obs){
     double **XmWobsXm;
     XmWobsXm    = dMat_alloc(Znr,Znr,0,0.0);
-    if (DEBUG) Rprintf("Compute XmWobsXm matrix\n");
+  /*  if (DEBUG) Rprintf("Compute XmWobsXm matrix\n");*/
     get_XmWXm(XX,X,W_obs, M,N, Ncov,XmWobsXm);
-    if (DEBUG) Rprintf("Compute mis information matrix\n");
+    /*if (DEBUG) Rprintf("Compute mis information matrix\n");*/
     /*get_Info(X, N, Ncov, M, Z, Znr, Znc, pxx, Info);*/
       QuadXtKX(Z,XmWobsXm, Znr,Znc, Info_obs);
     matrix_free((void **)XmWobsXm,Znr);
@@ -1068,7 +1068,9 @@ int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc,*pmissi
       if (Nparm != Znc) error("Nparm != Znc\n");
 
     /* Allocate memory for matrix of covariates and Z map matrix */
-      if (DEBUG) Rprintf("Allocate memory\n");
+      /*if (DEBUG) Rprintf("Allocate memory\n");*/
+
+
     tXXZ     = dMat_alloc(Nparm, NM, 0, 0.0);
 
     X        = dMat_alloc(N, Ncov, 0, 0.0); /* Xvec doesn't have intercept*/
