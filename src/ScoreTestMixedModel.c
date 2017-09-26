@@ -1000,10 +1000,10 @@ void ScoreTestMixedModel( double *x_intere ,
   double **zc;
   double **tz_intere;
   double **tz_intere_tx_intere_W_X_zc;
-  if (DEBUG) Rprintf("Allocate memory\n");
-  if (DEBUG) Rprintf("Allocate z_intere\n");
+  /*if (DEBUG) Rprintf("Allocate memory\n");
+  if (DEBUG) Rprintf("Allocate z_intere\n");*/
   z_intere = dMat_alloc(z_intere_nr,z_intere_nc,0,0.0);
-  if (DEBUG) Rprintf("Finish z_intere\n");
+  /*if (DEBUG) Rprintf("Finish z_intere\n");*/
 
   zc = dMat_alloc(zc_nr,zc_nc,0,0.0);
 
@@ -1018,27 +1018,27 @@ void ScoreTestMixedModel( double *x_intere ,
   fillMat(zc_vec,zc_nr,zc_nc,0,zc);
 
   Inv_info = dMat_alloc(zc_nc,zc_nc,0,0.0);
-  if (DEBUG) Rprintf("Finish inv_info\n");
-  if (DEBUG) Rprintf("Allocate efficient_info\n");
+  /*if (DEBUG) Rprintf("Finish inv_info\n");
+  if (DEBUG) Rprintf("Allocate efficient_info\n");*/
   efficient_info = dMat_alloc(nparm_intere,nparm_intere,0,0.0);
-  if (DEBUG) Rprintf("Allocate XtYminusP\n");
+  /*if (DEBUG) Rprintf("Allocate XtYminusP\n");*/
   XtYminusP = dVec_alloc(M,0,0.0);
 
 
 
 
-  if (DEBUG) Rprintf("Allocate info_lost\n");
+  /*if (DEBUG) Rprintf("Allocate info_lost\n");*/
   info_lost = dMat_alloc(z_intere_nc,z_intere_nc,0,0.0);
-  if (DEBUG) Rprintf("Allocate info_complete\n");
+  /*if (DEBUG) Rprintf("Allocate info_complete\n");*/
   info_complete = dMat_alloc(z_intere_nc,z_intere_nc,0,0.0);
-  if (DEBUG) Rprintf("Allocate efficient_info\n");
+  /*if (DEBUG) Rprintf("Allocate efficient_info\n");*/
   efficient_info = dMat_alloc(z_intere_nc,z_intere_nc,0,0.0);
-  if (DEBUG) Rprintf("Fill in Matrix\n");
+  /*if (DEBUG) Rprintf("Fill in Matrix\n");*/
   fillMat(z_intere_vec,z_intere_nr,z_intere_nc,0,z_intere);
   fillMat(inv_info_vec,zc_nc,zc_nc,0,Inv_info);
-  if (DEBUG) Rprintf("Get Xt(Y-P)\n");
+  /*if (DEBUG) Rprintf("Get Xt(Y-P)\n");*/
   get_XtYminusP(x_intere,YminusP, XtYminusP,N,  M);
-  if (DEBUG) Rprintf("Get Score\n");
+  /*if (DEBUG) Rprintf("Get Score\n");*/
   get_Score(z_intere, XtYminusP, z_intere_nr, z_intere_nc,score);
 
   transform_x(z_intere,z_intere_nr,z_intere_nc,tz_intere);
@@ -1056,23 +1056,23 @@ void ScoreTestMixedModel( double *x_intere ,
 
 
 
-  if (DEBUG) Rprintf("Get info_lost\n");
+  /*if (DEBUG) Rprintf("Get info_lost\n");*/
   QuadXKXt(tz_intere_tx_intere_W_X_zc,Inv_info,z_intere_nc,zc_nc,info_lost);
-  if (DEBUG) Rprintf("Get info_complete\n");
+  /*if (DEBUG) Rprintf("Get info_complete\n");*/
   Get_ObservedInfo(M,N,info_complete, DEBUG,
                    x_intere,Ncov,z_intere_nr,z_intere_nc,z_intere,W_obs);
-  if (DEBUG) Rprintf("Get efficient information matrix\n");
+  /*if (DEBUG) Rprintf("Get efficient information matrix\n");*/
   MatrixMinus(info_complete,info_lost, z_intere_nc,z_intere_nc, efficient_info);
-  if (DEBUG) Rprintf("fill in efficient information matrix\n");
+  /*if (DEBUG) Rprintf("fill in efficient information matrix\n");*/
   fill_SysMat_to_vec(efficient_info,efficient_info_vec,z_intere_nc);
-  if (DEBUG) Rprintf("fill in complete information matrix\n");
+  /*if (DEBUG) Rprintf("fill in complete information matrix\n");*/
   fill_SysMat_to_vec(info_complete,info_complete_vec,z_intere_nc);
-  if (DEBUG) Rprintf("fill in lost information matrix\n");
+  /*if (DEBUG) Rprintf("fill in lost information matrix\n");*/
   fill_SysMat_to_vec(info_lost,info_lost_vec,z_intere_nc);
 
 
 
-  if (DEBUG) Rprintf("Free Memory\n");
+  /*if (DEBUG) Rprintf("Free Memory\n");*/
   matrix_free((void**)z_intere,z_intere_nr);
   matrix_free((void**)Inv_info,zc_nc);
   matrix_free((void**)efficient_info,nparm_intere);
