@@ -1020,7 +1020,7 @@ void ScoreTestMixedModel( double *x_intere ,
   Inv_info = dMat_alloc(zc_nc,zc_nc,0,0.0);
   /*if (DEBUG) Rprintf("Finish inv_info\n");
   if (DEBUG) Rprintf("Allocate efficient_info\n");*/
-  efficient_info = dMat_alloc(nparm_intere,nparm_intere,0,0.0);
+  /*efficient_info = dMat_alloc(nparm_intere,nparm_intere,0,0.0);*/
   /*if (DEBUG) Rprintf("Allocate XtYminusP\n");*/
   XtYminusP = dVec_alloc(M,0,0.0);
 
