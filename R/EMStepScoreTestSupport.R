@@ -19,8 +19,8 @@ EMStepScoreTestSupport <- function(delta0,y,x.all,z.standard,z.all,missingTumorI
   delta_old <- delta0
   ##EM algorithm
   ##first E step
-  print(paste0("Begin EM algorithm"))
-  print(paste0("EM round: 1"))
+  #print(paste0("Begin EM algorithm"))
+  #print(paste0("EM round: 1"))
   prob.fit.result <- ProbFitting(delta_old,as.matrix(y),x.all,
                                  z.standard,z.all,missingTumorIndicator)
   y_em <- prob.fit.result[[1]]
