@@ -80,6 +80,7 @@ EMStepScoreTestSupportMixedModel <- function(delta0,y,x.all,z.standard,z.all,mis
   inv_info_vec <- temp$ret_Inv_info_vec
   YminusP <- temp$YminusP
   W_obs <- temp$W_obs
+  rm(temp)
 
 
   return(list(inv_info_vec=inv_info_vec,YminusP=YminusP,W_obs=W_obs,zc=z.all,x.all=x.all))
