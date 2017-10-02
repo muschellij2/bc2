@@ -1075,11 +1075,11 @@ void ScoreTestMixedModel( double *x_intere ,
   /*if (DEBUG) Rprintf("Free Memory\n");*/
   matrix_free((void**)z_intere,z_intere_nr);
   matrix_free((void**)Inv_info,zc_nc);
-  matrix_free((void**)efficient_info,nparm_intere);
+  matrix_free((void**)efficient_info,z_intere_nc);
   free(XtYminusP);
   matrix_free((void**)info_lost,z_intere_nc);
   matrix_free((void**)info_complete,z_intere_nc);
-  matrix_free((void**)X,Ncov_c0);
+  matrix_free((void**)X,N);
   matrix_free((void**)tx_intere_W_X,M);
   matrix_free((void**)zc ,zc_nr);
   matrix_free((void**)tz_intere ,z_intere_nc);
