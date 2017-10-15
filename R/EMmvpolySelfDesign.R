@@ -112,7 +112,8 @@ EMmvpolySelfDesign <- function(y,
     covariance.beta.no.inter <- takeout.intercept.result$covariance.beta.no.inter
 
 
-    second.stage.test <- SecondStageTest(delta.no.inter,covariance.delta.no.inter,M,second.stage.mat)
+    #second.stage.test <- SecondStageTest(delta.no.inter,covariance.delta.no.inter,M,second.stage.mat)
+    second.stage.test <- NULL
     global.test <- GenerateGlobalTest(delta.no.inter,
                                       covariance.delta.no.inter,
                                       M,
