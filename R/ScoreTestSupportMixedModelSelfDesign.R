@@ -1,24 +1,28 @@
-
 #' Title
 #'
 #' @param y
+#' @param x.self.design
+#' @param z.design
 #' @param baselineonly
 #' @param additive
 #' @param pairwise.interaction
 #' @param saturated
 #' @param missingTumorIndicator
+#' @param delta0
 #'
 #' @return
 #' @export
 #'
 #' @examples
-ScoreTestSupportMixedModel <- function(y,
-                             baselineonly=NULL,
-                             additive=NULL,
-                             pairwise.interaction=NULL,
-                             saturated=NULL,
-                             missingTumorIndicator = 888,
-                             delta0 = NULL){
+ScoreTestSupportMixedModelSelfDesign <- function(y,
+                                                 x.self.design,
+                                                 z.design,
+                                                 baselineonly=NULL,
+                                                 additive=NULL,
+                                                 pairwise.interaction=NULL,
+                                                 saturated=NULL,
+                                                 missingTumorIndicator = 888,
+                                                 delta0 = NULL){
 
   y <- as.matrix(y)
   tumor.number <- ncol(y)-1
@@ -50,15 +54,16 @@ ScoreTestSupportMixedModel <- function(y,
                                                  tumor.number,
                                                  tumor.names,
                                                  freq.subtypes)
-  z.all <- ZDesigntoZall(baselineonly,
-                         additive,
-                         pairwise.interaction,
-                         saturated,
-                         z.design.baselineonly,
-                         z.design.additive,
-                         z.design.pairwise.interaction,
-                         z.design.saturated)
-
+  z.all <- ZSelfDesigntoZall(x.self.design,
+                             baselineonly,
+                             additive,
+                             pairwise.interaction,
+                             saturated,
+                             z.design,
+                             z.design.baselineonly,
+                             z.design.additive,
+                             z.design.pairwise.interaction,
+                             z.design.saturated)
   if(is.null(delta0)==T){
     delta0 <-StartValueFunction(freq.subtypes,y.case.control,z.all)
   }else{
@@ -79,6 +84,7 @@ ScoreTestSupportMixedModel <- function(y,
   # score_support_result <- score_support(pxx,x.all,baselineonly,z.all,z.standard,y_em)
   #score_test_mis <- score_test_mis(y_em,baselineonly,score_support_result)
   #return(list(score_c=score_test_mis$score_c,infor_c = score_test_mis$infor_c))
+
   result <- Score.Support
   result[[6]] <- z.design.baselineonly
   result[[7]] <- z.design.additive
@@ -88,19 +94,3 @@ ScoreTestSupportMixedModel <- function(y,
   return(result)
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
