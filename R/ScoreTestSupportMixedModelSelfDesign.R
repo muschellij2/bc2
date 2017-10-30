@@ -72,7 +72,7 @@ ScoreTestSupportMixedModelSelfDesign <- function(y,
 
   #x.all has no intercept yet
   #we will add the intercept in C code
-  x.all <- GenerateXAll(y,baselineonly,additive,pairwise.interaction,saturated)
+  x.all <- GenerateSelfXAll(y,x.self.design,baselineonly,additive,pairwise.interaction,saturated)
   ###z standard matrix means the additive model z design matrix without baseline effect
   ###z standard matrix is used to match the missing tumor characteristics to the complete subtypes
 
