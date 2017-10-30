@@ -36,39 +36,25 @@ ScoreTest <- function(y,x,second.stage.structure = "additive",score.test.support
   if(is.null(tumor.names)){
     tumor.names <- paste0(c(1:tumor.number))
   }
-  tumor.character.cat = GenerateTumorCharacterCat(y.pheno.complete)
-  z.design.baselineonly <- GenerateZDesignBaselineonly(tumor.character.cat,
-                                                       tumor.number,
-                                                       tumor.names,
-                                                       freq.subtypes)
-  z.design.additive <- GenerateZDesignAdditive(tumor.character.cat,
-                                                    tumor.number,
-                                                    tumor.names,
-                                                    freq.subtypes)
-  z.design.pairwise.interaction <-
-    GenerateZDesignPairwiseInteraction(tumor.character.cat,
-                                       tumor.number,
-                                       tumor.names,
-                                       freq.subtypes)
-  z.design.saturated <- GenerateZDesignSaturated(tumor.character.cat,
-                                                 tumor.number,
-                                                 tumor.names,
-                                                 freq.subtypes)
+
+
+
+
   if(second.stage.structure == "baselineonly"){
-    z.intere <- z.design.baselineonly
+    z.intere <- score.test.support[[6]]
   }else if(second.stage.structure == "additive"){
-    z.intere <- z.design.additive
+    z.intere <- score.test.support[[7]]
     #z.intere <- z.design.additive[,-1]
   }else if(second.stage.structure=="pairwise.interaction"){
-    z.intere <- z.design.pairwise.interaction
+    z.intere <- score.test.support[[8]]
   }else if(second.stage.structure=="saturated"){
-    z.intere <- z.design.saturated
+    z.intere <- score.test.support[[9]]
   }
 
 
 
 
-  z.standard <- z.design.additive[,-1]
+  z.standard <- score.test.support[[10]]
   debug     <- as.integer(1)
   inv_info_vec=as.numeric(score.test.support$inv_info_vec)
   YminusP=as.numeric(score.test.support$YminusP)

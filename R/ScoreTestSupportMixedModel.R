@@ -80,7 +80,13 @@ ScoreTestSupportMixedModel <- function(y,
   # score_support_result <- score_support(pxx,x.all,baselineonly,z.all,z.standard,y_em)
   #score_test_mis <- score_test_mis(y_em,baselineonly,score_support_result)
   #return(list(score_c=score_test_mis$score_c,infor_c = score_test_mis$infor_c))
-  return(Score.Support)
+  result <- Score.Support
+  result[[6]] <- z.design.baselineonly
+  result[[7]] <- z.design.additive
+  result[[8]] <- z.design.pairwise.interaction
+  result[[9]] <- z.design.saturated
+  result[[10]] <- z.standard
+  return(result)
 
 }
 
@@ -182,6 +188,13 @@ ScoreTestSupportMixedModelSelfDesign <- function(y,
   # score_support_result <- score_support(pxx,x.all,baselineonly,z.all,z.standard,y_em)
   #score_test_mis <- score_test_mis(y_em,baselineonly,score_support_result)
   #return(list(score_c=score_test_mis$score_c,infor_c = score_test_mis$infor_c))
-  return(Score.Support)
+
+  result <- Score.Support
+  result[[6]] <- z.design.baselineonly
+  result[[7]] <- z.design.additive
+  result[[8]] <- z.design.pairwise.interaction
+  result[[9]] <- z.design.saturated
+  result[[10]] <- z.standard
+  return(result)
 
 }

@@ -35,28 +35,28 @@ ScoreTestMixedModel <- function(y,x,z.design = z.design,score.test.support=NULL,
     tumor.names <- paste0(c(1:tumor.number))
   }
   tumor.character.cat = GenerateTumorCharacterCat(y.pheno.complete)
-  z.design.baselineonly <- GenerateZDesignBaselineonly(tumor.character.cat,
-                                                       tumor.number,
-                                                       tumor.names,
-                                                       freq.subtypes)
-  z.design.additive <- GenerateZDesignAdditive(tumor.character.cat,
-                                               tumor.number,
-                                               tumor.names,
-                                               freq.subtypes)
-  z.design.pairwise.interaction <-
-    GenerateZDesignPairwiseInteraction(tumor.character.cat,
-                                       tumor.number,
-                                       tumor.names,
-                                       freq.subtypes)
-  z.design.saturated <- GenerateZDesignSaturated(tumor.character.cat,
-                                                 tumor.number,
-                                                 tumor.names,
-                                                 freq.subtypes)
+  # z.design.baselineonly <- GenerateZDesignBaselineonly(tumor.character.cat,
+  #                                                      tumor.number,
+  #                                                      tumor.names,
+  #                                                      freq.subtypes)
+  # z.design.additive <- GenerateZDesignAdditive(tumor.character.cat,
+  #                                              tumor.number,
+  #                                              tumor.names,
+  #                                              freq.subtypes)
+  # z.design.pairwise.interaction <-
+  #   GenerateZDesignPairwiseInteraction(tumor.character.cat,
+  #                                      tumor.number,
+  #                                      tumor.names,
+  #                                      freq.subtypes)
+  # z.design.saturated <- GenerateZDesignSaturated(tumor.character.cat,
+  #                                                tumor.number,
+  #                                                tumor.names,
+  #                                                freq.subtypes)
   z.intere <- z.design
 
 
 
-  z.standard <- z.design.additive[,-1]
+  z.standard <- score.test.support[[10]]
   debug     <- as.integer(1)
   inv_info_vec=as.numeric(score.test.support$inv_info_vec)
   YminusP=as.numeric(score.test.support$YminusP)
