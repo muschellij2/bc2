@@ -94,3 +94,4 @@ ScoreTestSupportMixedModelSelfDesign <- function(y,
   return(result)
 
 }
+
