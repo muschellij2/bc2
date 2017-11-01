@@ -26,7 +26,8 @@ char name[10];
   }
   printf("\n \n");
 }
-static void print_iVec(vec, n, name)
+
+/*static void print_iVec(vec, n, name)
 int *vec;
 int n;
 char name[10];
@@ -37,10 +38,10 @@ char name[10];
     printf(" %d ", vec[i]);
   }
   printf("\n \n");
-}
+}*/
 
 
-static void print_dMat(mat, nr, nc, name)
+/*static void print_dMat(mat, nr, nc, name)
 double **mat;
 int nr, nc;
 char name[10];
@@ -52,7 +53,7 @@ char name[10];
     printf("\n");
   }
   printf("\n \n");
-}
+}*/
 
 /* Function to allocate memory for a double vector */
   static double * dVec_alloc(n, initFlag, initVal)
@@ -135,14 +136,6 @@ int m1_nr, m1_nc, m2_nc;
 } /* END: matrixMult */
 
 
-  /* two matrix minues  */
-  static void matrixminus(double **mat1,double**mat2,int nr,int nc,double **ret){
-    for(int i=0;i<nr;i++){
-      for(int j=0;j<nc;j++){
-        ret[i][j] = mat1[i][j]-mat2[i][j];
-      }
-    }
-  }/* END: matrixminus */
 
 
 
@@ -325,40 +318,6 @@ int N, M;
 
 } /* END: get_pxx */
 
-  /* Function to compute vec1*W*vec2 */
-  static double v1Wv2(p, N, M, vec1, vec2)
-double *p, *vec1, *vec2;  /* p is stored as a vector, out must be of length NM */
-  int N, M;
-{
-  int i, ii, jj, NM, MP1, row, NMP1;
-  double sum, prow, *p1, *pv2, *pv1, ret;
-
-  NM   = N*M;
-  MP1  = M + 1;
-  NMP1 = NM + 1;
-
-  ret = 0.0;
-  for (row=0, p1=p, pv2=vec2, pv1=vec1; row<NM; row++, p1++, pv2++, pv1++) {
-    prow = *p1;
-    sum  = (prow-prow*prow)* *pv2;
-    ii   = row + N;
-    jj   = row - N;
-    for (i=2; i<MP1; i++) {
-      if (ii < NMP1) {
-        sum += -prow*p[ii]*vec2[ii];
-        ii   = ii + N;
-      }
-      if (jj > -1) {
-        sum += -prow*p[jj]*vec2[jj];
-        jj   = jj - N;
-      }
-    }
-    ret += *pv1 * sum;
-  }
-
-  return(ret);
-
-} /* END: v1Wv2 */
 
 
 
@@ -781,28 +740,6 @@ double **inv; /* Returned inverse */
   }
 
 
-/* Function for getting the observed information matrix */
-  static void Get_ObservedInfo(double **Info,double *Y,int M,int N,double **Info_obs,int DEBUG,
-                               double *XX,double **X,int Ncov,int Znr,int Znc,double **Z){
-    double * W_mis  ;
-    double **Info_mis, **XmWmisXm;
-    W_mis = dVec_alloc((M*M*N),0,0.0);
-    Weighted_W(Y, W_mis, N, M);
-    XmWmisXm    = dMat_alloc(Znr,Znr,0,0.0);
-    Info_mis = dMat_alloc(Znc,Znc,0,0.0);
-    if (DEBUG) Rprintf("Compute XmWmisXm matrix\n");
-    get_XmWXm(XX,X,W_mis, M,N, Ncov,XmWmisXm);
-    if (DEBUG) Rprintf("Compute mis information matrix\n");
-    /*get_Info(X, N, Ncov, M, Z, Znr, Znc, pxx, Info);*/
-      QuadXKX(Z,XmWmisXm, Znr,Znc, Info_mis);
-    if (DEBUG) Rprintf("Compute observed information matrix\n");
-    matrixminus(Info,Info_mis,Znc,Znc,Info_obs);
-    free(W_mis);
-    matrix_free((void **)Info_mis,Znc);
-    matrix_free((void **)XmWmisXm,Znr);
-
-
-  }
 
 static void LogLikelihood(double *Y, double *ret_p,double *loglikelihood, int N,
                           int M){
@@ -937,41 +874,13 @@ static void LogLikelihood(double *Y, double *ret_p,double *loglikelihood, int N,
   } /* END: Mvpoly */
 
 
-  static void EstepFitting(double *missing_vec, double **missing_Mat,
-                           double *Y, double **X,double*beta,
-                           int missing_number,int M,int N,int NCOV){
-    double sum=0.0;
-    int temp;
-    int i;
-    for(int t=0;t<missing_number;t++){
-      i = missing_vec[t]-1;
-      sum = 0.0;
-      for(int j=0;j<M;j++){
-        if(missing_Mat[t][j]==1){
-          temp = j*N+i;
-          Y[temp] = 0.0;
-          for(int k=0;k<NCOV;k++){
-            Y[temp] +=  X[i][k]*beta[j*NCOV+k]; /* get X[i,]*beta[,j] if j subtype is potentail true */
-          }
-          Y[temp] = exp(Y[temp]);
-          sum += Y[temp];
-        }
-      }
-      for(int j=0;j<M;j++){
-        if(missing_Mat[t][j]==1){
-          Y[j*N+i] = Y[j*N+i]/sum;
-        }
-      }
-    }
-
-  }
 
 static void Free_Mem(double * XX,double **tXXZ,int Nparm,double**X,int N,
                      double *delta0,double**Z,int M,
                      double** XmWXm,int Znr,int Znc,
-                     double *lxx,double **Info_obs, double* ret_info,
+                     double *lxx, double* ret_info,
                      double **Inv, double *w_y, double *W,double *beta,
-                     double **missing_Mat,int DEBUG, double **Info,int missing_number){
+                     int DEBUG, double **Info){
   if (DEBUG) Rprintf("Free memory\n");
   free(XX);
   if (DEBUG) Rprintf("Free tXXZ\n");
@@ -986,10 +895,7 @@ static void Free_Mem(double * XX,double **tXXZ,int Nparm,double**X,int N,
   matrix_free((void**) XmWXm, Znr);
   if (DEBUG) Rprintf("Free lxx\n");
   free(lxx);
-  if (DEBUG) Rprintf("Fill Info_obs\n");
-  fill_Info(Info_obs,ret_info,Nparm);
-  if (DEBUG) Rprintf("Free Info_obs\n");
-  matrix_free((void **)Info_obs, Znc);
+
   if (DEBUG) Rprintf("Free Inv\n");
   matrix_free((void **)Inv, Znc);
   if (DEBUG) Rprintf("Free w_y\n");
@@ -998,31 +904,27 @@ static void Free_Mem(double * XX,double **tXXZ,int Nparm,double**X,int N,
   free(W);
   if (DEBUG) Rprintf("Free beta\n");
   free(beta);
-  if (DEBUG) Rprintf("Free missing_mat\n");
-  matrix_free((void **)missing_Mat,missing_number);
   if (DEBUG) Rprintf("Free Info\n");
   matrix_free((void **)Info,Znc);
 
 }
 
-void Mvpoly_final(deltai, pNparm, Y, Xvec, ZallVec,Zallnr,Zallnc, pN, pM, pNcov, pNiter, ptol,ptolMaxstep,
-            pDEBUG, ret_rc, ret_delta,ret_info,ret_p,missing_vec,
-            missing_Mat_vec,pmissing_number,loglikelihood)
-double *deltai, *Y, *Xvec, *ptol, *ret_delta,*ret_info,*ret_p,*ZallVec,*missing_vec,
-*missing_Mat_vec,*ptolMaxstep,*loglikelihood;
-int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc,*pmissing_number;
+void Mvpoly_complete(deltai, pNparm, Y, Xvec, ZallVec,Zallnr,Zallnc, pN, pM, pNcov, pNiter, ptol,
+            pDEBUG, ret_rc, ret_delta,ret_info,ret_p,
+            loglikelihood)
+double *deltai, *Y, *Xvec, *ptol, *ret_delta,*ret_info,*ret_p,*ZallVec,
+*loglikelihood;
+int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc;
 
 {
-  int i, Niter, M, N, Ncov0, Ncov, iter, Znr, Znc, NM, rc, conv=0;
+  int i, Niter, M, N, Ncov0, Ncov, Znr, Znc, NM, conv=0;
   int Nparm, DEBUG;
-  double tol, **X, **Z_design, *delta0, **Z, rerror, **XmWXm;
+  double tol, **X, *delta0, **Z, **XmWXm;
   double *w_y, **Inv, **Info,*lxx, **tXXZ;
   double *W,*beta;
-  double **missing_Mat;
-  int missing_number;
-  double tolMaxstep;
+
   double *XX;
-  double **Info_obs;
+
 
   *ret_rc = 1;
   DEBUG   = *pDEBUG;
@@ -1031,13 +933,13 @@ int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc,*pmissi
   N       = *pN;
   M       = *pM;
   tol     = *ptol;
-  tolMaxstep = *ptolMaxstep;
+
   Ncov0   = *pNcov;
   Ncov    = Ncov0 + 1;  /* Allow for intercept */
     Znr     = *Zallnr;
     Znc     = *Zallnc;
     NM      = N*M;
-    missing_number = *pmissing_number;
+
     /*printf("Ncat\tNcatp1\tNcov0\tNcov\tZnr\Znc\n");
     printf("%i\t%i\t%i\t%i\t%i\t%i\n",Ncat,Ncatp1,Ncov0,Ncov,Znr,Znc);*/
       if (Nparm != Znc) error("Nparm != Znc\n");
@@ -1052,18 +954,18 @@ int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc,*pmissi
     lxx      = dVec_alloc(NM, 0, 0.0);
     XmWXm    = dMat_alloc(Znr,Znr,0,0.0);
     Info     = dMat_alloc(Nparm, Nparm, 0, 0.0);
-    Info_obs = dMat_alloc(Nparm,Nparm,0,0.0);
+
     Inv      = dMat_alloc(Nparm, Nparm, 0, 0.0);
     w_y      = dVec_alloc(NM, 0, 0.0);
     W        = dVec_alloc((M*M*N),0,0.0);
     beta  = dVec_alloc(Znr, 0, 0.0);
-    missing_Mat = dMat_alloc(missing_number,M,0,0.0);
+
     XX = dVec_alloc((N*Ncov*Ncov),0,0.0);
     /* Copy initial estimates to delta0 */
     if (DEBUG) Rprintf("Copy data\n");
     for (i=0; i<Nparm; i++) delta0[i] = deltai[i];
     fillMat(Xvec, N, Ncov0, 1, X);
-    fillMat(missing_Mat_vec,missing_number,M,0,missing_Mat);
+
     /* fillMat(Zvec, M, Ncatp1, 0, Z_design);*/
     if (DEBUG) Rprintf("Get the matrix Z\n");
     fillMat(ZallVec,Znr,Znc,0,Z);
@@ -1075,11 +977,9 @@ int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc,*pmissi
     get_XX(X,Ncov,N,XX);
     /* Compute beta = Z*delta */
     X_y(Z, Znr, Znc, delta0, beta);
-    /*First EM Step */
-    /* since first Estep is outside of C function,add first M step here */
     Mvpoly(deltai,Nparm, Y,
     X, Z,Znr,Znc,
-    N, M,Ncov, Niter, tolMaxstep,
+    N, M,Ncov, Niter, tol,
     DEBUG,ret_rc,ret_delta,Info,
     ret_p,lxx,W,beta,
     w_y,XmWXm,Inv,tXXZ,XX);
@@ -1089,77 +989,9 @@ int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc,*pmissi
     error("ERROR");
     }
 
-    if (DEBUG) Rprintf("Check EM algorithm stopping criteria\n");
-    rerror = checkStop(ret_delta, delta0, Nparm);
-    /* Check the convergence for first round EM */
-    /* If converged, then we go out of the EM iteration and return result*/
-    /* If not we keep iterating */
-    if (rerror <= tol) {
-    conv = 1;
-    if (DEBUG) Rprintf("Compute Observed Information Matrix\n");
-    Get_ObservedInfo(Info,Y, M, N,Info_obs, DEBUG,
-    XX,X, Ncov,Znr,Znc,Z);
     LogLikelihood(Y, ret_p,loglikelihood, N,M);
-
-    Free_Mem(XX,tXXZ,Nparm,X,N,
-    delta0,Z,M,
-    XmWXm, Znr,Znc,
-    lxx,Info_obs,ret_info,
-    Inv, w_y, W,beta,
-    missing_Mat,DEBUG,Info,missing_number);
-
-    if (!conv) {
-    Rprintf("ERROR: algorithm did not converge\n");
-    error("ERROR");
-    }
-    *ret_rc = 0;
-
-    return;
-    }else{
-
-    /* Update the parameters for the first E step */
-    if (DEBUG) Rprintf("Update parameters\n");
-    for (i=0; i<Nparm; i++) delta0[i] = ret_delta[i];
-
-
-
-    /*Begins the second EM round if not converged*/
-    for(iter=2; iter<=Niter; iter++) {
-    if(DEBUG) Rprintf("EM round: %d\n",iter);
-    X_y(Z, Znr, Znc, delta0, beta);
-    EstepFitting(missing_vec,missing_Mat,Y, X,beta,missing_number, M,N,Ncov);
-    Mvpoly(delta0,Nparm, Y,
-    X, Z,Znr,Znc,
-    N, M,Ncov, Niter, tolMaxstep,
-    DEBUG,ret_rc,ret_delta,Info,
-    ret_p,lxx,W,beta,
-    w_y,XmWXm,Inv,tXXZ,XX);
-
-
-    /* Check for non-finite values */
-    if (!all_finite(ret_delta, Nparm)) {
-    Rprintf("ERROR: EM algorithm not converging, parameters have non-finite values\n");
-    error("ERROR");
-    }
-
-    if (DEBUG) Rprintf("Check EM algorithm stopping criteria\n");
-    rerror = checkStop(ret_delta, delta0, Nparm);
-    if (rerror <= tol) {
-    conv = 1;
-    break;
-    }
-
-    /* Update delta0 */
-    if (DEBUG) Rprintf("Update parameters\n");
-    for (i=0; i<Nparm; i++) delta0[i] = ret_delta[i];
-    }
-    }
-
-    if (DEBUG) Rprintf("Compute Observed Information Matrix\n");
-    Get_ObservedInfo(Info,Y, M, N,Info_obs, DEBUG,
-    XX,X, Ncov,Znr,Znc,Z);
-    LogLikelihood(Y, ret_p,loglikelihood, N,M);
-
+    if (DEBUG) Rprintf("Fill Info\n");
+    fill_Info(Info,ret_info,Nparm);
 
 
 
@@ -1170,9 +1002,9 @@ int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc,*pmissi
     Free_Mem(XX,tXXZ,Nparm,X,N,
     delta0,Z,M,
     XmWXm, Znr,Znc,
-    lxx,Info_obs,ret_info,
+    lxx,ret_info,
     Inv, w_y, W,beta,
-    missing_Mat,DEBUG,Info,missing_number);
+    DEBUG,Info);
 
     if (!conv) {
     Rprintf("ERROR: algorithm did not converge\n");
