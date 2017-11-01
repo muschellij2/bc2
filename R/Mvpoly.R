@@ -64,9 +64,9 @@ delta0 <-StartValueFunction(freq.subtypes,y.case.control,z.all)
 #we will add the intercept in C code
 x.all <- GenerateXAll(y,baselineonly,additive,pairwise.interaction,saturated)
 
-ProbFitting <- function(delta0,y,x.all,z.standard,z.all,missingTumorIndicator=NULL)
+y.filt <- ProbFitting(delta0,y,x.all,z.standard,z.all,missingTumorIndicator=NULL)[[1]]
 
-y_fit <- ProbFitting[[1]]
+
 x.all <- as.matrix(x.all)
 z.standard <- z.design.additive[,-1]
 M <- as.integer(nrow(z.standard))
