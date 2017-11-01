@@ -1006,10 +1006,6 @@ int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc;
     Inv, w_y, W,beta,
     DEBUG,Info);
 
-    if (!conv) {
-    Rprintf("ERROR: algorithm did not converge\n");
-    error("ERROR");
-    }
     *ret_rc = 0;
 
     return;
