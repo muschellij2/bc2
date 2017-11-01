@@ -794,7 +794,7 @@ static void LogLikelihood(double *Y, double *ret_p,double *loglikelihood, int N,
   /* Function Mvpoly */
   static void Mvpoly(double *deltai,int Nparm,double* Y,
                      double **X, double **Z,int Znr,int Znc,
-                     int N, int M, int Ncov, int Niter,double tolMStep,
+                     int N, int M, int Ncov, int Niter,double tol,
                      int DEBUG,int* ret_rc,double* ret_delta,double**Info,
                      double *ret_p,double *lxx,double *W,double *beta,
                      double* w_y,double **XmWXm,double **Inv,double **tXXZ,double *XX){
@@ -851,7 +851,7 @@ static void LogLikelihood(double *Y, double *ret_p,double *loglikelihood, int N,
 
           if (DEBUG) Rprintf("Check Weighted Least Square stopping criteria\n");
           rerror = checkStop(ret_delta, delta0, Nparm);
-          if (rerror <= tolMStep) {
+          if (rerror <= tol) {
             conv = 1;
             break;
           }

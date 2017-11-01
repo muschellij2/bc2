@@ -63,8 +63,9 @@ delta0 <-StartValueFunction(freq.subtypes,y.case.control,z.all)
 #x.all has no intercept yet
 #we will add the intercept in C code
 x.all <- GenerateXAll(y,baselineonly,additive,pairwise.interaction,saturated)
+z.standard <- z.design.additive[,-1]
 
-y.filt <- ProbFitting(delta0,y,x.all,z.standard,z.all,missingTumorIndicator=NULL)[[1]]
+y.fit <- ProbFitting(delta0,y,x.all,z.standard,z.all,missingTumorIndicator=NULL)[[1]]
 
 
 x.all <- as.matrix(x.all)
@@ -87,7 +88,7 @@ nparm  <- as.integer(length(delta0))
 deltai <- as.numeric(delta0)
 
 NITER  <- as.integer(500)
-Y <- as.numeric(as.vector(y_fit))
+Y <- as.numeric(as.vector(y.fit))
 X <- as.numeric(as.vector(x.all))
 ZallVec = as.numeric(as.vector(z.all))
 Znr = as.integer(nrow(z.all))

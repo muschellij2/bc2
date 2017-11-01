@@ -4,7 +4,7 @@
 \alias{ProbFitting}
 \title{Title}
 \usage{
-ProbFitting(delta0, y, x.all, z.standard, z.all, missingTumorIndicator)
+ProbFitting(delta0, y, x.all, z.standard, z.all, missingTumorIndicator = NULL)
 }
 \arguments{
 \item{missingTumorIndicator}{}
