@@ -6,7 +6,7 @@
 \usage{
 TwoStageModel(y, baselineonly = NULL, additive = NULL,
   pairwise.interaction = NULL, saturated = NULL,
-  missingTumorIndicator = 888)
+  missingTumorIndicator = NULL)
 }
 \arguments{
 \item{missingTumorIndicator}{}

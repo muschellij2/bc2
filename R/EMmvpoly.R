@@ -114,11 +114,7 @@ EMmvpoly <- function(y,
                                        M,
                                        first.stage.mat)
 
-    #   pxx = EM.result[[3]]
-    #   y_em = EM.result[[4]]
-    #  score_support_result <- score_support(pxx,x.all,baselineonly,z.all,z.standard,y_em)
-    #  #return(score_support_result)
-    # score_test_mis_result <- score_test_mis(y_em,baselineonly,score_support_result)
+
 
     return(list(delta=delta,covariance.delta=covariance.delta,second.stage.mat = second.stage.mat,second.stage.test,global.test,first.stage.mat,first.stage.test,loglikelihood = loglikelihood,
                 AIC = AIC,beta=beta,covariance.beta=covariance.beta,

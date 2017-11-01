@@ -70,7 +70,64 @@ z.standard <- z.design.additive[,-1]
 M <- as.integer(nrow(z.standard))
 p.main <- ncol(z.standard)+1
 
-EM.result = EMStep(delta0,as.matrix(y),x.all,z.standard,z.all,missingTumorIndicator)
+tol <- as.numeric(1e-04)
+
+
+delta_old <- delta0
+
+N <- as.integer(nrow(x.all))
+
+M <- as.integer(nrow(z.standard))
+
+NCOV   <- as.integer(ncol(x.all))
+NM     <- N*M
+nparm  <- as.integer(length(delta0))
+deltai <- as.numeric(delta0)
+
+NITER  <- as.integer(500)
+Y <- as.numeric(as.vector(y_em))
+X <- as.numeric(as.vector(x.all))
+ZallVec = as.numeric(as.vector(z.all))
+Znr = as.integer(nrow(z.all))
+Znc = as.integer(ncol(z.all))
+debug     <- as.integer(1)
+ret_rc    <- as.integer(1)
+ret_delta <- as.numeric(rep(-9999, nparm))
+ret_info <- as.numeric(rep(-9999,nparm^2))
+ret_p <- as.numeric(rep(0,NM))
+ret_lxx <- as.numeric(rep(0,NM))
+loglikelihood <- as.numeric(-1);
+
+
+
+temp <- .C("Mvpoly_complete",deltai, nparm, Y=Y, X, ZallVec,Znr,Znc, N, M, NCOV, NITER, tol,
+           debug, ret_rc=ret_rc, ret_delta=ret_delta,ret_info=ret_info,ret_p=ret_p,loglikelihood = loglikelihood)
+print(paste0("EM Algorithm Converged"))
+info <- matrix(unlist(temp$ret_info),nparm,nparm)
+result <- list(temp$ret_delta,info,
+               temp$ret_p)
+
+
+# infor_mis_c <- infor_mis(y_em,x.all,z.all)
+#infor_obs <- result[[2]]-infor_mis_c
+delta=result[[1]]
+infor_obs=result[[2]]
+p=result[[3]]
+loglikelihood = temp$loglikelihood
+AIC = 2*nparm - 2*loglikelihood
+#loglikelihood.aic <- LogLikelihoodwithAIC(y_em,p,nparm)
+#loglikelihood <- loglikelihood.aic[[1]]
+#AIC <- loglikelihood.aic[[2]]
+
+
+EM.reuslt <- (list(delta=delta,
+            infor_obs=infor_obs,
+            p=p,y_em=NULL,
+            M=M,
+            NumberofTumor=ncol(z.standard),
+            loglikelihood = loglikelihood,
+            AIC = AIC
+))
 ###delta represent second stage parameters
 delta <- EM.result$delta
 covariance.delta <- solve(EM.result$infor_obs)
@@ -122,11 +179,7 @@ first.stage.test <- FirstStageTest(beta.no.inter,
                                    M,
                                    first.stage.mat)
 
-#   pxx = EM.result[[3]]
-#   y_em = EM.result[[4]]
-#  score_support_result <- score_support(pxx,x.all,baselineonly,z.all,z.standard,y_em)
-#  #return(score_support_result)
-# score_test_mis_result <- score_test_mis(y_em,baselineonly,score_support_result)
+
 
 return(list(delta=delta,covariance.delta=covariance.delta,second.stage.mat = second.stage.mat,second.stage.test,global.test,first.stage.mat,first.stage.test,loglikelihood = loglikelihood,
             AIC = AIC,beta=beta,covariance.beta=covariance.beta,

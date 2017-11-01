@@ -16,7 +16,7 @@ TwoStageModel <- function(y,
                           additive=NULL,
                           pairwise.interaction=NULL,
                           saturated=NULL,
-                          missingTumorIndicator = 888){
+                          missingTumorIndicator = NULL){
   if(is.null(missingTumorIndicator)==1){
     return(Mvpoly(y,
                   baselineonly,
