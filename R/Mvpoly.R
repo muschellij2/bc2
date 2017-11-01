@@ -64,7 +64,9 @@ delta0 <-StartValueFunction(freq.subtypes,y.case.control,z.all)
 #we will add the intercept in C code
 x.all <- GenerateXAll(y,baselineonly,additive,pairwise.interaction,saturated)
 
-y <- as.matrix(y)
+ProbFitting <- function(delta0,y,x.all,z.standard,z.all,missingTumorIndicator=NULL)
+
+y_fit <- ProbFitting[[1]]
 x.all <- as.matrix(x.all)
 z.standard <- z.design.additive[,-1]
 M <- as.integer(nrow(z.standard))
@@ -85,7 +87,7 @@ nparm  <- as.integer(length(delta0))
 deltai <- as.numeric(delta0)
 
 NITER  <- as.integer(500)
-Y <- as.numeric(as.vector(y))
+Y <- as.numeric(as.vector(y_fit))
 X <- as.numeric(as.vector(x.all))
 ZallVec = as.numeric(as.vector(z.all))
 Znr = as.integer(nrow(z.all))
@@ -102,7 +104,7 @@ loglikelihood <- as.numeric(-1);
 
 temp <- .C("Mvpoly_complete",deltai, nparm, Y=Y, X, ZallVec,Znr,Znc, N, M, NCOV, NITER, tol,
            debug, ret_rc=ret_rc, ret_delta=ret_delta,ret_info=ret_info,ret_p=ret_p,loglikelihood = loglikelihood)
-print(paste0("EM Algorithm Converged"))
+
 info <- matrix(unlist(temp$ret_info),nparm,nparm)
 result <- list(temp$ret_delta,info,
                temp$ret_p)
