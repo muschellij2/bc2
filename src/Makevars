@@ -8,4 +8,6 @@ ScoreTest.o: ScoreTest.c
 convert.o: convert.c
 EMStepScoreTestSupportMixedModel.c: EMStepScoreTestSupportMixedModel.o
 ScoreTestMixedModel.c: ScoreTestMixedModel.o
+Mvpoly.c: Mvpoly.o
+
 
