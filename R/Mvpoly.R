@@ -85,7 +85,7 @@ nparm  <- as.integer(length(delta0))
 deltai <- as.numeric(delta0)
 
 NITER  <- as.integer(500)
-Y <- as.numeric(as.vector(y_em))
+Y <- as.numeric(as.vector(y))
 X <- as.numeric(as.vector(x.all))
 ZallVec = as.numeric(as.vector(z.all))
 Znr = as.integer(nrow(z.all))
