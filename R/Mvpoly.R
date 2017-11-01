@@ -118,12 +118,9 @@ infor_obs=result[[2]]
 p=result[[3]]
 loglikelihood = temp$loglikelihood
 AIC = 2*nparm - 2*loglikelihood
-#loglikelihood.aic <- LogLikelihoodwithAIC(y_em,p,nparm)
-#loglikelihood <- loglikelihood.aic[[1]]
-#AIC <- loglikelihood.aic[[2]]
 
 
-EM.reuslt <- (list(delta=delta,
+EM.result <- (list(delta=delta,
             infor_obs=infor_obs,
             p=p,y_em=NULL,
             M=M,
