@@ -33,7 +33,12 @@ TwoStageModel <- function(y,
                       saturated,
                       missingTumorIndicator))
     }else if(missingDataAlgorithm=="OneStepMLE"){
-
+      return(OneStepMLE(y,
+                                    baselineonly,
+                                    additive,
+                                    pairwise.interaction,
+                                    saturated,
+                                    missingTumorIndicator))
     }
 
 
