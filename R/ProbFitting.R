@@ -15,7 +15,7 @@
 #' @export
 #'
 #' @examples
-ProbFitting <- function(delta0,y,x.all,z.standard,z.all,missingTumorIndicator=NULL){
+ProbFitting <- function(delta0,y,x.all,z.standard,z.all,missingTumorIndicator){
   if(is.null(missingTumorIndicator)==1){
     n <- nrow(y)
     M <- nrow(z.standard)
@@ -48,6 +48,7 @@ ProbFitting <- function(delta0,y,x.all,z.standard,z.all,missingTumorIndicator=NU
     y_em <- matrix(0,nrow=n,ncol = M)
     missing.vec = rep(0,n)
     missing.mat = matrix(0,nrow=n,ncol=M)
+
     beta <- matrix(z.all%*%delta0,ncol = M)
     ##add intercept to x.all
     x.all.inter <- as.matrix(cbind(1,x.all))
@@ -72,8 +73,10 @@ ProbFitting <- function(delta0,y,x.all,z.standard,z.all,missingTumorIndicator=NU
 
     missing.vec <- missing.vec[1:(index-1)]
     missing.mat <- missing.mat[1:(index-1),]
+    complete.vec <- rep(0,n)
+    complete.vec <- complete.vec[!(complete.vec%in%missing.vec)]
 
-    return(list(y_em=y_em,missing.vec = missing.vec , missing.mat = missing.mat))
+    return(list(y_em=y_em,missing.vec = missing.vec , missing.mat = missing.mat,complete.vec = complete.vec))
   }
 
 }
