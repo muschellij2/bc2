@@ -284,12 +284,18 @@ double **X, **Z, **out;  /* out must have dim Zallnc x Xnr*M */
 } /* END: get_tXXZ */
 
   /* Function to compute lxx = xx * beta = xx * z * delta */
-  static void get_lxx(Z, Znr, Znc, delta, X, Xnr, Xnc, M, beta,out)
-double **Z, *delta, **X, *out,*beta;
+  static void get_lxx(Z, Znr, Znc, delta, X, Xnr, Xnc, M,out)
+double **Z, *delta, **X, *out;
 int Xnr, Xnc, Znr, Znc, M;
 {
-  double  sum;
+  double  sum, *beta;
   int i, j, k, row, brow, bstart;
+
+  beta  = dVec_alloc(Znr, 0, 0.0);
+
+  /* Compute beta = Z*delta */
+  X_y(Z, Znr, Znc, delta, beta);
+
 
   /* Compute out = XX*beta */
     row = 0;
