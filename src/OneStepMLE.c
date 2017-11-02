@@ -971,11 +971,11 @@ static void Free_Mem(double * XX,double **tXXZ,int Nparm,double**X,int N,
 
 }
 
-void OneStepMLE(deltai, pNparm, Y, Xvec, ZallVec,Zallnr,Zallnc, pN, pM, pNcov, pNiter, ptol,ptolMaxstep,
+void OneStepMLE(deltai, pNparm, Y, Xvec, ZallVec,Zallnr,Zallnc, pN, pM, pNcov, pNiter, ptol,
             pDEBUG, ret_rc, ret_delta,ret_info,ret_p,missing_vec,
             missing_Mat_vec,pmissing_number,loglikelihood)
 double *deltai, *Y, *Xvec, *ptol, *ret_delta,*ret_info,*ret_p,*ZallVec,*missing_vec,
-*missing_Mat_vec,*ptolMaxstep,*loglikelihood;
+*missing_Mat_vec,*loglikelihood;
 int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc,*pmissing_number;
 
 {
@@ -997,7 +997,7 @@ int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc,*pmissi
   N       = *pN;
   M       = *pM;
   tol     = *ptol;
-  tolMaxstep = *ptolMaxstep;
+
   Ncov0   = *pNcov;
   Ncov    = Ncov0 + 1;  /* Allow for intercept */
     Znr     = *Zallnr;
