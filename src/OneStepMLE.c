@@ -969,6 +969,7 @@ static void Free_Mem(double * XX,double **tXXZ,int Nparm,double**X,int N,
   if (DEBUG) Rprintf("Free Info\n");
   matrix_free((void **)Info,Znc);
 
+
 }
 
 void OneStepMLE(deltai, pNparm, Y, Xvec, ZallVec,Zallnr,Zallnc, pN, pM, pNcov, pNiter, ptol,
@@ -1072,6 +1073,30 @@ int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc,*pmissi
    if (DEBUG) Rprintf("Compute delta\n");
 
    get_delta(Inv, Nparm, tXXZ, N, M, w_y, ret_delta);
+
+
+   if (DEBUG) Rprintf("Update parameters\n");
+   for (i=0; i<Nparm; i++) delta0[i] = ret_delta[i];
+
+   X_y(Z, Znr, Znc, delta0, beta);
+   EstepFitting(missing_vec,missing_Mat,Y, X,beta,missing_number, M,N,Ncov);
+
+   if (DEBUG) Rprintf("Compute lxx\n");
+   get_lxx(Z, Znr, Znc, delta0, X, N, Ncov, M,lxx);
+   if (DEBUG) Rprintf("Compute pxx\n");
+   get_pxx(lxx, N, M, ret_p);
+   if (DEBUG) Rprintf("Compute weighted matrix\n");
+   Weighted_W(ret_p, W, N, M);
+   if (DEBUG) Rprintf("Compute XmWXm matrix\n");
+   get_XmWXm(XX,X,W, M,N, Ncov,XmWXm);
+   /*print_dMat(XmWXm,Znr,Znr,"XmWXm");*/
+   if (DEBUG) Rprintf("Compute information matrix\n");
+
+   /*get_Info(X, N, Ncov, M, Z, Znr, Znc, pxx, Info);*/
+
+   QuadXKX(Z,XmWXm, Znr,Znc, Info);
+
+
 
    if (DEBUG) print_dVec(ret_delta, Nparm, "delta");
 
