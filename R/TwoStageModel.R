@@ -16,7 +16,8 @@ TwoStageModel <- function(y,
                           additive=NULL,
                           pairwise.interaction=NULL,
                           saturated=NULL,
-                          missingTumorIndicator = NULL){
+                          missingTumorIndicator = NULL,
+                          missingDataAlgorithm = "EM"){
   if(is.null(missingTumorIndicator)==1){
     return(Mvpoly(y,
                   baselineonly,
@@ -24,12 +25,17 @@ TwoStageModel <- function(y,
                   pairwise.interaction,
                   saturated))
   }else{
-   return(EMmvpoly(y,
-                               baselineonly,
-                               additive,
-                               pairwise.interaction,
-                               saturated,
-                               missingTumorIndicator))
+    if(missingDataAlgorithm=="EM"){
+      return(EMmvpoly(y,
+                      baselineonly,
+                      additive,
+                      pairwise.interaction,
+                      saturated,
+                      missingTumorIndicator))
+    }else if(missingDataAlgorithm=="OneStepMLE"){
+
+    }
+
 
   }
 }
