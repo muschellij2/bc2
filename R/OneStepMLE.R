@@ -150,7 +150,7 @@ OneStepMLE <- function(y,
              missing.mat.vec,missing.number,loglikelihood = loglikelihood)
 
 
-
+  info <- matrix(unlist(temp$ret_info),nparm,nparm)
   result <- list(temp$ret_delta,info,
                  temp$ret_p)
   y_em <- matrix(unlist(temp$Y),N,M)
