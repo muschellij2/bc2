@@ -79,8 +79,15 @@ OneStepMLE <- function(y,
   ###z standard matrix means the additive model z design matrix without baseline effect
   ###z standard matrix is used to match the missing tumor characteristics to the complete subtypes
 
-  y.fit <- ProbFitting(delta0,y.pheno.complete,x.all.complete,z.standard,z.all,missingTumorIndicator=NULL)[[1]]
 
+  prob.fit.result <- ProbFitting(delta0,y,x.all,z.standard,z.all,missingTumorIndicator=missingTumorIndicator)
+  y.fit <- prob.fit.result[[1]]
+  missing.vec <- as.numeric(as.vector(prob.fit.result[[2]]))
+  missing.mat <- prob.fit.result[[3]]
+  missing.mat.vec <- as.numeric(as.vector(missing.mat))
+  missing.number <- as.integer(length(missing.vec))
+  complete.vec <- prob.fit.result[[4]]
+  y.fit.complete <- y.fit[complete.vec,]
   M <- as.integer(nrow(z.standard))
   p.main <- ncol(z.standard)+1
 
@@ -99,7 +106,7 @@ OneStepMLE <- function(y,
   deltai <- as.numeric(delta0)
 
   NITER  <- as.integer(500)
-  Y <- as.numeric(as.vector(y.fit))
+  Y <- as.numeric(as.vector(y.fit.complete))
   X <- as.numeric(as.vector(x.all.complete))
   ZallVec = as.numeric(as.vector(z.all))
   Znr = as.integer(nrow(z.all))
@@ -129,12 +136,6 @@ OneStepMLE <- function(y,
 
   deltai <- as.numeric(delta0)
 
-  prob.fit.result <- ProbFitting(delta0,y,x.all,z.standard,z.all,missingTumorIndicator=missingTumorIndicator)
-  y.fit <- prob.fit.result[[1]]
-  missing.vec <- as.numeric(as.vector(prob.fit.result[[2]]))
-  missing.mat <- prob.fit.result[[3]]
-  missing.mat.vec <- as.numeric(as.vector(missing.mat))
-  missing.number <- as.integer(length(missing.vec))
 
 
   Y <- as.numeric(as.vector(y.fit))
@@ -149,7 +150,7 @@ OneStepMLE <- function(y,
              missing.mat.vec,missing.number,loglikelihood = loglikelihood)
 
 
-  info <- matrix(unlist(temp$ret_info),nparm,nparm)
+
   result <- list(temp$ret_delta,info,
                  temp$ret_p)
   y_em <- matrix(unlist(temp$Y),N,M)
@@ -219,6 +220,8 @@ OneStepMLE <- function(y,
                                      covariance.beta.no.inter,
                                      M,
                                      first.stage.mat)
+
+
 
 
   return(list(delta=delta,covariance.delta=covariance.delta,second.stage.mat = second.stage.mat,second.stage.test,global.test,first.stage.mat,first.stage.test,loglikelihood = loglikelihood,
