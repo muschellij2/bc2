@@ -1099,7 +1099,7 @@ int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc,*pmissi
     lxx,Info_obs,ret_info,
     Inv, w_y, W,beta,
     missing_Mat,DEBUG,Info,missing_number);
-
+    conv = 1;
     if (!conv) {
     Rprintf("ERROR: algorithm did not converge\n");
     error("ERROR");
