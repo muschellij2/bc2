@@ -1101,6 +1101,8 @@ int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc,*pmissi
     missing_Mat,DEBUG,Info,missing_number);
 
 
+    *ret_rc = 0;
+
     return;
 } /* END: Mvpoly */
 
