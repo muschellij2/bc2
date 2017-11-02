@@ -1100,11 +1100,6 @@ int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc,*pmissi
     Inv, w_y, W,beta,
     missing_Mat,DEBUG,Info,missing_number);
 
-    if (!conv) {
-    Rprintf("ERROR: algorithm did not converge\n");
-    error("ERROR");
-    }
-    *ret_rc = 0;
 
     return;
 } /* END: Mvpoly */
