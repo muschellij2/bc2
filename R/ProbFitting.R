@@ -73,7 +73,7 @@ ProbFitting <- function(delta0,y,x.all,z.standard,z.all,missingTumorIndicator){
 
     missing.vec <- missing.vec[1:(index-1)]
     missing.mat <- missing.mat[1:(index-1),]
-    complete.vec <- rep(0,n)
+    complete.vec <- c(1:n)
     complete.vec <- complete.vec[!(complete.vec%in%missing.vec)]
 
     return(list(y_em=y_em,missing.vec = missing.vec , missing.mat = missing.mat,complete.vec = complete.vec))
