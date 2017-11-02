@@ -120,7 +120,7 @@ loglikelihood = temp$loglikelihood
 AIC = 2*nparm - 2*loglikelihood
 
 
-EM.result <- (list(delta=delta,
+Mvpoly.result <- (list(delta=delta,
             infor_obs=infor_obs,
             p=p,y_em=NULL,
             M=M,
@@ -129,10 +129,10 @@ EM.result <- (list(delta=delta,
             AIC = AIC
 ))
 ###delta represent second stage parameters
-delta <- EM.result$delta
-covariance.delta <- solve(EM.result$infor_obs)
-loglikelihood <- EM.result$loglikelihood
-AIC <- EM.result$AIC
+delta <- Mvpoly.result$delta
+covariance.delta <- solve(Mvpoly.result$infor_obs)
+loglikelihood <- Mvpoly.result$loglikelihood
+AIC <- Mvpoly.result$AIC
 second.stage.mat <-
   GenerateSecondStageMat(baselineonly,
                          additive,
