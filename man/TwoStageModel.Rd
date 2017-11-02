@@ -9,7 +9,7 @@ TwoStageModel(y, baselineonly = NULL, additive = NULL,
   missingTumorIndicator = NULL, missingDataAlgorithm = "EM")
 }
 \arguments{
-\item{missingTumorIndicator}{}
+\item{missingDataAlgorithm}{}
 }
 \description{
 Title
