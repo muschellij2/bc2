@@ -22,7 +22,11 @@ ScoreTestSupport <- function(y,
                              missingDataAlgorithm = "EM"
                              ){
  if(is.null(missingTumorIndicator)==1){
-
+  return(CompleteCasesScoreTestSupport(y,
+                                                   baselineonly,
+                                                   additive,
+                                                   pairwise.interaction,
+                                                   saturated))
  }else{
    if(missingDataAlgorithm=="EM"){
     return(EMScoreTestSupport(y,

@@ -106,7 +106,7 @@ CompleteCasesScoreTestSupport <- function(y,
   WX_vec <- as.numeric(rep(0,N*M*Znr))
 
 
-  temp <- .C("CompleteCasesScoreSupport",
+  temp <- .C("CompleteCasesScoreTestSupport",
              deltai,
              nparm,
              Y=Y,
@@ -114,7 +114,6 @@ CompleteCasesScoreTestSupport <- function(y,
              ZallVec,
              Znr,Znc, N, M, NCOV, NITER,
              tol,
-             tolMaxstep,
              debug,
              ret_rc=ret_rc,
              ret_delta=ret_delta,
@@ -125,7 +124,7 @@ CompleteCasesScoreTestSupport <- function(y,
              W_obs = W_obs,
              WXZ_vec = WXZ_vec,
              WX_vec = WX_vec)
-  print(paste0("EM Algorithm Converged"))
+
   inv_info_vec <- temp$ret_Inv_info_vec
   YminusP <- temp$YminusP
   W_obs <- temp$W_obs
@@ -145,6 +144,9 @@ CompleteCasesScoreTestSupport <- function(y,
   result[[8]] <- z.design.pairwise.interaction
   result[[9]] <- z.design.saturated
   result[[10]] <- z.standard
+
+
+
   return(result)
 
 }
