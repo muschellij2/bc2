@@ -10,5 +10,5 @@ EMStepScoreTestSupportMixedModel.o: EMStepScoreTestSupportMixedModel.c
 ScoreTestMixedModel.o: ScoreTestMixedModel.c
 Mvpoly.o: Mvpoly.c
 OneStepMLE.o: OneStepMLE.c
-
+CompleteCasesScoreTestSupport.o:CompleteCasesScoreTestSupport.c
 

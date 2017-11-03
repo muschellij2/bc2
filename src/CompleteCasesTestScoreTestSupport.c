@@ -8,7 +8,6 @@
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 
-
 #define ALMOST_ZERO 1e-16
 #define NUM_ZERO 1e-100
 #define ERROR_SINGULAR_MATRIX 1
@@ -26,8 +25,7 @@ char name[10];
   }
   printf("\n \n");
 }
-
-/*static void print_iVec(vec, n, name)
+static void print_iVec(vec, n, name)
 int *vec;
 int n;
 char name[10];
@@ -38,10 +36,10 @@ char name[10];
     printf(" %d ", vec[i]);
   }
   printf("\n \n");
-}*/
+}
 
 
-/*static void print_dMat(mat, nr, nc, name)
+static void print_dMat(mat, nr, nc, name)
 double **mat;
 int nr, nc;
 char name[10];
@@ -53,7 +51,7 @@ char name[10];
     printf("\n");
   }
   printf("\n \n");
-}*/
+}
 
 /* Function to allocate memory for a double vector */
   static double * dVec_alloc(n, initFlag, initVal)
@@ -136,12 +134,26 @@ int m1_nr, m1_nc, m2_nc;
 } /* END: matrixMult */
 
 
+  /* two matrix minus  */
+  static void MatrixMinus(double **mat1,double**mat2,int nr,int nc,double **ret){
+    for(int i=0;i<nr;i++){
+      for(int j=0;j<nc;j++){
+        ret[i][j] = mat1[i][j]-mat2[i][j];
+      }
+    }
+  }/* END: matrixminus */
+
+
+  /* two vector minus */
+  static void VectorMinus(double *vec1,double*vec2,int N,double *ret){
+    for(int i=0;i<N;i++){
+      ret[i] = vec1[i]-vec2[i];
+    }
+  }
 
 
 
-
-
-  /* Function to compute Xy for matrix X and vector */
+/* Function to compute Xy for matrix X and vector */
   static void X_y(X, nr, nc, y, ret)
 double **X, *y, *ret;
 int nr, nc;
@@ -268,10 +280,13 @@ int Xnr, Xnc, Znr, Znc, M;
 {
   double  sum,*beta;
   int i, j, k, row, brow, bstart;
+
   beta  = dVec_alloc(Znr, 0, 0.0);
 
   /* Compute beta = Z*delta */
-  X_y(Z, Znr, Znc, delta, beta);
+    X_y(Z, Znr, Znc, delta, beta);
+
+
   /* Compute out = XX*beta */
     row = 0;
     for (i=0; i<M; i++) {
@@ -321,6 +336,40 @@ int N, M;
 
 } /* END: get_pxx */
 
+  /* Function to compute vec1*W*vec2 */
+  static double v1Wv2(p, N, M, vec1, vec2)
+double *p, *vec1, *vec2;  /* p is stored as a vector, out must be of length NM */
+  int N, M;
+{
+  int i, ii, jj, NM, MP1, row, NMP1;
+  double sum, prow, *p1, *pv2, *pv1, ret;
+
+  NM   = N*M;
+  MP1  = M + 1;
+  NMP1 = NM + 1;
+
+  ret = 0.0;
+  for (row=0, p1=p, pv2=vec2, pv1=vec1; row<NM; row++, p1++, pv2++, pv1++) {
+    prow = *p1;
+    sum  = (prow-prow*prow)* *pv2;
+    ii   = row + N;
+    jj   = row - N;
+    for (i=2; i<MP1; i++) {
+      if (ii < NMP1) {
+        sum += -prow*p[ii]*vec2[ii];
+        ii   = ii + N;
+      }
+      if (jj > -1) {
+        sum += -prow*p[jj]*vec2[jj];
+        jj   = jj - N;
+      }
+    }
+    ret += *pv1 * sum;
+  }
+
+  return(ret);
+
+} /* END: v1Wv2 */
 
 
 
@@ -370,21 +419,23 @@ double *lxx, *out, *Pxx, *W;
 
 
   /* fill the info matrix to the result*/
-  static void fill_Info(Info,ret_info,Nparm)
-double **Info,*ret_info;
-int Nparm;
+  /* the Info matrix is sysmetric */
+  static void fill_SysMat(Mat,Vec,Nr)
+double **Mat,*Vec;
+int Nr;
 {
   int i,j;
-  for(j=0;j<Nparm;j++){
-    for(i=0;i< Nparm;i++){
-      ret_info[i*Nparm+j] = Info[i][j];
+  for(j=0;j<Nr;j++){
+    for(i=0;i<(j+1);i++){
+      Vec[j*Nr+i] = Mat[i][j];
+      Vec[i*Nr+j] = Mat[i][j];
     }
   }
 
 
 }
 
-/*end fill_Info*/
+/*end fill_SysMat*/
 
   /* Function to compute delta */
   static void get_delta(INV, nc, tXXZ, N, M, W_y, out)
@@ -579,45 +630,7 @@ double **ret;
 
 } /* END: symPosMatInv */
 
-  /* Function to compute the inverse of a covariance matrix */
-int cov_inv_new(cov, n, inv)
-double **cov;
-int n;
-double **inv; /* Returned inverse */
-{
-  double cc, a, b, d;
-  int ret;
 
-  switch (n) {
-    case 0:
-      Rprintf("\nERROR: dimension of covariance matrix is 0\n");
-    exit(1);
-    case 1:
-      a = cov[0][0];
-      if (fabs(a) < ALMOST_ZERO) return(ERROR_SINGULAR_MATRIX);
-      inv[0][0] = 1.0/a;
-      break;
-      case 2:
-        a  = cov[0][0];
-        b  = cov[0][1];
-        d  = cov[1][1];
-        cc = a*d - b*b;
-        if (fabs(cc) < ALMOST_ZERO) return(ERROR_SINGULAR_MATRIX);
-        cc = 1.0/cc;
-        inv[0][0] = d*cc;
-        inv[0][1] = -b*cc;
-        inv[1][0] = -b*cc;
-        inv[1][1] = a*cc;
-        break;
-        default:
-          ret = symPosMatInv(cov, n, inv);
-          if (ret) return(ret);
-          break;
-  } /* END: switch */
-
-    return(0);
-
-} /* END: cov_inv_new */
 
 
   /*calculate the weighted matrix for MLE*/
@@ -719,7 +732,7 @@ double **inv; /* Returned inverse */
   }
 
 /* Function for quadractic computation X^tkX */
-  static void QuadXKX(double **X,double ** K, int Xnr,int Xnc, double** ret){
+  static void QuadXtKX(double **X,double ** K, int Xnr,int Xnc, double** ret){
     double sum = 0.0;
 
     for(int i=0;i<Xnc;i++){
@@ -742,49 +755,98 @@ double **inv; /* Returned inverse */
     }
   }
 
+/* Function for quadractic computation X^tkX */
+  static void QuadXKXt(double **X,double ** K, int Xnr,int Xnc, double** ret){
+    double sum = 0.0;
 
+    for(int i=0;i<Xnr;i++){
+      for(int j=0;j<(i+1);j++){
+        /*the ith row and jth column of the ret*/
+          /*the ith row X transpose times K times the jth row of the X */
+          sum = 0.0;
+          /* One vector times K times one Vector*/
+            for(int k=0;k<Xnc;k++){
+              for(int l=0;l<Xnc;l++){
 
-static void LogLikelihood(double *Y, double *ret_p,double *loglikelihood, int N,
-                          int M){
-  *loglikelihood = 0;
+                sum += X[i][k]*K[k][l]*X[j][l];
+              }
+            }
+          ret[i][j] = sum;
+          /* ret is sysmetric */
+            ret[j][i] = sum;
 
-  double *Y_temp, *p_temp;
-  double p_o = 0;
-  double p_sum = 0;
-  int ind = 0;
-  Y_temp = dVec_alloc(M,0,0.0);
-  p_temp = dVec_alloc(M,0,0.0);
-  for(int i=0;i<N;i++){
-    p_o = 0;
-    ind = 0;
-    p_sum = 0;
-    for(int j=0;j<M;j++){
-      p_temp[j] = ret_p[i+N*j];
-    }
-    for(int j=0;j<M;j++){
-      Y_temp[j] = Y[i+N*j];
-    }
-    for(int j=0;j<M;j++){
-      if(Y_temp[j]> ALMOST_ZERO ){
-        p_o += p_temp[j];
-        ind = 1;
       }
     }
-    if(ind ==0){
-      for(int j=0;j<M;j++){
-        p_sum += p_temp[j];
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* calculate WX is a matrix with N*M row and M*p column*/
+  /* WX is decomposed into M*M block, each block has N*p column*/
+  /* Decompose W matrix into M*M block. each block is a diagnonal matrix with N*N */
+  /* i represent the row for the M*M block */
+  /* j represent the column for the M*M block */
+  /* k represent 1 to Ncov column of X */
+  /* v represent 1 to N element of X kth column element */
+  /* W is sysmetric */
+
+  static void get_WX(int M,int N,int Ncov,double **X, double *W,double **WX){
+    int NM =N*M;
+    double *Wtemp;
+    Wtemp = dVec_alloc(N,0,0.0);
+    for(int i=0;i<M;i++){
+      for(int j=0;j<(i+1);j++){
+        for(int v=0;v<N;v++){
+          Wtemp[v] = W[NM*i+N*j+v];
+        }
+
+        for(int k=0;k<Ncov;k++){
+          for(int v=0;v<N;v++){
+            /*WX[N*i+v][Ncov*j+k] = */
+              WX[N*j+v][Ncov*i+k] =  WX[N*i+v][Ncov*j+k]=Wtemp[v]*X[v][k];
+
+          }
+        }
       }
-      p_o = 1-p_sum;
     }
+    free(Wtemp);
+  }
 
-    *loglikelihood += log(p_o);
+/* fill matrix into vector */
+  /* vec was ordered by column */
+  static void fill_vec(double **mat,int nr, int nc, double *ret){
+    for(int j=0;j<nc;j++){
+      for(int i=0;i<nr;i++){
+        ret[j*nr+i] = mat[i][j];
+      }
+    }
+  }
 
+/* get the matrix WXZ */
+  static void get_WXZ(int M,int N,int Ncov,double **X, double *W,
+                      double **WX,double **WXZ,int Nparm,double **Z,int Znc,
+                      double *WXZ_vec,double *WX_vec){
+    /*Rprintf("Get WX");*/
+      get_WX(M,N,Ncov,X, W, WX);
+    fill_vec(WX,N*M,M*Ncov,WX_vec);
+    /*Rprintf("Get WXZ");*/
+      matrixMult(WX, N*M, M*Ncov, Z, Nparm, WXZ);
+    fill_vec(WXZ,N*M,Znc,WXZ_vec);
 
   }
-  free(Y_temp);
-  free(p_temp);
 
-}
 
 
 /*calculate the weighted matrix for MLE*/
@@ -797,7 +859,7 @@ static void LogLikelihood(double *Y, double *ret_p,double *loglikelihood, int N,
   /* Function Mvpoly */
   static void Mvpoly(double *deltai,int Nparm,double* Y,
                      double **X, double **Z,int Znr,int Znc,
-                     int N, int M, int Ncov, int Niter,double tol,
+                     int N, int M, int Ncov, int Niter,double tolMStep,
                      int DEBUG,int* ret_rc,double* ret_delta,double**Info,
                      double *ret_p,double *lxx,double *W,double *beta,
                      double* w_y,double **XmWXm,double **Inv,double **tXXZ,double *XX){
@@ -824,21 +886,15 @@ static void LogLikelihood(double *Y, double *ret_p,double *loglikelihood, int N,
           Weighted_W(ret_p, W, N, M);
           if (DEBUG) Rprintf("Compute XmWXm matrix\n");
           get_XmWXm(XX,X,W, M,N, Ncov,XmWXm);
-          /*print_dMat(XmWXm,Znr,Znr,"XmWXm");*/
-            if (DEBUG) Rprintf("Compute information matrix\n");
-
+          if (DEBUG) Rprintf("Compute information matrix\n");
           /*get_Info(X, N, Ncov, M, Z, Znr, Znc, pxx, Info);*/
-
-            QuadXKX(Z,XmWXm, Znr,Znc, Info);
-          /* print_dMat(XmWXm,Znr,Znr,"Info");*/
-
-            if (DEBUG) Rprintf("Compute covariance matrix\n");
-          rc = cov_inv_new(Info, Znc, Inv);
+            QuadXtKX(Z,XmWXm, Znr,Znc, Info);
+          if (DEBUG) Rprintf("Compute covariance matrix\n");
+          rc = cov_inv(Info, Znc, Inv);
           if (rc) {
             Rprintf("ERROR computing inverse of information matrix\n");
             error("ERROR");
           }
-
           if (DEBUG) Rprintf("Compute W_y\n");
           get_Wy(Y, lxx, ret_p, N, M,W,w_y);
           if (DEBUG) Rprintf("Compute delta\n");
@@ -855,7 +911,7 @@ static void LogLikelihood(double *Y, double *ret_p,double *loglikelihood, int N,
 
           if (DEBUG) Rprintf("Check Weighted Least Square stopping criteria\n");
           rerror = checkStop(ret_delta, delta0, Nparm);
-          if (rerror <= tol) {
+          if (rerror <= tolMStep) {
             conv = 1;
             break;
           }
@@ -878,17 +934,49 @@ static void LogLikelihood(double *Y, double *ret_p,double *loglikelihood, int N,
   } /* END: Mvpoly */
 
 
+  static void EstepFitting(double *missing_vec, double **missing_Mat,
+                           double *Y, double **X,double*beta,
+                           int missing_number,int M,int N,int NCOV){
+    double sum=0.0;
+    int temp;
+    int i;
+    for(int t=0;t<missing_number;t++){
+      i = missing_vec[t]-1;
+      sum = 0.0;
+      for(int j=0;j<M;j++){
+        if(missing_Mat[t][j]==1){
+          temp = j*N+i;
+          Y[temp] = 0.0;
+          for(int k=0;k<NCOV;k++){
+            Y[temp] +=  X[i][k]*beta[j*NCOV+k]; /* get X[i,]*beta[,j] if j subtype is potentail true */
+          }
+          Y[temp] = exp(Y[temp]);
+          sum += Y[temp];
+        }
+      }
+      for(int j=0;j<M;j++){
+        if(missing_Mat[t][j]==1){
+          Y[j*N+i] = Y[j*N+i]/sum;
+        }
+      }
+    }
+
+  }
 
 static void Free_Mem(double * XX,double **tXXZ,int Nparm,double**X,int N,
                      double *delta0,double**Z,int M,
                      double** XmWXm,int Znr,int Znc,
                      double *lxx, double* ret_info,
                      double **Inv, double *w_y, double *W,double *beta,
-                     int DEBUG, double **Info){
+                     int DEBUG, double **Info
+                     ,double **WX,
+                     double** WXZ){
   if (DEBUG) Rprintf("Free memory\n");
+  if (DEBUG) Rprintf("Free XX\n");
   free(XX);
   if (DEBUG) Rprintf("Free tXXZ\n");
   matrix_free((void **)tXXZ, Nparm);
+
   if (DEBUG) Rprintf("Free X\n");
   matrix_free((void **)X, N);
   if (DEBUG) Rprintf("Free delta0\n");
@@ -899,25 +987,27 @@ static void Free_Mem(double * XX,double **tXXZ,int Nparm,double**X,int N,
   matrix_free((void**) XmWXm, Znr);
   if (DEBUG) Rprintf("Free lxx\n");
   free(lxx);
-
+  if (DEBUG) Rprintf("Begin fill Mat\n");
+  fill_SysMat(Info,ret_info,Nparm);
   if (DEBUG) Rprintf("Free Inv\n");
   matrix_free((void **)Inv, Znc);
-  if (DEBUG) Rprintf("Free w_y\n");
-  free(w_y);
   if (DEBUG) Rprintf("Free W\n");
   free(W);
+  if (DEBUG) Rprintf("Free W_y\n");
+  free(w_y);
   if (DEBUG) Rprintf("Free beta\n");
   free(beta);
   if (DEBUG) Rprintf("Free Info\n");
   matrix_free((void **)Info,Znc);
+  matrix_free((void**) WX,M*N);
+  matrix_free((void**) WXZ,N*M);
 
 }
 
-void Mvpoly_complete(deltai, pNparm, Y, Xvec, ZallVec,Zallnr,Zallnc, pN, pM, pNcov, pNiter, ptol,
-            pDEBUG, ret_rc, ret_delta,ret_info,ret_p,
-            loglikelihood)
+void CompleteCasesScoreTestSupport(deltai, pNparm, Y, Xvec, ZallVec,Zallnr,Zallnc, pN, pM, pNcov, pNiter, ptol,
+                        pDEBUG, ret_rc, ret_delta,ret_info,ret_p,ret_Inv_info_vec,YminusP,W_obs, WXZ_vec,WX_vec)
 double *deltai, *Y, *Xvec, *ptol, *ret_delta,*ret_info,*ret_p,*ZallVec,
-*loglikelihood;
+ *ret_Inv_info_vec, *YminusP, *W_obs,*WXZ_vec,*WX_vec;
 int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc;
 
 {
@@ -925,10 +1015,16 @@ int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc;
   int Nparm, DEBUG;
   double tol, **X, *delta0, **Z, **XmWXm;
   double *w_y, **Inv, **Info,*lxx, **tXXZ;
-  double *W,*beta;
+  double *beta;
+
+
 
   double *XX;
 
+  double *W;
+
+  double **WX;
+  double **WXZ;
 
   *ret_rc = 1;
   DEBUG   = *pDEBUG;
@@ -954,17 +1050,21 @@ int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc;
 
     X        = dMat_alloc(N, Ncov, 0, 0.0); /* X doesn't have intercept*/
     delta0   = dVec_alloc(Nparm, 0, 0.0);
-    Z        = dMat_alloc(Znr, Znc, 1, 0.0); /* Initialize to 0 */
+    Z        = dMat_alloc(Znr, Znc, 0, 0.0); /* Initialize to 0 */
     lxx      = dVec_alloc(NM, 0, 0.0);
     XmWXm    = dMat_alloc(Znr,Znr,0,0.0);
     Info     = dMat_alloc(Nparm, Nparm, 0, 0.0);
 
     Inv      = dMat_alloc(Nparm, Nparm, 0, 0.0);
     w_y      = dVec_alloc(NM, 0, 0.0);
-    W        = dVec_alloc((M*M*N),0,0.0);
+    W      = dVec_alloc(NM*M, 0, 0.0);
     beta  = dVec_alloc(Znr, 0, 0.0);
 
     XX = dVec_alloc((N*Ncov*Ncov),0,0.0);
+
+    WX = dMat_alloc(N*M,M*Ncov,0,0.0);
+    WXZ = dMat_alloc(N*M,Znc,0,0.0);
+
     /* Copy initial estimates to delta0 */
     if (DEBUG) Rprintf("Copy data\n");
     for (i=0; i<Nparm; i++) delta0[i] = deltai[i];
@@ -980,39 +1080,46 @@ int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc;
     X_y(Z, Znr, Znc, delta0, beta);
     if(DEBUG) Rprintf("Get Matrix XX\n");
     get_XX(X,Ncov,N,XX);
-    /* Compute beta = Z*delta */
-
     Mvpoly(deltai,Nparm, Y,
-    X, Z,Znr,Znc,
-    N, M,Ncov, Niter, tol,
-    DEBUG,ret_rc,ret_delta,Info,
-    ret_p,lxx,W,beta,
-    w_y,XmWXm,Inv,tXXZ,XX);
+           X, Z,Znr,Znc,
+           N, M,Ncov, Niter, tol,
+           DEBUG,ret_rc,ret_delta,Info,
+           ret_p,lxx,W,beta,
+           w_y,XmWXm,Inv,tXXZ,XX);
     /* Check the convergence for first EM round */
     if (!all_finite(ret_delta, Nparm)) {
     Rprintf("ERROR: EM algorithm not converging, parameters have non-finite values\n");
     error("ERROR");
     }
 
-    LogLikelihood(Y, ret_p,loglikelihood, N,M);
-    if (DEBUG) Rprintf("Fill Info\n");
-    fill_Info(Info,ret_info,Nparm);
+    conv = 1;
 
 
-
-
-    /* Update delta0 */
-
+    if (DEBUG) Rprintf("Get Information Matrix Matrix Inverse\n");
+    cov_inv(Info,Znc,Inv);
+    if (DEBUG) Rprintf("Get Y-P\n");
+    VectorMinus(Y,ret_p,NM,YminusP);
+    fill_SysMat(Inv,ret_Inv_info_vec,Znc);
+    if (DEBUG) Rprintf("Get WXZ\n");
+    get_WXZ(M,N,Ncov,X, W,
+    WX,WXZ, Nparm,Z, Znc,
+    WXZ_vec,
+    WX_vec);
 
     Free_Mem(XX,tXXZ,Nparm,X,N,
     delta0,Z,M,
     XmWXm, Znr,Znc,
     lxx,ret_info,
     Inv, w_y, W,beta,
-    DEBUG,Info);
+    DEBUG,Info,WX,WXZ);
 
+    if (!conv) {
+    Rprintf("ERROR: algorithm did not converge\n");
+    error("ERROR");
+    }
     *ret_rc = 0;
 
     return;
+
 } /* END: Mvpoly */
 
