@@ -13,12 +13,12 @@
 #' @export
 #'
 #' @examples
-ScoreTestSupport <- function(y,
-                             baselineonly=NULL,
-                             additive=NULL,
-                             pairwise.interaction=NULL,
-                             saturated=NULL,
-                             missingTumorIndicator = 888){
+EMScoreTestSupport <- function(y,
+                             baselineonly,
+                             additive,
+                             pairwise.interaction,
+                             saturated,
+                             missingTumorIndicator){
   y <- as.matrix(y)
   tumor.number <- ncol(y)-1
   y.case.control <- y[,1]

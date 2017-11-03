@@ -11,6 +11,7 @@
 #' @export
 #'
 #' @examples
+
 Mvpoly <- function(y,
                           baselineonly,
                           additive,
