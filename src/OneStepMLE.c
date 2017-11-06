@@ -1063,6 +1063,7 @@ int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc,*pmissi
 
    Get_ObservedInfo(Info,Y, M, N,Info_obs, DEBUG,
                     XX,X, Ncov,Znr,Znc,Z);
+   print_dMat(Info_obs, Znc, Znc, "info_obs");
 
    /* print_dMat(XmWXm,Znr,Znr,"Info");*/
 

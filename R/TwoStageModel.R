@@ -41,6 +41,8 @@ TwoStageModel <- function(y,
                                     pairwise.interaction,
                                     saturated,
                                     missingTumorIndicator))
+    }else{
+      print(paste0("no missing data algorithm called ",missingDataAlgorithm))
     }
 
 
