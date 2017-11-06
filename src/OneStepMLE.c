@@ -1060,10 +1060,14 @@ int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc,*pmissi
    /*get_Info(X, N, Ncov, M, Z, Znr, Znc, pxx, Info);*/
 
    QuadXKX(Z,XmWXm, Znr,Znc, Info);
+
+   Get_ObservedInfo(Info,Y, M, N,Info_obs, DEBUG,
+                    XX,X, Ncov,Znr,Znc,Z);
+
    /* print_dMat(XmWXm,Znr,Znr,"Info");*/
 
    if (DEBUG) Rprintf("Compute covariance matrix\n");
-   rc = cov_inv(Info, Znc, Inv);
+   rc = cov_inv(Info_obs, Znc, Inv);
    if (rc) {
      Rprintf("ERROR computing inverse of information matrix\n");
      error("ERROR");
