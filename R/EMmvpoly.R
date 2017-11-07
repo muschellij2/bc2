@@ -7,7 +7,7 @@ EMmvpoly <- function(y,
                           missingTumorIndicator = 888){
 
   missing.data.vec <- GenerateMissingPosition(y,missingTumorIndicator)
-  y.pheno.complete <- y[missing.data.vec,]
+  y.pheno.complete <- y[-missing.data.vec,]
   initial.set <- InitialSetup(y.pheno.complete,
                            baselineonly,
                            additive,
@@ -27,27 +27,21 @@ EMmvpoly <- function(y,
   x.all <- as.matrix(GenerateXAll(y,baselineonly,additive,pairwise.interaction,saturated))
   covar.names <- initial.set$covar.names
 
-    y <- as.matrix(y)
-
-
-    M <- as.integer(nrow(z.standard))
-    p.main <- ncol(z.standard)+1
 
     model.result = EMStep(delta0,as.matrix(y),x.all,z.standard,z.all,missingTumorIndicator)
 
     summary.result <- SummaryResult(model.result,
-                              baselineonly,
-                              additive,
-                              pairwise.interaction,
-                              saturated,
-                              M,
-                              full.second.stage.names,
-                              covar.names,
-                              delta,
-                              z.design.additive,
-                              z.design.pairwise.interaction,
-                              z.design.saturated,
-                              tumor.names
+                                    baselineonly,
+                                    additive,
+                                    pairwise.interaction,
+                                    saturated,
+                                    z.standard,
+                                    covar.names,
+                                    delta,
+                                    z.design.additive,
+                                    z.design.pairwise.interaction,
+                                    z.design.saturated,
+                                    tumor.names
     )
 
 

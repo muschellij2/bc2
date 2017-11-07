@@ -94,8 +94,7 @@ SummaryResult <- function(model.result,
                           additive,
                           pairwise.interaction,
                           saturated,
-                          M,
-                          full.second.stage.names,
+                          z.standard,
                           covar.names,
                           delta,
                           z.design.additive,
@@ -103,6 +102,10 @@ SummaryResult <- function(model.result,
                           z.design.saturated,
                           tumor.names
                           ){
+
+
+  full.second.stage.names <- colnames(z.design.saturated)
+  M <- as.integer(nrow(z.standard))
   ###delta represent second stage parameters
   delta <- model.result$delta
   covariance.delta <- solve(model.result$infor_obs)
