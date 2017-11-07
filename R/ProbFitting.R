@@ -15,7 +15,7 @@
 #' @export
 #'
 #' @examples
-ProbFitting <- function(delta0,y,x.all,z.standard,z.all,missingTumorIndicator,missing.position){
+ProbFitting <- function(delta0,y,x.all,z.standard,z.all,missingTumorIndicator){
   if(is.null(missingTumorIndicator)==1){
     n <- nrow(y)
     M <- nrow(z.standard)
@@ -29,18 +29,14 @@ ProbFitting <- function(delta0,y,x.all,z.standard,z.all,missingTumorIndicator,mi
         ###find out which tumor characteristic is observed
         ###-3.14 is just a random number to make the algorithm run
         ###since there is no missing, all of the 2:ncol(y) will be chose
-        idx <- which(y[i,2:ncol(y)]!=(-3.14))
+        idx <- 1:(ncol(y)-1)
         ###jdx is the potential subtype this missing person could be
         jdx <- apply(z.standard,1,function(t){all(t[idx]==y[i,idx+1])})
         jdx <- which(jdx==T)
         ####get the conditional probability
-        temp <- exp(x.all.inter[i,]%*%beta[,jdx])
-        y_em[i,jdx] <- temp/sum(temp)
+        y_em[i,jdx] <- 1
       }
     }
-
-
-
     return(list(y_em=y_em))
   }else{
     n <- nrow(y)
@@ -53,6 +49,8 @@ ProbFitting <- function(delta0,y,x.all,z.standard,z.all,missingTumorIndicator,mi
     ##add intercept to x.all
     x.all.inter <- as.matrix(cbind(1,x.all))
     index = 1
+
+
     for(i in 1:nrow(y)){
       if(y[i,1]==1) {
         ###find out which tumor characteristic is observed

@@ -18,11 +18,12 @@ OneStepMLE <- function(y,
                      pairwise.interaction,
                      saturated,
                      missingTumorIndicator){
-
+  missing.data.vec <- GenerateMissingPosition(y,missingTumorIndicator)
+  y.pheno.complete <- y[-missing.data.vec,]
   tumor.number <- ncol(y)-1
   y.case.control <- y[,1]
   y.tumor <- y[,2:(tumor.number+1)]
-  y.pheno.complete <- GenerateCompleteYPheno(y,missingTumorIndicator)
+
 
   freq.subtypes <- GenerateFreqTable(y.pheno.complete)
   if(CheckControlTumor(y.case.control,y.tumor)==1){
@@ -80,14 +81,8 @@ OneStepMLE <- function(y,
   ###z standard matrix is used to match the missing tumor characteristics to the complete subtypes
 
 
-  prob.fit.result <- ProbFitting(delta0,y,x.all,z.standard,z.all,missingTumorIndicator=missingTumorIndicator)
+  prob.fit.result <- ProbFitting(delta0,y.pheno.complete,x.all.complete,z.standard,z.all)
   y.fit <- prob.fit.result[[1]]
-  missing.vec <- as.numeric(as.vector(prob.fit.result[[2]]))
-  missing.mat <- prob.fit.result[[3]]
-  missing.mat.vec <- as.numeric(as.vector(missing.mat))
-  missing.number <- as.integer(length(missing.vec))
-  complete.vec <- prob.fit.result[[4]]
-  y.fit.complete <- y.fit[complete.vec,]
   M <- as.integer(nrow(z.standard))
   p.main <- ncol(z.standard)+1
 
@@ -126,6 +121,19 @@ OneStepMLE <- function(y,
 
 
   delta0 <- temp$ret_delta
+
+
+  y.pheno.misonly <-   y[missing.data.vec,]
+  x.all.misonly <- x.all[missing.data.vec,]
+  prob.fit.result <- ProbFitting(delta0,y,x.all,z.standard,z.all)
+  y.fit <- prob.fit.result[[1]]
+
+  missing.vec <- as.numeric(as.vector(prob.fit.result[[2]]))
+  missing.mat <- prob.fit.result[[3]]
+  missing.mat.vec <- as.numeric(as.vector(missing.mat))
+  missing.number <- as.integer(length(missing.vec))
+  complete.vec <- prob.fit.result[[4]]
+  y.fit.complete <- y.fit[complete.vec,]
 
 
 
