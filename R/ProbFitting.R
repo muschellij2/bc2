@@ -15,7 +15,7 @@
 #' @export
 #'
 #' @examples
-ProbFitting <- function(delta0,y,x.all,z.standard,z.all,missingTumorIndicator){
+ProbFitting <- function(delta0,y,x.all,z.standard,z.all,missingTumorIndicator,missing.position){
   if(is.null(missingTumorIndicator)==1){
     n <- nrow(y)
     M <- nrow(z.standard)

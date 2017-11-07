@@ -17,10 +17,9 @@ Mvpoly <- function(y,
                           additive,
                           pairwise.interaction,
                           saturated){
-tumor.number <- ncol(y)-1
-y.case.control <- y[,1]
-y.tumor <- y[,2:(tumor.number+1)]
 y.pheno.complete <- y
+
+
 freq.subtypes <- GenerateFreqTable(y.pheno.complete)
 if(CheckControlTumor(y.case.control,y.tumor)==1){
   return(print("ERROR:The tumor characteristics for control subtypes should put as NA"))
