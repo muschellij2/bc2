@@ -6,7 +6,7 @@ EMmvpoly <- function(y,
                           saturated=NULL,
                           missingTumorIndicator = 888){
 
-  missing.data.vec <- GenerateMissingPosition(y.pheno,missingTumorIndicator)
+  missing.data.vec <- GenerateMissingPosition(y,missingTumorIndicator)
   y.pheno.complete <- y[missing.data.vec,]
   initial.set <- InitialSetup(y.pheno.complete,
                            baselineonly,

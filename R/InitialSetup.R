@@ -60,7 +60,7 @@ InitialSetup <- function(y.pheno.complete,
                          z.design.saturated)
   z.standard <- z.design.additive[,-1]
   delta0 <-StartValueFunction(freq.subtypes,y.case.control,z.all)
-  return(list(delta0 = delta0,z.all=z.all,z.standard= z.standard,z.deisign.baselineonly = z.design.baseline.only,z.design.additive=z.design.additive,z.design.pairwise.interaction=z.design.pairwise.interaction,z.design.saturated=z.design.saturated,covar.names = covar.names
+  return(list(delta0 = delta0,z.all=z.all,z.standard= z.standard,z.deisign.baselineonly = z.design.baselineonly,z.design.additive=z.design.additive,z.design.pairwise.interaction=z.design.pairwise.interaction,z.design.saturated=z.design.saturated,covar.names = covar.names
               ))
 }
 
