@@ -20,65 +20,24 @@ OneStepMLE <- function(y,
                      missingTumorIndicator){
   missing.data.vec <- GenerateMissingPosition(y,missingTumorIndicator)
   y.pheno.complete <- y[-missing.data.vec,]
-  tumor.number <- ncol(y)-1
-  y.case.control <- y[,1]
-  y.tumor <- y[,2:(tumor.number+1)]
-
-
-  freq.subtypes <- GenerateFreqTable(y.pheno.complete)
-  if(CheckControlTumor(y.case.control,y.tumor)==1){
-    return(print("ERROR:The tumor characteristics for control subtypes should put as NA"))
-  }
-  tumor.names <- colnames(y.tumor)
-  if(is.null(tumor.names)){
-    tumor.names <- paste0(c(1:tumor.number))
-  }
-  tumor.character.cat = GenerateTumorCharacterCat(y.pheno.complete)
-
-
-
-
-
-
-
-  z.design.baselineonly <- GenerateZDesignBaselineonly(tumor.character.cat,
-                                                       tumor.number,
-                                                       tumor.names,
-                                                       freq.subtypes)
-  z.design.additive <- GenerateZDesignAdditive(tumor.character.cat,
-                                               tumor.number,
-                                               tumor.names,
-                                               freq.subtypes)
-  z.design.pairwise.interaction <- GenerateZDesignPairwiseInteraction(tumor.character.cat,
-                                                                      tumor.number,
-                                                                      tumor.names,
-                                                                      freq.subtypes)
-  z.design.saturated <- GenerateZDesignSaturated(tumor.character.cat,
-                                                 tumor.number,
-                                                 tumor.names,
-                                                 freq.subtypes)
-  full.second.stage.names <- colnames(z.design.saturated)
-  covar.names <- GenerateCovarName(baselineonly,
-                                   additive,
-                                   pairwise.interaction,
-                                   saturated)
-
-  z.all <- ZDesigntoZall(baselineonly,
-                         additive,
-                         pairwise.interaction,
-                         saturated,
-                         z.design.baselineonly,
-                         z.design.additive,
-                         z.design.pairwise.interaction,
-                         z.design.saturated)
-  delta0 <-StartValueFunction(freq.subtypes,y.case.control,z.all)
-  z.standard <- z.design.additive[,-1,drop=F]
-  #x.all has no intercept yet
-  #we will add the intercept in C code
-  x.all <- GenerateXAll(y,baselineonly,additive,pairwise.interaction,saturated)
-  x.all.complete <- GenerateCompleteXCovariates(y,x.all,missingTumorIndicator)
+  initial.set <- InitialSetup(y.pheno.complete,
+                              baselineonly,
+                              additive,
+                              pairwise.interaction,
+                              saturated
+  )
   ###z standard matrix means the additive model z design matrix without baseline effect
   ###z standard matrix is used to match the missing tumor characteristics to the complete subtypes
+
+  delta0 = initial.set$delta0
+  z.all = initial.set$z.all
+  z.standard = initial.set$z.standard
+  z.deisign.baselineonly = initial.set$z.design.baseline.only
+  z.design.additive = initial.set$z.design.additive
+  z.design.pairwise.interaction = initial.set$z.design.pairwise.interaction
+  z.design.saturated = initial.set$z.design.saturated
+  x.all <- as.matrix(GenerateXAll(y,baselineonly,additive,pairwise.interaction,saturated))
+  covar.names <- initial.set$covar.names
 
 
   prob.fit.result <- ProbFitting(delta0,y.pheno.complete,x.all.complete,z.standard,z.all)

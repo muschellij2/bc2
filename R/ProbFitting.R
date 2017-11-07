@@ -15,7 +15,7 @@
 #' @export
 #'
 #' @examples
-ProbFitting <- function(delta0,y,x.all,z.standard,z.all,missingTumorIndicator){
+ProbFitting <- function(delta0,y,x.all,z.standard,z.all,missingTumorIndicator=NULL){
   if(is.null(missingTumorIndicator)==1){
     n <- nrow(y)
     M <- nrow(z.standard)
@@ -61,11 +61,14 @@ ProbFitting <- function(delta0,y,x.all,z.standard,z.all,missingTumorIndicator){
           missing.vec[index] <- i
           missing.mat[index,] <- jdx
           index <- index + 1
+          jdx <- which(jdx==T)
+          ####get the conditional probability
+          temp <- exp(x.all.inter[i,]%*%beta[,jdx])
+          y_em[i,jdx] <- temp/sum(temp)
+        }else{
+          y_em[i,jdx] <- 1
         }
-        jdx <- which(jdx==T)
-        ####get the conditional probability
-        temp <- exp(x.all.inter[i,]%*%beta[,jdx])
-        y_em[i,jdx] <- temp/sum(temp)
+
       }
     }
 
