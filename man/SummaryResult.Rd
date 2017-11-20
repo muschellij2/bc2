@@ -5,7 +5,7 @@
 \title{Title}
 \usage{
 SummaryResult(model.result, baselineonly, additive, pairwise.interaction,
-  saturated, M, full.second.stage.names, covar.names, delta, z.design.additive,
+  saturated, z.standard, covar.names, delta, z.design.additive,
   z.design.pairwise.interaction, z.design.saturated, tumor.names)
 }
 \arguments{

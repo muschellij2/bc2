@@ -8,6 +8,7 @@
 #' @export
 #'
 #' @examples
+
 FillandMatch <- function(reference,all){
   idx.fil <- which(all%in%reference)
   all.fill <- all[idx.fil]
