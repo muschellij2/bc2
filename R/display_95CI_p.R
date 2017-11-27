@@ -22,7 +22,7 @@ DisplaySecondStageTestResult = function(logodds,sigma,self.design=F){
   odds <- exp(logodds)
   odds.low <- exp(logodds.low)
   odds.high <- exp(logodds.high)
-  places <- 2
+  places <- 5
   odds <- round(odds,places)
   odds.low <- round(odds.low,places)
   odds.high <- round(odds.high,places)
@@ -60,7 +60,7 @@ DisplayFirstStageTestResult = function(logodds,sigma){
   odds <- exp(logodds)
   odds.low <- exp(logodds.low)
   odds.high <- exp(logodds.high)
-  places <- 2
+  places <- 5
   odds <- round(odds,places)
   odds.low <- round(odds.low,places)
   odds.high <- round(odds.high,places)
@@ -89,7 +89,7 @@ DisplayFirstStageTestResult = function(logodds,sigma){
 #' @examples
 DisplayFixedScoreTestResult <- function(score,infor){
   p.value.GTA <- ScoreGlobalTestForAssoc(score,infor)
-  places <- 3
+  places <- 5
   p.value.GTA <- round(p.value.GTA*10^(floor(-log10(p.value.GTA))+places))/(10^(floor(-log10(p.value.GTA))+places))
   return(p.value.GTA)
 }
@@ -131,7 +131,7 @@ DisplayIndTestResult = function(logodds,sigma){
   odds <- exp(logodds)
   odds.low <- exp(logodds.low)
   odds.high <- exp(logodds.high)
-  places <- 2
+  places <- 5
   odds <- round(odds,places)
   odds.low <- round(odds.low,places)
   odds.high <- round(odds.high,places)
