@@ -16,6 +16,7 @@ InitialSetup <- function(y.pheno.complete,
                          pairwise.interaction,
                          saturated
                          ){
+  y <- y.pheno.complete
   tumor.number <- ncol(y)-1
   y.case.control <- y[,1]
   y.tumor <- y[,2:(tumor.number+1)]
