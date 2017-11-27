@@ -70,6 +70,7 @@ InitialSetup <- function(y.pheno.complete,
 
 
 
+
 #' Title
 #'
 #' @param model.result
@@ -77,14 +78,14 @@ InitialSetup <- function(y.pheno.complete,
 #' @param additive
 #' @param pairwise.interaction
 #' @param saturated
-#' @param M
-#' @param full.second.stage.names
+#' @param z.standard
 #' @param covar.names
 #' @param delta
 #' @param z.design.additive
 #' @param z.design.pairwise.interaction
 #' @param z.design.saturated
 #' @param tumor.names
+#' @param z.all
 #'
 #' @return
 #' @export
@@ -101,7 +102,8 @@ SummaryResult <- function(model.result,
                           z.design.additive,
                           z.design.pairwise.interaction,
                           z.design.saturated,
-                          tumor.names
+                          tumor.names,
+                          z.all
                           ){
 
 

@@ -54,7 +54,8 @@ EMmvpoly <- function(y,
                                     z.design.additive,
                                     z.design.pairwise.interaction,
                                     z.design.saturated,
-                                    tumor.names
+                                    tumor.names,
+                                    z.all
     )
 
 
