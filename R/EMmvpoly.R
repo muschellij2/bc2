@@ -39,6 +39,7 @@ EMmvpoly <- function(y,
   z.design.saturated = initial.set$z.design.saturated
   x.all <- as.matrix(GenerateXAll(y,baselineonly,additive,pairwise.interaction,saturated))
   covar.names <- initial.set$covar.names
+  tumor.names <- initial.set$tumor.names
 
 
     model.result = EMStep(delta0,as.matrix(y),x.all,z.standard,z.all,missingTumorIndicator)
