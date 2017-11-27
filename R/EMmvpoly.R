@@ -1,4 +1,17 @@
 
+#' Title
+#'
+#' @param y
+#' @param baselineonly
+#' @param additive
+#' @param pairwise.interaction
+#' @param saturated
+#' @param missingTumorIndicator
+#'
+#' @return
+#' @export
+#'
+#' @examples
 EMmvpoly <- function(y,
                           baselineonly=NULL,
                           additive=NULL,
