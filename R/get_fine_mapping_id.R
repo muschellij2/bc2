@@ -10,8 +10,10 @@
 get_fine_mapping_id<- function(all,fine_mapping){
 CHR.all <- all$CHR
 position.all <- all$position
+idx.cut <- NULL
+known.flag <- NULL
 for(i in 1:nrow(fine_mapping)){
-  #print(i)
+  print(i)
   chr_temp <- CHR[i]
   start_temp <- start[i]
   end_temp <- end[i]
