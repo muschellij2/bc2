@@ -6,10 +6,10 @@
 \usage{
 SummaryResult(model.result, baselineonly, additive, pairwise.interaction,
   saturated, z.standard, covar.names, delta, z.design.additive,
-  z.design.pairwise.interaction, z.design.saturated, tumor.names)
+  z.design.pairwise.interaction, z.design.saturated, tumor.names, z.all)
 }
 \arguments{
-\item{tumor.names}{}
+\item{z.all}{}
 }
 \description{
 Title
