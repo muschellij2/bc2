@@ -36,7 +36,10 @@ for(i in 1:nrow(fine_mapping)){
   total <- temp+total
 }
 idx_cut <- idx_cut[1:total]
+idx_cut_du <- which(duplicated(idx_cut)==F)
+idx_cut <- idx_cut[idx_cut_du]
 known.flag <- known.flag[1:total]
+known.flag <- known.flag[idx_cut_du]
 return(list(idx_cut,known.flag))
 
 }
