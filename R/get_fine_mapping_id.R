@@ -12,6 +12,13 @@ CHR.all <- all$CHR
 position.all <- all$position
 idx.cut <- NULL
 known.flag <- NULL
+
+n.max <- nrow(all)
+total <- 0
+idx_cut <- rep(0,n.max)
+known.flag <- rep(0,n.max)
+
+
 for(i in 1:nrow(fine_mapping)){
   print(i)
   chr_temp <- CHR[i]
@@ -19,10 +26,14 @@ for(i in 1:nrow(fine_mapping)){
   end_temp <- end[i]
   idx <- which(CHR.all==chr_temp&position.all>=start_temp&
                  position.all<=end_temp)
+  temp <- length(idx)
   temp.known.flag <- rep(i,length(idx))
-  idx_cut <- c(idx_cut,idx)
-  known.flag <- c(known.flag,temp.known.flag)
+  idx_cut[total+(1:temp)] <- idx
+  known.flag[total+(1:temp)] <- temp.known.flag
+  total <- temp+total
 }
+idx_cut <- idx_cut[1:total]
+known.flag <- known.flag[1:total]
 return(list(idx_cut,known.flag))
 
 }
