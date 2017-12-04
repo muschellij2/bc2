@@ -12,6 +12,9 @@ CHR.all <- all$CHR
 position.all <- all$position
 idx.cut <- NULL
 known.flag <- NULL
+CHR <- fine_mapping$CHR
+start <- fine_mapping$start
+end <- fine_mapping$end
 
 n.max <- nrow(all)
 total <- 0
