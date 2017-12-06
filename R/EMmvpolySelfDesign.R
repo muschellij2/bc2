@@ -40,7 +40,7 @@ EMmvpolySelfDesign <- function(y,
     ###z standard matrix is used to match the missing tumor characteristics to the complete subtypes
 
     delta0 = initial.set$delta0
-
+    z.all = initial.set$z.all
     z.standard = initial.set$z.standard
     z.deisign.baselineonly = initial.set$z.design.baseline.only
     z.design.additive = initial.set$z.design.additive
