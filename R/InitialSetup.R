@@ -145,6 +145,8 @@ InitialSetup <- function(y.pheno.complete,
 #' @param z.design.saturated
 #' @param tumor.names
 #' @param z.all
+#' @param x.self.design
+#' @param z.design
 #'
 #' @return
 #' @export

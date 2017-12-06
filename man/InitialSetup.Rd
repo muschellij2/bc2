@@ -5,10 +5,10 @@
 \title{Title}
 \usage{
 InitialSetup(y.pheno.complete, baselineonly, additive, pairwise.interaction,
-  saturated)
+  saturated, x.self.design = NULL, z.design = NULL)
 }
 \arguments{
-\item{saturated}{}
+\item{z.design}{}
 }
 \description{
 Title
