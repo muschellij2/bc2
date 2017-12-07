@@ -55,7 +55,8 @@ InitialSetup <- function(y.pheno.complete,
     covar.names <- GenerateCovarName(baselineonly,
                                      additive,
                                      pairwise.interaction,
-                                     saturated)
+                                     saturated,
+                                     x.self.design = x.self.design)
 
     z.all <- ZDesigntoZall(baselineonly,
                            additive,
