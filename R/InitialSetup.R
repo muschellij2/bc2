@@ -13,6 +13,8 @@
 #' @export
 #'
 #' @examples
+#'
+#'
 InitialSetup <- function(y.pheno.complete,
                          baselineonly,
                          additive,
