@@ -4,10 +4,11 @@
 \alias{GenerateCovarName}
 \title{Title}
 \usage{
-GenerateCovarName(baselineonly, additive, pairwise.interaction, saturated)
+GenerateCovarName(baselineonly, additive, pairwise.interaction, saturated,
+  x.self.design = NULL)
 }
 \arguments{
-\item{saturated}{}
+\item{x.self.design}{}
 }
 \description{
 Title

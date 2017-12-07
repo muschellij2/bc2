@@ -1,4 +1,5 @@
 
+
 #' Title
 #'
 #' @param delta
@@ -41,8 +42,11 @@ SecondStageTest <- function(logodds,sigma,M,second.stage.mat){
     }
   }
 
-
-
+  second.n <- length(covar.names)
+  odds <- odds[1:second.n]
+  odds.low <- odds.low[1:second.n]
+  odds.high <- odds.high[1:second.n]
+  p.individual.heter <- p.individual.heter[1:second.n]
 
   result <- data.frame(CovarName = covar.names,
                        SecondStageEffect = second.stage.effect.names,
