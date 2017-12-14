@@ -13,3 +13,7 @@ InitialSetup(y.pheno.complete, baselineonly, additive, pairwise.interaction,
 \description{
 Title
 }
+\examples{
+
+
+}
