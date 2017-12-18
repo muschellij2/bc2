@@ -4,10 +4,10 @@
 \alias{DisplayIndTestResult}
 \title{Title}
 \usage{
-DisplayIndTestResult(logodds, sigma)
+DisplayIndTestResult(logodds, sigma, places = 5)
 }
 \arguments{
-\item{sigma}{}
+\item{places}{}
 }
 \description{
 Title

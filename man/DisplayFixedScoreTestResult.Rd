@@ -4,10 +4,10 @@
 \alias{DisplayFixedScoreTestResult}
 \title{Title}
 \usage{
-DisplayFixedScoreTestResult(score, infor)
+DisplayFixedScoreTestResult(score, infor, places = 5)
 }
 \arguments{
-\item{infor}{}
+\item{places}{}
 }
 \description{
 Title

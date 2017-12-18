@@ -2,17 +2,20 @@
 
 
 
+
 #' Title
 #'
 #' @param logodds
 #' @param sigma
 #' @param self.design
+#' @param places
 #'
 #' @return
 #' @export
 #'
 #' @examples
-DisplaySecondStageTestResult = function(logodds,sigma,self.design=F){
+DisplaySecondStageTestResult = function(logodds,sigma,self.design=F,
+                                        places= 5){
   var.logodds <- diag(sigma)
   logodds.low <- logodds-1.96*sqrt(var.logodds)
   logodds.high <- logodds+1.96*sqrt(var.logodds)
@@ -41,16 +44,19 @@ DisplaySecondStageTestResult = function(logodds,sigma,self.design=F){
 }
 
 
+
 #' Title
 #'
 #' @param logodds
 #' @param sigma
+#' @param places
 #'
 #' @return
 #' @export
 #'
 #' @examples
-DisplayFirstStageTestResult = function(logodds,sigma){
+DisplayFirstStageTestResult = function(logodds,sigma,
+                                       places = 5){
   var.logodds <- diag(sigma)
   logodds.low <- logodds-1.96*sqrt(var.logodds)
   logodds.high <- logodds+1.96*sqrt(var.logodds)
@@ -60,7 +66,7 @@ DisplayFirstStageTestResult = function(logodds,sigma){
   odds <- exp(logodds)
   odds.low <- exp(logodds.low)
   odds.high <- exp(logodds.high)
-  places <- 5
+
   odds <- round(odds,places)
   odds.low <- round(odds.low,places)
   odds.high <- round(odds.high,places)
@@ -78,18 +84,20 @@ DisplayFirstStageTestResult = function(logodds,sigma){
 
 
 
+
 #' Title
 #'
 #' @param score
 #' @param infor
+#' @param places
 #'
 #' @return
 #' @export
 #'
 #' @examples
-DisplayFixedScoreTestResult <- function(score,infor){
+DisplayFixedScoreTestResult <- function(score,infor,
+                                        places=5){
   p.value.GTA <- ScoreGlobalTestForAssoc(score,infor)
-  places <- 5
   p.value.GTA <- round(p.value.GTA*10^(floor(-log10(p.value.GTA))+places))/(10^(floor(-log10(p.value.GTA))+places))
   return(p.value.GTA)
 }
@@ -115,16 +123,19 @@ DisplayMixedScoreTestResult <- function(score.baseline,infor.baseline,score.case
 }
 
 
+
 #' Title
 #'
 #' @param logodds
 #' @param sigma
+#' @param places
 #'
 #' @return
 #' @export
 #'
 #' @examples
-DisplayIndTestResult = function(logodds,sigma){
+DisplayIndTestResult = function(logodds,sigma,
+                                places=5){
   var.logodds <- diag(sigma)
   logodds.low <- logodds-1.96*sqrt(var.logodds)
   logodds.high <- logodds+1.96*sqrt(var.logodds)

@@ -4,10 +4,10 @@
 \alias{DisplayFirstStageTestResult}
 \title{Title}
 \usage{
-DisplayFirstStageTestResult(logodds, sigma)
+DisplayFirstStageTestResult(logodds, sigma, places = 5)
 }
 \arguments{
-\item{sigma}{}
+\item{places}{}
 }
 \description{
 Title
