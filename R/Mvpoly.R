@@ -21,6 +21,7 @@ y.pheno.complete <- y
 
 
 freq.subtypes <- GenerateFreqTable(y.pheno.complete)
+y.tumor <- y[,2:ncol(y)]
 if(CheckControlTumor(y.case.control,y.tumor)==1){
   return(print("ERROR:The tumor characteristics for control subtypes should put as NA"))
 }
