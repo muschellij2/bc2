@@ -26,6 +26,7 @@ if(CheckControlTumor(y.case.control,y.tumor)==1){
   return(print("ERROR:The tumor characteristics for control subtypes should put as NA"))
 }
 tumor.names <- colnames(y.tumor)
+tumor.number <- ncol(y)-1
 if(is.null(tumor.names)){
   tumor.names <- paste0(c(1:tumor.number))
 }
