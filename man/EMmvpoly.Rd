@@ -6,10 +6,10 @@
 \usage{
 EMmvpoly(y, baselineonly = NULL, additive = NULL,
   pairwise.interaction = NULL, saturated = NULL,
-  missingTumorIndicator = 888)
+  missingTumorIndicator = 888, delta0 = NULL)
 }
 \arguments{
-\item{missingTumorIndicator}{}
+\item{delta0}{}
 }
 \description{
 Title
