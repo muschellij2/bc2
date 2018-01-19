@@ -7,6 +7,7 @@
 #' @param pairwise.interaction
 #' @param saturated
 #' @param missingTumorIndicator
+#' @param delta0
 #'
 #' @return
 #' @export
@@ -17,7 +18,8 @@ EMmvpoly <- function(y,
                           additive=NULL,
                           pairwise.interaction=NULL,
                           saturated=NULL,
-                          missingTumorIndicator = 888){
+                          missingTumorIndicator = 888,
+                     delta0= NULL){
 
   missing.data.vec <- GenerateMissingPosition(y,missingTumorIndicator)
   y.pheno.complete <- y[-missing.data.vec,]
@@ -29,8 +31,12 @@ EMmvpoly <- function(y,
   )
   ###z standard matrix means the additive model z design matrix without baseline effect
   ###z standard matrix is used to match the missing tumor characteristics to the complete subtypes
+  if(is.null(delta0)==T){
+    delta0 = initial.set$delta0
+  }else{
+    delta0 = delta0
+  }
 
-  delta0 = initial.set$delta0
   z.all = initial.set$z.all
   z.standard = initial.set$z.standard
   z.deisign.baselineonly = initial.set$z.design.baseline.only
