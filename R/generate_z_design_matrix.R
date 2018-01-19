@@ -14,7 +14,7 @@
 #' @examples
 GenerateZDesignBaselineonly <- function(tumor.character.cat,tumor.number,tumor.names,freq.subtypes){
   M = 1
-  cutoff <- 14
+  cutoff <- 15
   for(i in 1:tumor.number){
     M = M*length(tumor.character.cat[[i]])
   }
@@ -46,7 +46,7 @@ GenerateZDesignBaselineonly <- function(tumor.character.cat,tumor.number,tumor.n
 #' @examples
 GenerateZDesignAdditive <- function(tumor.character.cat,tumor.number,tumor.names,freq.subtypes){
   z.design.additive.text <- NULL
-  cutoff <- 14
+  cutoff <- 15
   for(i in 1:tumor.number){
     if(i==tumor.number){
       z.design.additive.text <- paste0(z.design.additive.text,
@@ -106,7 +106,7 @@ GenerateZDesignNamesAdditive <- function(tumor.names){
 #'
 #' @examples
 GenerateZDesignPairwiseInteraction <- function(tumor.character.cat,tumor.number,tumor.names,freq.subtypes){
-  cutoff <- 14
+  cutoff <- 15
   z.design.pairwise.interaction <-
     GenerateZDesignAdditive(tumor.character.cat,
                               tumor.number,
@@ -152,7 +152,7 @@ GenerateZDesignPairwiseInteraction <- function(tumor.character.cat,tumor.number,
 #'
 #' @examples
 GenerateZDesignSaturated <- function(tumor.character.cat,tumor.number,tumor.names,freq.subtypes) {
-  cutoff <- 14
+  cutoff <- 15
   z.design.saturated <- GenerateZDesignAdditive(tumor.character.cat,
                                                   tumor.number,
                                                   tumor.names,
