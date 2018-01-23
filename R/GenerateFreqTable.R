@@ -20,7 +20,7 @@ GenerateFreqTable <- function(y.pheno.complete){
   eval_text = paste0("as.data.frame(table(",eval_text,"),stringsAsFactors = F)")
   result = eval(parse(text=eval_text))
   result <- apply(result,2,as.numeric)
-  idx <- which(result[,ncol(result)]==0)
-  result <- result[-idx,,drop=F]
+  # idx <- which(result[,ncol(result)]==0)
+  # result <- result[-idx,,drop=F]
   return(result)
 }
