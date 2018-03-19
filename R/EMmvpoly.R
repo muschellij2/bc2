@@ -1,4 +1,69 @@
+#' Title
+#'
+#' @param y
+#' @param missingTumorIndicator
+#'
+#' @return
+#' @export
+#'
+#' @examples
+GenerateZstandard <- function(y,
+                              missingTumorIndicator = 888){
+  if(is.null(missingTumorIndicator)){
+  y.pheno.complete <- y
+  tumor.number <- ncol(y)-1
+  y.case.control <- y[,1]
+  y.tumor <- y[,2:(tumor.number+1)]
+  freq.subtypes <- GenerateFreqTable(y.pheno.complete)
+  if(CheckControlTumor(y.case.control,y.tumor)==1){
+    return(print("ERROR:The tumor characteristics for control subtypes should put as NA"))
+  }
+  tumor.names <- colnames(y.tumor)
+  if(is.null(tumor.names)){
+    tumor.names <- paste0(c(1:tumor.number))
+  }
+  tumor.character.cat = GenerateTumorCharacterCat(y.pheno.complete)
+  z.design.baselineonly <- GenerateZDesignBaselineonly(tumor.character.cat,
+                                                       tumor.number,
+                                                       tumor.names,
+                                                       freq.subtypes)
+  z.design.additive <- GenerateZDesignAdditive(tumor.character.cat,
+                                               tumor.number,
+                                               tumor.names,
+                                               freq.subtypes)
+  z.standard <- z.design.additve[,-1,drop=F]
+  return(z.standard)
 
+  }else{
+    missing.data.vec <- GenerateMissingPosition(y,missingTumorIndicator)
+    y.pheno.complete <- y[-missing.data.vec,]
+    y <- y.pheno.complete
+    tumor.number <- ncol(y)-1
+    y.case.control <- y[,1]
+    y.tumor <- y[,2:(tumor.number+1)]
+    freq.subtypes <- GenerateFreqTable(y.pheno.complete)
+    if(CheckControlTumor(y.case.control,y.tumor)==1){
+      return(print("ERROR:The tumor characteristics for control subtypes should put as NA"))
+    }
+    tumor.names <- colnames(y.tumor)
+    if(is.null(tumor.names)){
+      tumor.names <- paste0(c(1:tumor.number))
+    }
+    tumor.character.cat = GenerateTumorCharacterCat(y.pheno.complete)
+    z.design.baselineonly <- GenerateZDesignBaselineonly(tumor.character.cat,
+                                                         tumor.number,
+                                                         tumor.names,
+                                                         freq.subtypes)
+    z.design.additive <- GenerateZDesignAdditive(tumor.character.cat,
+                                                 tumor.number,
+                                                 tumor.names,
+                                                 freq.subtypes)
+    z.standard <- z.design.additve[,-1,drop=F]
+    return(z.standard)
+
+  }
+
+}
 #' Title
 #'
 #' @param y
