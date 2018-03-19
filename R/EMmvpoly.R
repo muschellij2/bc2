@@ -31,7 +31,7 @@ GenerateZstandard <- function(y,
                                                tumor.number,
                                                tumor.names,
                                                freq.subtypes)
-  z.standard <- z.design.additve[,-1,drop=F]
+  z.standard <- z.design.additive[,-1,drop=F]
   return(z.standard)
 
   }else{
@@ -58,7 +58,7 @@ GenerateZstandard <- function(y,
                                                  tumor.number,
                                                  tumor.names,
                                                  freq.subtypes)
-    z.standard <- z.design.additve[,-1,drop=F]
+    z.standard <- z.design.additive[,-1,drop=F]
     return(z.standard)
 
   }
