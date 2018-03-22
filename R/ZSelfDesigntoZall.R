@@ -37,7 +37,7 @@ ZSelfDesigntoZall <- function(x.self.design,
   total.covar.number <- 1+ self.design.number+baselineonly.number+additive.number+
     pairwise.interaction.number+saturated.number
 
-  z.all <- matrix(0,nrow=(M*total.covar.number),ncol = (M+self.design.second.cat+baselineonly.number*baselineonly.second.cat+
+  z.all <- matrix(0,nrow=(M*total.covar.number),ncol = (M+self.design.second.cat*self.design.number+baselineonly.number*baselineonly.second.cat+
                                                           additive.second.cat*additive.number+
                                                           pairwise.interaction.second.cat*pairwise.interaction.number)+saturated.second.cat*saturated.number)
 
