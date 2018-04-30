@@ -152,3 +152,42 @@ result <-   DisplayMixedScoreTestResult(score.meta.fixed,
 return(result[1])
 }
 
+
+
+
+#' Title
+#'
+#' @param icog_onco_score_infor_one
+#' @param second.num
+#'
+#' @return
+#' @export
+#'
+#' @examples
+MetaFixedPfunction_temp <- function(icog_onco_score_infor_one,second.num){
+  log.icog <- as.numeric(icog_onco_score_infor_one[1:(second.num)])
+  sigma.icog <- matrix(as.numeric(icog_onco_score_infor_one[(second.num+1):
+                                                              (second.num+second.num^2) ]),
+                       ncol = second.num)
+  start <- second.num+second.num^2
+  log.onco <- as.numeric(icog_onco_score_infor_one[(1+start):
+                                                       (second.num+start)])
+  sigma.onco <- matrix(as.numeric(icog_onco_score_infor_one[(second.num+1+start):
+                                                              (second.num+second.num^2+start) ]),ncol=second.num)
+
+  meta.result.fixed <- LogoddsMetaAnalysis(log.icog,sigma.icog,
+                                         log.onco,sigma.onco)
+
+
+  logodds.meta.fixed <- meta.result.fixed[[1]]
+  sigma.meta.fixed <- meta.result.fixed[[2]]
+
+
+
+
+  p.value <- DisplaySecondStageTestResult(logodds.meta.fixed,sigma.meta.fixed,self.design=T,
+                                          places= 5)
+
+  return(list(logodds.meta.fixed,sigma.meta.fixed,
+              p.value))
+}
