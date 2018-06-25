@@ -16,7 +16,8 @@ Mvpoly <- function(y,
                           baselineonly,
                           additive,
                           pairwise.interaction,
-                          saturated){
+                          saturated,
+                   delta0 = NULL){
 y.pheno.complete <- y
 
 
@@ -62,7 +63,10 @@ z.all <- ZDesigntoZall(baselineonly,
                        z.design.additive,
                        z.design.pairwise.interaction,
                        z.design.saturated)
-delta0 <-StartValueFunction(freq.subtypes,y.case.control,z.all)
+if(is.null(delta0)){
+  delta0 <-StartValueFunction(freq.subtypes,y.case.control,z.all)
+}
+
 #x.all has no intercept yet
 #we will add the intercept in C code
 x.all <- GenerateXAll(y,baselineonly,additive,pairwise.interaction,saturated)
