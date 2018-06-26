@@ -1005,9 +1005,9 @@ static void Free_Mem(double * XX,double **tXXZ,int Nparm,double**X,int N,
 }
 
 void CompleteCasesScoreTestSupport(deltai, pNparm, Y, Xvec, ZallVec,Zallnr,Zallnc, pN, pM, pNcov, pNiter, ptol,
-                        pDEBUG, ret_rc, ret_delta,ret_info,ret_p,ret_Inv_info_vec,YminusP,W_obs, WXZ_vec,WX_vec)
+                        pDEBUG, ret_rc, ret_delta,ret_info,ret_p,ret_Inv_info_vec,YminusP, WXZ_vec,WX_vec)
 double *deltai, *Y, *Xvec, *ptol, *ret_delta,*ret_info,*ret_p,*ZallVec,
- *ret_Inv_info_vec, *YminusP, *W_obs,*WXZ_vec,*WX_vec;
+ *ret_Inv_info_vec, *YminusP, *WXZ_vec,*WX_vec;
 int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc;
 
 {
