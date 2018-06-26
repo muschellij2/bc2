@@ -1,4 +1,5 @@
 
+
 #' Title
 #'
 #' @param y
@@ -7,7 +8,6 @@
 #' @param pairwise.interaction
 #' @param saturated
 #' @param missingTumorIndicator
-#' @param missingDataAlgorithm
 #'
 #' @return
 #' @export
@@ -18,8 +18,7 @@ ScoreTestSupport <- function(y,
                                additive=NULL,
                                pairwise.interaction=NULL,
                                saturated=NULL,
-                               missingTumorIndicator = NULL,
-                             missingDataAlgorithm = "EM"
+                               missingTumorIndicator = NULL
                              ){
  if(is.null(missingTumorIndicator)==1){
   return(CompleteCasesScoreTestSupport(y,
@@ -28,16 +27,16 @@ ScoreTestSupport <- function(y,
                                                    pairwise.interaction,
                                                    saturated))
  }else{
-   if(missingDataAlgorithm=="EM"){
+   #if(missingDataAlgorithm=="EM"){
     return(EMScoreTestSupport(y,
                                           baselineonly,
                                           additive,
                                           pairwise.interaction,
                                           saturated,
                                           missingTumorIndicator))
-   }else if(missingDataAlgorithm=="OneStepMLE"){
+  # }else if(missingDataAlgorithm=="OneStepMLE"){
 
-   }
+   #}
  }
 
 }
