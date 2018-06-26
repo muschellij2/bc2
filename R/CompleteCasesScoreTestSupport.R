@@ -101,7 +101,7 @@ CompleteCasesScoreTestSupport <- function(y,
   ret_p <- as.numeric(rep(0,NM))
   ret_Inv_info_vec <- as.numeric(as.vector(matrix(0,Znc,Znc)))
   YminusP <- Y
-  #W_obs <- as.numeric(rep(0,N*M*M))
+  W_obs <- as.numeric(rep(0,N*M*M))
   WXZ_vec <- as.numeric(rep(0,N*M*Znc))
   WX_vec <- as.numeric(rep(0,N*M*Znr))
 
@@ -128,7 +128,7 @@ CompleteCasesScoreTestSupport <- function(y,
              ret_p=ret_p,
              ret_Inv_info_vec=ret_Inv_info_vec,
              YminusP=YminusP,
-             #W_obs = W_obs,
+             W_obs = W_obs,
              WXZ_vec = WXZ_vec,
              WX_vec = WX_vec)
   print(paste0("EM Algorithm Converged"))

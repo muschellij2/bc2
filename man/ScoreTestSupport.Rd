@@ -6,10 +6,10 @@
 \usage{
 ScoreTestSupport(y, baselineonly = NULL, additive = NULL,
   pairwise.interaction = NULL, saturated = NULL,
-  missingTumorIndicator = NULL, missingDataAlgorithm = "EM")
+  missingTumorIndicator = NULL)
 }
 \arguments{
-\item{missingDataAlgorithm}{}
+\item{missingTumorIndicator}{}
 }
 \description{
 Title

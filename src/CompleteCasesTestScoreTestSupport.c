@@ -967,7 +967,7 @@ static void Free_Mem(double * XX,double **tXXZ,int Nparm,double**X,int N,
                      double *delta0,double**Z,int M,
                      double** XmWXm,int Znr,int Znc,
                      double *lxx, double* ret_info,
-                     double **Inv, double *w_y, double *W,double *beta,
+                     double **Inv, double *w_y,double *beta,
                      int DEBUG, double **Info
                      ,double **WX,
                      double** WXZ){
@@ -991,8 +991,6 @@ static void Free_Mem(double * XX,double **tXXZ,int Nparm,double**X,int N,
   fill_SysMat(Info,ret_info,Nparm);
   if (DEBUG) Rprintf("Free Inv\n");
   matrix_free((void **)Inv, Znc);
-  if (DEBUG) Rprintf("Free W\n");
-  free(W);
   if (DEBUG) Rprintf("Free W_y\n");
   free(w_y);
   if (DEBUG) Rprintf("Free beta\n");
@@ -1005,9 +1003,9 @@ static void Free_Mem(double * XX,double **tXXZ,int Nparm,double**X,int N,
 }
 
 void CompleteCasesScoreTestSupport(deltai, pNparm, Y, Xvec, ZallVec,Zallnr,Zallnc, pN, pM, pNcov, pNiter, ptol,
-                        pDEBUG, ret_rc, ret_delta,ret_info,ret_p,ret_Inv_info_vec,YminusP, WXZ_vec,WX_vec)
+                        pDEBUG, ret_rc, ret_delta,ret_info,ret_p,ret_Inv_info_vec,YminusP,W, WXZ_vec,WX_vec)
 double *deltai, *Y, *Xvec, *ptol, *ret_delta,*ret_info,*ret_p,*ZallVec,
- *ret_Inv_info_vec, *YminusP, *WXZ_vec,*WX_vec;
+ *ret_Inv_info_vec, *YminusP, *W,*WXZ_vec,*WX_vec;
 int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc;
 
 {
@@ -1021,7 +1019,6 @@ int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc;
 
   double *XX;
 
-  double *W;
 
   double **WX;
   double **WXZ;
@@ -1100,7 +1097,10 @@ int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc;
     if (DEBUG) Rprintf("Get Y-P\n");
     VectorMinus(Y,ret_p,NM,YminusP);
     fill_SysMat(Inv,ret_Inv_info_vec,Znc);
+    if (DEBUG) Rprintf("Get W\n");
+
     if (DEBUG) Rprintf("Get WXZ\n");
+
     get_WXZ(M,N,Ncov,X, W,
     WX,WXZ, Nparm,Z, Znc,
     WXZ_vec,
@@ -1110,7 +1110,7 @@ int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc;
     delta0,Z,M,
     XmWXm, Znr,Znc,
     lxx,ret_info,
-    Inv, w_y, W,beta,
+    Inv, w_y,beta,
     DEBUG,Info,WX,WXZ);
 
     if (!conv) {

@@ -6,10 +6,10 @@
 \usage{
 TwoStageModel(y, baselineonly = NULL, additive = NULL,
   pairwise.interaction = NULL, saturated = NULL,
-  missingTumorIndicator = NULL, missingDataAlgorithm = "EM")
+  missingTumorIndicator = NULL, delta0 = NULL)
 }
 \arguments{
-\item{missingDataAlgorithm}{}
+\item{delta0}{}
 }
 \description{
 Title

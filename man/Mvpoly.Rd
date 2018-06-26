@@ -4,7 +4,8 @@
 \alias{Mvpoly}
 \title{Title}
 \usage{
-Mvpoly(y, baselineonly, additive, pairwise.interaction, saturated)
+Mvpoly(y, baselineonly, additive, pairwise.interaction, saturated,
+  delta0 = NULL)
 }
 \arguments{
 \item{saturated}{}
