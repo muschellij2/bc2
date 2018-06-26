@@ -1054,7 +1054,6 @@ int *pNparm, *pN, *pM, *pNcov, *pNiter, *ret_rc, *pDEBUG,*Zallnr,*Zallnc;
 
     Inv      = dMat_alloc(Nparm, Nparm, 0, 0.0);
     w_y      = dVec_alloc(NM, 0, 0.0);
-    W      = dVec_alloc(NM*M, 0, 0.0);
     beta  = dVec_alloc(Znr, 0, 0.0);
 
     XX = dVec_alloc((N*Ncov*Ncov),0,0.0);
