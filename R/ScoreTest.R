@@ -27,7 +27,12 @@ ScoreTest <- function(y,x,second.stage.structure = "additive",score.test.support
   tumor.number <- ncol(y)-1
   y.case.control <- y[,1]
   y.tumor <- y[,2:(tumor.number+1)]
-  y.pheno.complete <- GenerateCompleteYPheno(y,missingTumorIndicator)
+  if(is.null(missingTumorIndicator)){
+  y.pheno.complete <- y
+  }else{
+    y.pheno.complete <- GenerateCompleteYPheno(y,missingTumorIndicator)
+  }
+
   freq.subtypes <- GenerateFreqTable(y.pheno.complete)
   if(CheckControlTumor(y.case.control,y.tumor)==1){
     return(print("ERROR:The tumor characteristics for control subtypes should put as NA"))
