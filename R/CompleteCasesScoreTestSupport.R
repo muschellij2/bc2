@@ -128,13 +128,13 @@ CompleteCasesScoreTestSupport <- function(y,
              ret_p=ret_p,
              ret_Inv_info_vec=ret_Inv_info_vec,
              YminusP=YminusP,
-             W_obs = W_obs,
+             W= W_obs,
              WXZ_vec = WXZ_vec,
              WX_vec = WX_vec)
-  print(paste0("EM Algorithm Converged"))
+  print(paste0("Algorithm Converged"))
   inv_info_vec <- temp$ret_Inv_info_vec
   YminusP <- temp$YminusP
-  W_obs <- temp$W_obs
+  W_obs <- temp$W
   WXZ_vec <- temp$WXZ_vec
   WX_vec <- temp$WX_vec
 
