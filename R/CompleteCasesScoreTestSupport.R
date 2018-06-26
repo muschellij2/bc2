@@ -108,7 +108,7 @@ CompleteCasesScoreTestSupport <- function(y,
 
 
 
-  temp <- .C("CompleteCasesScoreSupport",
+  temp <- .C("CompleteCasesScoreTestSupport",
              deltai,
              nparm,
              Y=Y,
