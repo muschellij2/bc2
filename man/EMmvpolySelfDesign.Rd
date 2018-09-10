@@ -6,10 +6,10 @@
 \usage{
 EMmvpolySelfDesign(y, x.self.design, z.design, baselineonly = NULL,
   additive = NULL, pairwise.interaction = NULL, saturated = NULL,
-  missingTumorIndicator = 888, z.all = NULL)
+  missingTumorIndicator = 888, z.all = NULL, delta0 = NULL)
 }
 \arguments{
-\item{z.all}{}
+\item{delta0}{}
 }
 \description{
 Title
