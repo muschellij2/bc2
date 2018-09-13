@@ -229,7 +229,12 @@ if(is.null(x.self.design)){
               AIC = AIC,beta=beta,covariance.beta=covariance.beta,
               z.standard=z.standard))
 }else{
-  full.second.stage.names <- colnames(z.design.saturated)
+  if(is.null(colnames(z.design))){
+    full.second.stage.names <- paste0("self_design_group",c(1:ncol(z.design)))
+  }else{
+    full.second.stage.names <- colnames(z.design)
+  }
+
   M <- as.integer(nrow(z.standard))
   ###delta represent second stage parameters
   delta <- model.result$delta
@@ -247,7 +252,8 @@ if(is.null(x.self.design)){
   takeout.intercept.result <- TakeoutIntercept(delta,covariance.delta,
                                                M,
                                                tumor.names,
-                                               z.all,covar.names)
+                                               z.all,
+                                               covar.names)
   beta <- takeout.intercept.result$beta
   covariance.beta <- takeout.intercept.result$covariance.beta
   delta.no.inter <- takeout.intercept.result$delta.no.inter
