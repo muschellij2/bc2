@@ -9,7 +9,7 @@ ZSelfDesigntoZall(x.self.design, baselineonly, additive, pairwise.interaction,
   z.design.pairwise.interaction, z.design.saturated)
 }
 \arguments{
-\item{x}{}
+\item{z.design.saturated}{}
 }
 \description{
 Title
