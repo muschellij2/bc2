@@ -67,7 +67,7 @@ MetaPfunction <- function(icog_onco_score_infor_one,second.num){
                                                               (second.num+second.num^2+start) ]),ncol=second.num)
 
 
-  meta.result <- LogoddsMetaAnalysis(score.icog,infor.icog,
+  meta.result <- ScoreMetaAnalysis(score.icog,infor.icog,
                                    score.onco,infor.onco)
   score.meta <- t(meta.result[[1]])
   infor.meta <- meta.result[[2]]
