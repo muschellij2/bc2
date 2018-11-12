@@ -23,7 +23,7 @@ Metaoddsfunction <- function(icog_onco_score_infor_one,second.num){
                                      score.onco,infor.onco)
   score.meta <- as.vector(meta.result[[1]])
   infor.meta <- meta.result[[2]]
-  p.meta <- DisplaySecondStageTestResult(score.meta,infor.meta)[[3]]
+  p.meta <- DisplaySecondStageTestResult(score.meta,infor.meta)[[2*second.num+1]]
   return(list(log.odds=score.meta,
               covar = infor.meta,
               p = p.meta))
