@@ -18,6 +18,7 @@
 #'
 #' @examples
 
+
 EMmvpolySelfDesign <- function(y,
                                x.self.design,
                                z.design,
