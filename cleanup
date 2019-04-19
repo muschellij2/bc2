@@ -1,0 +1,6 @@
+#!/bin/sh
+############### still a WIP ###############
+rm -f -r src/*.o src/*.so 
+rm -f -r src/*.o-*
+rm -f -r src/*.gcno
+rm -f -r src/*.gcda
