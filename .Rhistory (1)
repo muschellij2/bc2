@@ -1,6 +1,0 @@
-3.5*3
-10.5*1.6
-ls()
-library(devtools)
-document()
-library(bc2)
