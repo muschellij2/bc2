@@ -1,19 +1,5 @@
 all: $(SHLIB)
 
-<<<<<<< HEAD
-source1.o: source1.c
-source_mis.o: source_mis.c
-
-# source.o: source.c
-# source0.o: source0.c
-getXpWXp.o: getXpWXp.c
-# getXbetaX.o: getXbetaX.c
-getXWX.o: getXWX.c
-getXWXp.o: getXWXp.c
-getW.o: getW.c
-getWXp.o: getWXp.c
-getXY.o: getXY.c
-=======
 PKG_CFLAGS=-Wno-unused-function
 
 EMStep.o: EMStep.c
@@ -25,5 +11,3 @@ ScoreTestMixedModel.o: ScoreTestMixedModel.c
 Mvpoly.o: Mvpoly.c
 OneStepMLE.o: OneStepMLE.c
 CompleteCasesScoreTestSupport.o:CompleteCasesScoreTestSupport.c
->>>>>>> upstream/master
-
